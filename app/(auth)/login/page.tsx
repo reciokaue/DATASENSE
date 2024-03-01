@@ -1,7 +1,6 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import bcrypt from 'bcrypt'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
@@ -9,13 +8,11 @@ import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { setCookie } from '@/actions/setCookie'
+import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
 import { api } from '@/lib/api'
-import { decryptData, encryptData } from '@/lib/crypto'
-
-import { Button } from '../components/ui/button'
-import { Input } from '../components/ui/input'
 
 export default function Login() {
   const router = useRouter()
@@ -23,13 +20,7 @@ export default function Login() {
 
   const schema = z.object({
     email: z.string().email('Deve ser um email valido'),
-    password: z
-      .string({
-        required_error: 'A senha é obrigatória',
-        invalid_type_error: 'A senha deve ter caracteres',
-      })
-      .min(3, 'Deve ter no mínimo 3 caracteres')
-      .trim(),
+    password: z.string().min(3, 'Deve ter no mínimo 3 caracteres').trim(),
     rememberMe: z.boolean().nullable(),
   })
   type Props = z.infer<typeof schema>
@@ -50,17 +41,15 @@ export default function Login() {
         email: data.email,
         password: data.password,
       })
+      const authToken = response.data
+      setCookie('authToken', authToken)
       if (data.rememberMe) {
-        const authToken = response.data
-        setCookie('authToken', authToken)
-
         localStorage.setItem('feedback-view_email', data.email)
         localStorage.setItem('feedback-view_password', data.password)
       }
       router.push('/dashboard')
     } catch (e: any) {
       const message = e?.response.data.message
-      console.log(message)
       if (message === 'Wrong password')
         toast({
           title: 'Senha incorreta',
