@@ -42,7 +42,9 @@ export default function Login() {
         password: data.password,
       })
       const authToken = response.data
-      setCookie('authToken', authToken)
+      setCookie('@feedback.view:auth-token', authToken)
+      console.log(authToken)
+
       if (data.rememberMe) {
         localStorage.setItem('feedback-view_email', data.email)
         localStorage.setItem('feedback-view_password', data.password)
