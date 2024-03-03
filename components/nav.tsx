@@ -25,7 +25,7 @@ export function Nav() {
   const user: userToken | undefined = token && jwtDecode(token.value)
 
   return (
-    <nav className="mx-auto flex max-w-6xl p-4">
+    <nav className="flex max-w-6xl py-4">
       <Link href="/profile" className="flex items-center gap-2">
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20 text-sm">
           {nameImagePreview(user?.name || '')}
