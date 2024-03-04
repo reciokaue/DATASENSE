@@ -2,7 +2,6 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { getCookie } from 'cookies-next'
-import { Suspense } from 'react'
 
 import { FormCard } from '@/components/form-card'
 import { Nav } from '@/components/nav'
@@ -29,19 +28,6 @@ export default function Dashboard() {
     },
     enabled: !!token,
   })
-
-  // useEffect(() => {
-  //   async function getData() {
-  //     console.log('headers', api.defaults.headers)
-  //     try {
-  //       const response = await api.get('/form')
-  //       return response.data
-  //     } catch (er) {
-  //       console.log(er)
-  //     }
-  //   }
-  //   getData()
-  // }, [])
 
   return (
     <main className="screen:px-0 mx-auto flex max-w-6xl flex-col px-10">
