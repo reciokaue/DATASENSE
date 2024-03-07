@@ -13,7 +13,7 @@ export function SearchBar() {
         <Search className="h-4 w-6" />
       </Button>
       <div className="w-full">
-        <Input type="email" placeholder="Search..." className="w-full" />
+        <Input type="email" placeholder="Procurar..." className="w-full" />
       </div>
       <Button variant="outline" size="icon" className="shrink-0">
         <List className="h-4 w-4" />
@@ -22,10 +22,6 @@ export function SearchBar() {
         <LayoutGrid className="h-4 w-4" />
       </Button>
       <NewFormButton />
-      {/* <Button>
-        Novo
-        <Plus size={24} />
-      </Button> */}
     </div>
   )
 }

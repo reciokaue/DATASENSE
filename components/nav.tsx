@@ -21,13 +21,13 @@ function nameImagePreview(name: string) {
 
 export function Nav() {
   const token = getCookie('@feedback.view:auth-token')
-  const user: userToken = token ? jwtDecode(token) : {}
+  const user: userToken = token ? jwtDecode(token) : ({} as userToken)
 
   return (
     <nav className="flex max-w-6xl py-4">
       <Link href="/profile" className="flex items-center gap-2">
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20 text-sm">
-          {nameImagePreview(user?.name || '')}
+          {user && nameImagePreview(user?.name || '')}
         </div>
         <label>{user?.name}</label>
       </Link>

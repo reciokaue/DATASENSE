@@ -1,13 +1,13 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { setCookie } from 'cookies-next'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { setCookie } from '@/actions/setCookie'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'

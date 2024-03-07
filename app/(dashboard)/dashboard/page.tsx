@@ -33,7 +33,7 @@ export default function Dashboard() {
     <main className="screen:px-0 mx-auto flex max-w-6xl flex-col px-10">
       <Nav />
       <SearchBar />
-      <div className="mt-10 grid grid-cols-3 gap-3">
+      <div className="mt-10 grid grid-cols-1 gap-3 md:grid-cols-3">
         {formsData
           ? formsData.map((form: any) => <FormCard data={form} key={form.id} />)
           : [0, 1, 2].map((i) => (
