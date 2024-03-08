@@ -1,5 +1,5 @@
 import { Search, X } from 'lucide-react'
-import { cookies } from 'next/headers'
+import { Suspense } from 'react'
 
 import { FormCard } from '@/components/form-card'
 import { Badge } from '@/components/ui/badge'
@@ -7,17 +7,13 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { api } from '@/lib/api'
 
-const tags = ['Todas', 'Pesquisa de mercado', 'Campanha', 'Online']
-
 export default async function Page() {
-  const cookieStore = cookies()
-  const token = cookieStore.get('@feedback.view:auth-token')
-
-  const response = await api.get('/form', {
-    headers: {
-      Authorization: `Bearer ${token?.value}`,
+  const forms = await api.get('/form', {
+    params: {
+      isDefault: true,
     },
   })
+  // const topics = await api.get('/form')
 
   return (
     <div className="screen:px-0 mx-auto flex max-w-6xl flex-col px-10">
@@ -29,11 +25,14 @@ export default async function Page() {
       </header>
       <section>
         <div className="mt-4 flex gap-2">
-          {tags.map((tag) => (
-            <Badge variant={tag === 'Todas' ? 'default' : 'ghost'} key={tag}>
-              {tag}
+          {/* {[{ name: 'Todas' }, ...topics.data].map((tag) => (
+            <Badge
+              variant={tag.name === 'Todas' ? 'default' : 'ghost'}
+              key={tag.name}
+            >
+              {tag.name}
             </Badge>
-          ))}
+          ))} */}
         </div>
         <div className="relative mt-4 w-full">
           <span className="absolute left-0 z-10 flex h-10 w-10 items-center justify-center">
@@ -47,7 +46,7 @@ export default async function Page() {
         </div>
         <h1 className="mt-8 text-xl font-semibold">Todas</h1>
         <section className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-3">
-          {response.data.map((form: any) => (
+          {forms.data?.map((form: any) => (
             <FormCard data={form} key={form.id} />
           ))}
         </section>

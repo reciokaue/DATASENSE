@@ -6,6 +6,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { Providers } from '@/components/providers'
+import { api } from '@/lib/api'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,6 +24,8 @@ export default function RootLayout({
 
   if (!token) {
     redirect('./login')
+  } else {
+    api.defaults.headers.common.Authorization = `Bearer ${token.value}`
   }
 
   return (
