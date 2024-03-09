@@ -22,11 +22,11 @@ export default function RootLayout({
   const cookieStore = cookies()
   const token = cookieStore.get('@feedback.view:auth-token')
 
-  if (!token) {
-    redirect('./login')
-  } else {
-    api.defaults.headers.common.Authorization = `Bearer ${token.value}`
-  }
+  // if (!token) {
+  //   // redirect('./login')
+  // } else {
+  //   api.defaults.headers.common.Authorization = `Bearer ${token.value}`
+  // }
 
   return (
     <html lang="en">

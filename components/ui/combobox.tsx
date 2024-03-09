@@ -27,6 +27,7 @@ interface ComboboxProps {
   title: string
   defaultValue?: string
   styles?: string
+  handleSetValue: (topic: string) => void
 }
 
 export function Combobox({
@@ -34,9 +35,18 @@ export function Combobox({
   title,
   styles,
   defaultValue = '',
+  handleSetValue,
 }: ComboboxProps) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState(defaultValue)
+
+  function setComboboxValue(framework: Option) {
+    const newValue = framework.value === value ? '' : framework.value
+
+    setValue(newValue)
+    handleSetValue(newValue)
+    setOpen(false)
+  }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -62,8 +72,7 @@ export function Combobox({
               <CommandItem
                 key={framework.value}
                 onSelect={() => {
-                  setValue(framework.value === value ? '' : framework.value)
-                  setOpen(false)
+                  setComboboxValue(framework)
                 }}
               >
                 <Check
