@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { setCookie } from '@/actions/setCookie'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
@@ -34,18 +33,16 @@ export default function Login() {
   async function handleSign(data: Props) {
     try {
       const { email, password, name } = data
-      const response = await api.post('/register', {
+      await api.post('/auth/register', {
         email,
         password,
         name,
       })
-      const authToken = response.data
-      setCookie('authToken', authToken)
       router.push('/dashboard')
     } catch (e: any) {
       const message = e?.response.data.message
       console.log(message)
-      if (message === 'This email already existis, please use another')
+      if (message === 'User already exists.')
         toast({
           title: 'Email já cadastrado',
           description: 'Cadastre outro email ou faça login',

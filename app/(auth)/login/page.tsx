@@ -1,7 +1,6 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { setCookie } from 'cookies-next'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
@@ -37,13 +36,10 @@ export default function Login() {
 
   async function handleSign(data: Props) {
     try {
-      const response = await api.post('/login', {
+      await api.post('/auth/login', {
         email: data.email,
         password: data.password,
       })
-      const authToken = response.data
-      setCookie('@feedback.view:auth-token', authToken)
-      console.log(authToken)
 
       if (data.rememberMe) {
         localStorage.setItem('feedback-view_email', data.email)
@@ -52,13 +48,13 @@ export default function Login() {
       router.push('/dashboard')
     } catch (e: any) {
       const message = e?.response.data.message
-      if (message === 'Wrong password')
+      if (message === 'Invalid Password.')
         toast({
           title: 'Senha incorreta',
           description: 'Não lembra a senha? clique em esqueci minha senha',
           variant: 'destructive',
         })
-      if (message === "Email doesn't exist")
+      if (message === 'User does not exist.')
         toast({
           title: 'Email não existe',
           description: 'Verifique se digitou corretamente',

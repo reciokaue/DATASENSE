@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import { cookies, cookies as nextCookies } from 'next/headers'
 import { z } from 'zod'
 
 import { prisma } from '@/lib/prisma'
@@ -26,6 +27,7 @@ export async function POST(req: Request) {
     'B9S1G094LXL',
     { expiresIn: '30 days' },
   )
+  cookies().set('@feedback.view:auth-token', token)
 
   return Response.json(token, { status: 200 })
 }
