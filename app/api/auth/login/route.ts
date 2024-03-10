@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { cookies, cookies as nextCookies } from 'next/headers'
+import { cookies } from 'next/headers'
 import { z } from 'zod'
 
 import { prisma } from '@/lib/prisma'
