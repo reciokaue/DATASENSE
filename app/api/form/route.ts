@@ -10,21 +10,27 @@ import { paginationSchema } from '@/utils/schemas/pagination'
 import { FormSchema } from './schemas'
 
 export async function GET(req: NextRequest) {
-  const token = cookies().get('@feedback.view:auth-token')
-  const decoded = jwt.verify(token?.value, 'B9S1G094LXL')
+  // const token = cookies().get('@feedback.view:auth-token')
+  // const decoded = jwt.verify(token?.value, 'B9S1G094LXL')
 
-  const { page, pageSize, query } = paginationSchema.parse(paramsToObject(req))
+  const { page, pageSize, query, isDefault } = paginationSchema.parse(
+    paramsToObject(req),
+  )
 
   const forms = await prisma.form.findMany({
     where: {
-      userId: decoded?.sub,
+      userId: 'fcbe6ae0-ad79-4b76-9a29-3664893f030c',
       ...(query && {
         name: { contains: query },
         about: { contains: query },
       }),
+      ...(isDefault && {
+        isDefault: true,
+      }),
     },
     take: pageSize,
     skip: pageSize * page,
+    include: { _count: true },
   })
 
   return Response.json(forms, { status: 200 })
