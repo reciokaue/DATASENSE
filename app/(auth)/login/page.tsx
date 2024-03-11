@@ -74,7 +74,7 @@ export default function Login() {
     }
 
     getLoginInfo()
-  }, [])
+  }, [setValue])
 
   return (
     <section

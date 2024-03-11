@@ -6,7 +6,7 @@ import { X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 import { Button } from '../ui/button'
-import { type Tag as TagType, TagInputProps } from './tag-input'
+import { TagInputProps } from './tag-input'
 
 export const tagVariants = cva(
   'transition-all border inline-flex items-center text-sm pl-2 rounded-md',
@@ -72,7 +72,7 @@ export const tagVariants = cva(
 )
 
 export type TagProps = {
-  tagObj: TagType
+  tagObj: string
   variant: TagInputProps['variant']
   size: TagInputProps['size']
   shape: TagInputProps['shape']

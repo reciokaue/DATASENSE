@@ -84,7 +84,7 @@ export default function TopicInput() {
                   className="sm:min-w-[450px]"
                   setTags={(newTags) => {
                     setTags(newTags)
-                    setValue('topics', newTags)
+                    setValue('topics', newTags as any)
                   }}
                 />
               </FormControl>

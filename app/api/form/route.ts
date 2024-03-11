@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { cookies } from 'next/headers'
 import { NextRequest } from 'next/server'
@@ -38,13 +37,13 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const token = cookies().get('@feedback.view:auth-token')
-  const decoded = jwt.verify(token?.value, 'B9S1G094LXL')
+  const decoded = token && jwt.verify(token?.value, 'B9S1G094LXL')
 
   const validated = FormSchema.safeParse(await req.json())
   if (!validated.success) {
     return Response.json({ message: 'Data invalid' }, { status: 400 })
   }
-  validated.data.userId = decoded.sub
+  validated.data.userId = String(decoded?.sub)
 
   const topicExistis = await prisma.topic.findUnique({
     where: {
@@ -55,7 +54,7 @@ export async function POST(req: NextRequest) {
     return Response.json({ message: 'Topic not found' }, { status: 404 })
 
   const form = await prisma.form.create({
-    data: validated.data,
+    data: validated.data as any,
   })
 
   return Response.json(form, { status: 200 })

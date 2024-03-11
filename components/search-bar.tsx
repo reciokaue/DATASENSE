@@ -1,4 +1,4 @@
-import { LayoutGrid, List, Plus, Search } from 'lucide-react'
+import { LayoutGrid, List, Search } from 'lucide-react'
 
 import { NewFormButton } from './new-form-button'
 import { Button } from './ui/button'

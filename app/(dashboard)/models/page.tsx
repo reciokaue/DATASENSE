@@ -1,18 +1,16 @@
 import { Search, X } from 'lucide-react'
-import { Suspense } from 'react'
 
-import { FormCard } from '@/components/form-card'
-import { Badge } from '@/components/ui/badge'
+// import { FormCard } from '@/components/form-card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { api } from '@/lib/api'
+// import { api } from '@/lib/api'
 
 export default async function Page() {
-  const forms = await api.get('/form', {
-    params: {
-      isDefault: true,
-    },
-  })
+  // const forms = await api.get('/form', {
+  //   params: {
+  //     isDefault: true,
+  //   },
+  // })
   // const topics = await api.get('/form')
 
   return (
@@ -46,9 +44,9 @@ export default async function Page() {
         </div>
         <h1 className="mt-8 text-xl font-semibold">Todas</h1>
         <section className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-3">
-          {forms.data?.map((form: any) => (
+          {/* {forms.data?.map((form: any) => (
             <FormCard data={form} key={form.id} />
-          ))}
+          ))} */}
         </section>
       </section>
     </div>

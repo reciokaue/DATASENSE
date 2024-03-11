@@ -8,13 +8,12 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 
-import { type Tag as TagType } from './tag-input'
 import { TagList, TagListProps } from './tag-list'
 
 type TagPopoverProps = {
   children: React.ReactNode
-  tags: TagType[]
-  customTagRenderer?: (tag: TagType) => React.ReactNode
+  tags: string[]
+  customTagRenderer?: (tag: string) => React.ReactNode
 } & TagListProps
 
 export const TagPopover: React.FC<TagPopoverProps> = ({

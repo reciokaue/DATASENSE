@@ -1,9 +1,8 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { getCookie } from 'cookies-next'
 import { BookCopy, Hand, Plus, ScanSearch } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+// import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -11,7 +10,6 @@ import { api } from '@/lib/api'
 
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -52,7 +50,7 @@ const schema = z.object({
 type Props = z.infer<typeof schema>
 
 export function NewFormButton() {
-  const router = useRouter()
+  // const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -63,17 +61,12 @@ export function NewFormButton() {
   })
 
   async function handleCreateNewForm(data: Props) {
-    const token = getCookie('@feedback.view:auth-token')
-
     if (data.startType === 'from-zero') {
       try {
-        const response = await api.post('/form', {
+        await api.post('/form', {
           name: data.name,
           about: data.about,
           topic: data.topic,
-          headers: {
-            Authorization: `Bearer ${token.value}`,
-          },
         })
         // const response = await api.post('/login', {
         //   email: data.email,

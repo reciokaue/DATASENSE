@@ -31,9 +31,9 @@ export interface TagInputProps
     VariantProps<typeof tagVariants> {
   placeholder?: string
   tags: Array<string>
-  setTags: React.Dispatch<React.SetStateAction<Tag[]>>
+  setTags: React.Dispatch<React.SetStateAction<string[]>>
   enableAutocomplete?: boolean
-  autocompleteOptions?: Tag[]
+  autocompleteOptions?: string[]
   maxTags?: number
   minTags?: number
   readOnly?: boolean
@@ -55,10 +55,10 @@ export interface TagInputProps
   autocompleteFilter?: (option: string) => boolean
   direction?: 'row' | 'column'
   onInputChange?: (value: string) => void
-  customTagRenderer?: (tag: Tag) => React.ReactNode
+  customTagRenderer?: (tag: string) => React.ReactNode
   onFocus?: React.FocusEventHandler<HTMLInputElement>
   onBlur?: React.FocusEventHandler<HTMLInputElement>
-  onTagClick?: (tag: Tag) => void
+  onTagClick?: (tag: string) => void
   draggable?: boolean
   inputFieldPostion?: 'bottom' | 'top' | 'inline'
   clearAll?: boolean
@@ -150,7 +150,7 @@ const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>((props) => {
       // Check if the tag is in the autocomplete options if restrictTagsToAutocomplete is true
       if (
         restrictTagsToAutocompleteOptions &&
-        !autocompleteOptions?.some((option) => option.text === newTagText)
+        !autocompleteOptions?.some((option) => option === newTagText)
       ) {
         toast({
           title: 'Invalid Tag',
@@ -218,7 +218,7 @@ const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>((props) => {
   }
 
   const filteredAutocompleteOptions = autocompleteFilter
-    ? autocompleteOptions?.filter((option) => autocompleteFilter(option.text))
+    ? autocompleteOptions?.filter((option) => autocompleteFilter(option))
     : autocompleteOptions
 
   const displayedTags = sortTags ? [...tags].sort() : tags
@@ -263,7 +263,7 @@ const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>((props) => {
           <Autocomplete
             tags={tags}
             setTags={setTags}
-            autocompleteOptions={filteredAutocompleteOptions as Tag[]}
+            autocompleteOptions={filteredAutocompleteOptions as string[]}
             maxTags={maxTags}
             onTagAdd={onTagAdd}
             allowDuplicates={allowDuplicates ?? false}

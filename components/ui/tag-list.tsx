@@ -6,11 +6,10 @@ import SortableList, { SortableItem } from 'react-easy-sort'
 import { cn } from '@/lib/utils'
 
 import { Tag, TagProps } from './tag'
-import { type Tag as TagType } from './tag-input'
 
 export type TagListProps = {
-  tags: TagType[]
-  customTagRenderer?: (tag: TagType) => React.ReactNode
+  tags: string[]
+  customTagRenderer?: (tag: string) => React.ReactNode
   direction?: TagProps['direction']
   onSortEnd: (oldIndex: number, newIndex: number) => void
 } & Omit<TagProps, 'tagObj'>

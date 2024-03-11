@@ -10,12 +10,10 @@ import {
   CommandList,
 } from '@/components/ui/command'
 
-import { type Tag as TagType } from './tag-input'
-
 type AutocompleteProps = {
-  tags: TagType[]
-  setTags: React.Dispatch<React.SetStateAction<TagType[]>>
-  autocompleteOptions: TagType[]
+  tags: string[]
+  setTags: React.Dispatch<React.SetStateAction<string[]>>
+  autocompleteOptions: string[]
   maxTags?: number
   onTagAdd?: (tag: string) => void
   allowDuplicates: boolean
@@ -38,20 +36,17 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup heading="Suggestions">
           {autocompleteOptions.map((option) => (
-            <CommandItem key={option.id}>
+            <CommandItem key={option}>
               <div
                 onClick={() => {
                   if (maxTags && tags.length >= maxTags) return
-                  if (
-                    !allowDuplicates &&
-                    tags.some((tag) => tag.text === option.text)
-                  )
+                  if (!allowDuplicates && tags.some((tag) => tag === option))
                     return
                   setTags([...tags, option])
-                  onTagAdd?.(option.text)
+                  onTagAdd?.(option)
                 }}
               >
-                {option.text}
+                {option}
               </div>
             </CommandItem>
           ))}
