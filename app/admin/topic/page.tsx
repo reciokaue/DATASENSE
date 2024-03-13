@@ -33,10 +33,18 @@ export default function TopicCreation() {
 
   const handleSaveNewTags = async () => {
     await api.post('/topic', {
-      data: createdTags,
+      topics: createdTags,
     })
     setAllTags([...allTags, ...createdTags])
     setCreatedTags([])
+  }
+  const handleRemoveTags = async () => {
+    await api.delete('/topic', {
+      data: {
+        topics: removedTags,
+      },
+    })
+    setRemovedTags([])
   }
 
   useEffect(() => {
@@ -47,7 +55,7 @@ export default function TopicCreation() {
       setAllTags(topics.data as string[])
     }
     fetchData()
-  })
+  }, [])
 
   return (
     <main className="flex h-full flex-col justify-start gap-10 pb-10 pt-20">
@@ -100,7 +108,9 @@ export default function TopicCreation() {
             </p>
           </div>
           <div className="flex w-full justify-start gap-2">
-            <Button variant="destructive">Deletar</Button>
+            <Button onClick={handleRemoveTags} variant="destructive">
+              Deletar
+            </Button>
             <Button onClick={cancelRemoveTags} variant="secondary">
               Cancelar
             </Button>

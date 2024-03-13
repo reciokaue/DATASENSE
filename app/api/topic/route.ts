@@ -28,11 +28,15 @@ export async function POST(req: NextRequest) {
     return Response.json({ message: 'missing data' }, { status: 400 })
 
   async function addTopic(topic: string) {
-    prisma.topic.create({
-      data: {
-        name: topic,
-      },
-    })
+    try {
+      await prisma.topic.create({
+        data: {
+          name: topic,
+        },
+      })
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   await Promise.all(
