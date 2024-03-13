@@ -1,7 +1,7 @@
 'use client'
 
 import { Label } from '@radix-ui/react-label'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { TagInput } from '@/components/ui/tag-input'
@@ -14,7 +14,7 @@ import { api } from '@/lib/api'
 
 export default function TopicCreation() {
   const [removedTags, setRemovedTags] = useState<string[]>([])
-  const [allTags, setAllTags] = useState<string[]>(TAGS_EXAMPLE)
+  const [allTags, setAllTags] = useState<string[]>([])
   const [manual, setManual] = useState(false)
   const [createdTags, setCreatedTags] = useState<string[]>([])
 
@@ -39,9 +39,19 @@ export default function TopicCreation() {
     setCreatedTags([])
   }
 
+  useEffect(() => {
+    async function fetchData() {
+      const topics = await api.get('/topic', {
+        params: { pageSize: 500 },
+      })
+      setAllTags(topics.data as string[])
+    }
+    fetchData()
+  })
+
   return (
-    <main className="flex h-full flex-col justify-start gap-10 pt-20">
-      <div className="flex gap-10">
+    <main className="flex h-full flex-col justify-start gap-10 pb-10 pt-20">
+      <div className="flex flex-col gap-10 md:flex-row">
         <section className="flex max-w-[450px] flex-col items-start space-y-6">
           <div className="flex flex-col items-start space-y-2">
             <Label>Criar Tópicos</Label>
@@ -101,38 +111,3 @@ export default function TopicCreation() {
     </main>
   )
 }
-
-const TAGS_EXAMPLE = [
-  'Automação Residencial',
-  'Big data',
-  'Blockchain',
-  'Cibersegurança',
-  'Ciência espacial',
-  'Computação em nuvem',
-  'Desenvolvimento web',
-  'Design de interfaces',
-  'E-commerce',
-  'Educação online',
-  'Energias renováveis',
-  'Gestão de Projetos',
-  'Impressão 3D',
-  'Indústria 4.0',
-  'Inteligência artificial',
-  'Inteligência de Negócios',
-  'Internet das coisas',
-  'Jogos eletrônicos',
-  'Machine Learning',
-  'Marketing Digital',
-  'Realidade Mista',
-  'Realidade aumentada',
-  'Realidade virtual',
-  'Redes sociais',
-  'Robótica',
-  'Saúde digital',
-  'Sustentabilidade ambiental',
-  'Tecnologia móvel',
-  'Testes',
-  'Testesa',
-  'User Experience (UX)',
-  'User Interface (UI)',
-]
