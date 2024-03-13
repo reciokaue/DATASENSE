@@ -9,9 +9,6 @@ import { TagList } from '@/components/ui/tag-list'
 import { Textarea } from '@/components/ui/textarea'
 import { api } from '@/lib/api'
 
-// import { TopicDeleting } from '@/components/topic-deleting'
-// import TopicInput from '@/components/topic-input'
-
 export default function TopicCreation() {
   const [removedTags, setRemovedTags] = useState<string[]>([])
   const [allTags, setAllTags] = useState<string[]>([])
@@ -32,6 +29,7 @@ export default function TopicCreation() {
   }
 
   const handleSaveNewTags = async () => {
+    if (createdTags.length === 0) return
     await api.post('/topic', {
       topics: createdTags,
     })
@@ -39,6 +37,7 @@ export default function TopicCreation() {
     setCreatedTags([])
   }
   const handleRemoveTags = async () => {
+    if (removedTags.length === 0) return
     await api.delete('/topic', {
       data: {
         topics: removedTags,
