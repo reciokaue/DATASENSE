@@ -9,9 +9,6 @@ import { paginationSchema } from '@/utils/schemas/pagination'
 import { FormSchema } from './schemas'
 
 export async function GET(req: NextRequest) {
-  // const token = cookies().get('@feedback.view:auth-token')
-  // const decoded = jwt.verify(token?.value, 'B9S1G094LXL')
-
   const { page, pageSize, query, isDefault } = paginationSchema.parse(
     paramsToObject(req),
   )

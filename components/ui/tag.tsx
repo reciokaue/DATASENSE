@@ -72,15 +72,15 @@ export const tagVariants = cva(
 )
 
 export type TagProps = {
-  tagObj: string
-  variant: TagInputProps['variant']
-  size: TagInputProps['size']
-  shape: TagInputProps['shape']
-  borderStyle: TagInputProps['borderStyle']
-  textCase: TagInputProps['textCase']
-  interaction: TagInputProps['interaction']
-  animation: TagInputProps['animation']
-  textStyle: TagInputProps['textStyle']
+  tagObj?: string
+  variant?: TagInputProps['variant']
+  size?: TagInputProps['size']
+  shape?: TagInputProps['shape']
+  borderStyle?: TagInputProps['borderStyle']
+  textCase?: TagInputProps['textCase']
+  interaction?: TagInputProps['interaction']
+  animation?: TagInputProps['animation']
+  textStyle?: TagInputProps['textStyle']
   onRemoveTag: (id: string) => void
 } & Pick<TagInputProps, 'direction' | 'onTagClick' | 'draggable'>
 

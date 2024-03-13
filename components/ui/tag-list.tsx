@@ -11,7 +11,8 @@ export type TagListProps = {
   tags: string[]
   customTagRenderer?: (tag: string) => React.ReactNode
   direction?: TagProps['direction']
-  onSortEnd: (oldIndex: number, newIndex: number) => void
+  onSortEnd?: (oldIndex: number, newIndex: number) => void
+  className?: string
 } & Omit<TagProps, 'tagObj'>
 
 const DropTarget: React.FC = () => {
@@ -20,10 +21,11 @@ const DropTarget: React.FC = () => {
 
 export const TagList: React.FC<TagListProps> = ({
   tags,
-  customTagRenderer,
-  direction,
-  draggable,
+  customTagRenderer = false,
+  direction = 'row',
+  draggable = false,
   onSortEnd,
+  className,
   ...tagListProps
 }) => {
   const [draggedTagId, setDraggedTagId] = React.useState<string | null>(null)
@@ -38,7 +40,7 @@ export const TagList: React.FC<TagListProps> = ({
 
   return (
     <div
-      className={cn('max-w-[450px] rounded-md', {
+      className={cn('max-w-[450px] rounded-md', className, {
         'flex flex-wrap gap-2': direction === 'row',
         'flex flex-col gap-2': direction === 'column',
       })}

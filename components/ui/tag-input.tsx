@@ -5,15 +5,11 @@
 import { type VariantProps } from 'class-variance-authority'
 import React from 'react'
 
-import { CommandInput } from '@/components/ui/command'
-
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { toast } from '../ui/use-toast'
-import { Autocomplete } from './auto-complete'
 import { tagVariants } from './tag'
 import { TagList } from './tag-list'
-import { TagPopover } from './tag-popover'
 
 export enum Delimiter {
   Comma = ',',
@@ -32,8 +28,6 @@ export interface TagInputProps
   placeholder?: string
   tags: Array<string>
   setTags: React.Dispatch<React.SetStateAction<string[]>>
-  enableAutocomplete?: boolean
-  autocompleteOptions?: string[]
   maxTags?: number
   minTags?: number
   readOnly?: boolean
@@ -52,7 +46,6 @@ export interface TagInputProps
   maxLength?: number
   usePopoverForTags?: boolean
   value?: string | number | readonly string[] | { id: string; text: string }[]
-  autocompleteFilter?: (option: string) => boolean
   direction?: 'row' | 'column'
   onInputChange?: (value: string) => void
   customTagRenderer?: (tag: string) => React.ReactNode
@@ -64,7 +57,6 @@ export interface TagInputProps
   clearAll?: boolean
   onClearAll?: () => void
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>
-  restrictTagsToAutocompleteOptions?: boolean
 }
 
 const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>((props) => {
@@ -77,8 +69,6 @@ const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>((props) => {
     size,
     shape,
     className,
-    enableAutocomplete,
-    autocompleteOptions,
     maxTags,
     delimiter = Delimiter.Comma,
     onTagAdd,
@@ -90,7 +80,6 @@ const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>((props) => {
     sortTags,
     delimiterList,
     truncate,
-    autocompleteFilter,
     borderStyle,
     textCase,
     interaction,
@@ -110,7 +99,6 @@ const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>((props) => {
     onClearAll,
     usePopoverForTags = false,
     inputProps = {},
-    restrictTagsToAutocompleteOptions = false,
     disabled = false,
   } = props
 
@@ -146,19 +134,6 @@ const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>((props) => {
     ) {
       e.preventDefault()
       const newTagText = inputValue.trim()
-
-      // Check if the tag is in the autocomplete options if restrictTagsToAutocomplete is true
-      if (
-        restrictTagsToAutocompleteOptions &&
-        !autocompleteOptions?.some((option) => option === newTagText)
-      ) {
-        toast({
-          title: 'Invalid Tag',
-          description: 'Please select a tag from the autocomplete options.',
-          variant: 'destructive',
-        })
-        return
-      }
 
       if (validateTag && !validateTag(newTagText)) {
         return
@@ -216,11 +191,6 @@ const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>((props) => {
   const handleClearAll = () => {
     onClearAll?.()
   }
-
-  const filteredAutocompleteOptions = autocompleteFilter
-    ? autocompleteOptions?.filter((option) => autocompleteFilter(option))
-    : autocompleteOptions
-
   const displayedTags = sortTags ? [...tags].sort() : tags
 
   const truncatedTags = truncate
@@ -258,143 +228,30 @@ const TagInput = React.forwardRef<HTMLInputElement, TagInputProps>((props) => {
           direction={direction}
         />
       ) : null}
-      {enableAutocomplete ? (
-        <div className="w-full max-w-[450px]">
-          <Autocomplete
-            tags={tags}
-            setTags={setTags}
-            autocompleteOptions={filteredAutocompleteOptions as string[]}
-            maxTags={maxTags}
-            onTagAdd={onTagAdd}
-            allowDuplicates={allowDuplicates ?? false}
-          >
-            {!usePopoverForTags ? (
-              <CommandInput
-                placeholder={
-                  maxTags !== undefined && tags.length >= maxTags
-                    ? placeholderWhenFull
-                    : placeholder
-                }
-                ref={inputRef}
-                value={inputValue}
-                disabled={
-                  disabled || (maxTags !== undefined && tags.length >= maxTags)
-                }
-                onChangeCapture={handleInputChange}
-                onKeyDown={handleKeyDown}
-                onFocus={onFocus}
-                onBlur={onBlur}
-                className="w-full"
-              />
-            ) : (
-              <TagPopover
-                tags={truncatedTags}
-                customTagRenderer={customTagRenderer}
-                variant={variant}
-                size={size}
-                shape={shape}
-                borderStyle={borderStyle}
-                textCase={textCase}
-                interaction={interaction}
-                animation={animation}
-                textStyle={textStyle}
-                onTagClick={onTagClick}
-                draggable={draggable}
-                onSortEnd={onSortEnd}
-                onRemoveTag={removeTag}
-                direction={direction}
-              >
-                <CommandInput
-                  placeholder={
-                    maxTags !== undefined && tags.length >= maxTags
-                      ? placeholderWhenFull
-                      : placeholder
-                  }
-                  ref={inputRef}
-                  value={inputValue}
-                  disabled={
-                    disabled ||
-                    (maxTags !== undefined && tags.length >= maxTags)
-                  }
-                  onChangeCapture={handleInputChange}
-                  onKeyDown={handleKeyDown}
-                  onFocus={onFocus}
-                  onBlur={onBlur}
-                  className="w-full"
-                />
-              </TagPopover>
-            )}
-          </Autocomplete>
-        </div>
-      ) : (
-        <div className="w-full">
-          {!usePopoverForTags ? (
-            <Input
-              ref={inputRef}
-              id={id}
-              type="text"
-              placeholder={
-                maxTags !== undefined && tags.length >= maxTags
-                  ? placeholderWhenFull
-                  : placeholder
-              }
-              value={inputValue}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
-              onFocus={onFocus}
-              onBlur={onBlur}
-              {...inputProps}
-              className={className}
-              autoComplete={enableAutocomplete ? 'on' : 'off'}
-              list={enableAutocomplete ? 'autocomplete-options' : undefined}
-              disabled={
-                disabled || (maxTags !== undefined && tags.length >= maxTags)
-              }
-            />
-          ) : (
-            <TagPopover
-              tags={truncatedTags}
-              customTagRenderer={customTagRenderer}
-              variant={variant}
-              size={size}
-              shape={shape}
-              borderStyle={borderStyle}
-              textCase={textCase}
-              interaction={interaction}
-              animation={animation}
-              textStyle={textStyle}
-              onTagClick={onTagClick}
-              draggable={draggable}
-              onSortEnd={onSortEnd}
-              onRemoveTag={removeTag}
-              direction={direction}
-            >
-              <Input
-                ref={inputRef}
-                id={id}
-                type="text"
-                placeholder={
-                  maxTags !== undefined && tags.length >= maxTags
-                    ? placeholderWhenFull
-                    : placeholder
-                }
-                value={inputValue}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyDown}
-                onFocus={onFocus}
-                onBlur={onBlur}
-                {...inputProps}
-                className={className}
-                autoComplete={enableAutocomplete ? 'on' : 'off'}
-                list={enableAutocomplete ? 'autocomplete-options' : undefined}
-                disabled={
-                  disabled || (maxTags !== undefined && tags.length >= maxTags)
-                }
-              />
-            </TagPopover>
-          )}
-        </div>
-      )}
+      <div className="w-full">
+        {!usePopoverForTags && (
+          <Input
+            ref={inputRef}
+            id={id}
+            type="text"
+            placeholder={
+              maxTags !== undefined && tags.length >= maxTags
+                ? placeholderWhenFull
+                : placeholder
+            }
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            {...inputProps}
+            className={className}
+            disabled={
+              disabled || (maxTags !== undefined && tags.length >= maxTags)
+            }
+          />
+        )}
+      </div>
       {showCount && maxTags && (
         <div className="flex">
           <span className="ml-auto mt-1 text-sm text-muted-foreground">
