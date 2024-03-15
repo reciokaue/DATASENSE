@@ -1,5 +1,6 @@
-import { Combobox } from '@/components/ui/combobox'
 import { api } from '@/lib/api'
+
+import { QuestionList } from './question-list'
 
 export default async function Page({ params }: { params: { formId: string } }) {
   const { data: form } = await api.get(`/form/${params.formId}`)
@@ -7,21 +8,16 @@ export default async function Page({ params }: { params: { formId: string } }) {
   return (
     <div>
       <section>
-        <div className="max-w-[450px] space-y-2 bg-red-200">
+        <div className="max-w-[450px] space-y-2">
           <h1 className="text-2xl font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
             {form.name}
           </h1>
           <p className="text-md overflow-ellipsis text-muted-foreground">
             {form.about}
           </p>
-          <footer className="flex">
-            <div></div>
-            <Combobox frameworks={[]} defaultValue={form.topic} styles="" />
-          </footer>
         </div>
-        <div></div>
       </section>
-      My Post: {params.formId}
+      <QuestionList questions={[{ id: 1 }, { id: 2 }, { id: 3 }]} />
     </div>
   )
 }
