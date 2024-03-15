@@ -4,7 +4,8 @@ import { Navbar } from '@/components/navbar'
 
 const routes = [
   { title: 'Documentation', href: '/docs', disabled: true },
-  { title: 'Tópicos', href: '/admin/topic' },
+  { title: 'Tópicos', href: '/admin/topics' },
+  { title: 'Questões', href: '/admin/questions' },
   { title: 'Tipos de questão', href: '/admin/question-types', disabled: true },
   { title: 'Support', href: '/support', disabled: true },
   { title: 'Dashboard', href: '/dashboard' },

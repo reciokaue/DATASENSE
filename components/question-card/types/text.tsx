@@ -1,0 +1,13 @@
+/* eslint-disable no-empty-pattern */
+import { Textarea } from '@/components/ui/textarea'
+
+interface TextProps {}
+
+export function Text({}: TextProps) {
+  return (
+    <Textarea
+      className="h-40 resize-none border-0"
+      placeholder="Fale sobre..."
+    />
+  )
+}
