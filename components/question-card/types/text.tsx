@@ -6,7 +6,7 @@ interface TextProps {}
 export function Text({}: TextProps) {
   return (
     <Textarea
-      className="h-40 resize-none border-0"
+      className="h-40 resize-none border-0 p-4"
       placeholder="Fale sobre..."
     />
   )

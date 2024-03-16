@@ -1,6 +1,13 @@
 'use client'
 
-import { Check, CircleDot, GripVertical, SmilePlus, Trash2 } from 'lucide-react'
+import {
+  Check,
+  CircleDot,
+  GripVertical,
+  Plus,
+  SmilePlus,
+  Trash2,
+} from 'lucide-react'
 import { useState } from 'react'
 
 import { Button } from '../ui/button'
@@ -8,6 +15,8 @@ import { Card } from '../ui/card'
 import { Combobox } from '../ui/combobox'
 import { Input } from '../ui/input'
 import { LabelDiv } from '../ui/label-div'
+import { Header } from './header'
+import { Options } from './options'
 import { Preview } from './preview'
 
 interface QuestionCardProps {
@@ -26,27 +35,15 @@ export function QuestionCard({ item }: QuestionCardProps) {
   const [questionType, setQuestionType] = useState('options')
 
   return (
-    <Card className="group relative flex w-full max-w-xl flex-col px-6 py-8">
-      <header className="mb-4 flex items-center justify-between">
-        <label className="flex items-center gap-2 self-end text-sm text-muted-foreground">
-          <SmilePlus size={20} /> 1
-        </label>
-        <label className="flex items-center gap-2 self-end text-sm text-muted-foreground">
-          Múltipla escolha <CircleDot size={20} />
-        </label>
-      </header>
-      <div className="flex flex-1 gap-4">
-        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
-          1
-        </span>
-        <p className="w-full text-lg font-medium leading-relaxed text-neutral-700">
-          Como você classificaria nosso atendimento ao cliente?
-        </p>
-      </div>
-
+    <Card className="group relative flex w-full min-w-[520px] max-w-xl flex-col px-6 py-8">
+      <Header
+        index={1}
+        questionText={'Como você classificaria nosso atendimento ao cliente?'}
+        questionType={questionType}
+      />
       <form className="mt-8 flex flex-col gap-4">
         <LabelDiv title="Questão" labelFor="question">
-          <Input value={''} id="question" />
+          <Input id="question" />
         </LabelDiv>
         <div className="flex items-center justify-between gap-4">
           <LabelDiv
@@ -74,26 +71,8 @@ export function QuestionCard({ item }: QuestionCardProps) {
 
         <Preview type={questionType} options={options_example} />
 
-        <LabelDiv title="Escolhas" styles="space-y-3 pr-8">
-          {['Sim', 'Não', 'Talvez'].map((option) => (
-            <li
-              key={option}
-              className="flex items-center gap-2 text-muted-foreground"
-            >
-              <Button variant="link" className="hover:text-red-500">
-                <Trash2 />
-              </Button>
-              <Input value={option} placeholder="Option text" styles="flex-1" />
-              <GripVertical size={18} />
-            </li>
-          ))}
-        </LabelDiv>
-        {/* <LabelDiv
-            title="Additional options"
-          >
-            required questions: booleans
-            allow comments: booleans
-          </LabelDiv> */}
+        <Options />
+
         <div className="mt-3 flex justify-end gap-2">
           <Button variant="secondary">Cancelar</Button>
           <Button className="gap-2 bg-primary">
