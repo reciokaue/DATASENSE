@@ -42,7 +42,7 @@ export function Header({ questionText, questionType, index }: HeaderProps) {
         <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
           {index}
         </span>
-        <p className="w-full text-lg font-medium leading-relaxed text-neutral-700">
+        <p className="w-full break-words pr-10  text-lg font-medium leading-relaxed text-neutral-700">
           {questionText}
         </p>
       </div>

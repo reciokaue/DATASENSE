@@ -1,14 +1,16 @@
 'use client'
 
-import {
-  Check,
-  CircleDot,
-  GripVertical,
-  Plus,
-  SmilePlus,
-  Trash2,
-} from 'lucide-react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Check } from 'lucide-react'
 import { useState } from 'react'
+import { useFieldArray, useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+import {
+  QuestionInput,
+  QuestionOutput,
+  QuestionSchema,
+} from '@/app/api/form/schemas'
 
 import { Button } from '../ui/button'
 import { Card } from '../ui/card'
@@ -31,19 +33,45 @@ const questionTypes = [
   { label: 'Texto', value: 'text' },
 ]
 
+type Props = z.infer<typeof QuestionSchema>
+
 export function QuestionCard({ item }: QuestionCardProps) {
   const [questionType, setQuestionType] = useState('options')
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    formState: { isSubmitting },
+  } = useForm<QuestionInput, any, QuestionOutput>({
+    resolver: zodResolver(QuestionSchema),
+  })
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'options',
+  })
+  const questionText = watch('text')
+  const formOptions = watch('options')
+
+  async function handleSign(data: Props) {
+    console.log(data)
+  }
 
   return (
     <Card className="group relative flex w-full min-w-[520px] max-w-xl flex-col px-6 py-8">
       <Header
         index={1}
-        questionText={'Como você classificaria nosso atendimento ao cliente?'}
+        questionText={questionText}
         questionType={questionType}
       />
-      <form className="mt-8 flex flex-col gap-4">
+      <form
+        onSubmit={handleSubmit(handleSign)}
+        className="mt-8 flex flex-col gap-4"
+      >
         <LabelDiv title="Questão" labelFor="question">
-          <Input id="question" />
+          <Input id="question" {...register('text')} />
         </LabelDiv>
         <div className="flex items-center justify-between gap-4">
           <LabelDiv
@@ -69,13 +97,20 @@ export function QuestionCard({ item }: QuestionCardProps) {
           </LabelDiv>
         </div>
 
-        <Preview type={questionType} options={options_example} />
+        <Preview type={questionType} options={formOptions} />
 
-        <Options />
+        {questionType !== 'text' && (
+          <Options
+            fields={fields}
+            register={register}
+            append={append}
+            remove={remove}
+          />
+        )}
 
         <div className="mt-3 flex justify-end gap-2">
           <Button variant="secondary">Cancelar</Button>
-          <Button className="gap-2 bg-primary">
+          <Button type="submit" className="gap-2 bg-primary">
             Salvar questão <Check size={20} />
           </Button>
         </div>

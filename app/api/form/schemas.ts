@@ -42,3 +42,6 @@ export const FormSchema = z.object({
       }
     }),
 })
+
+export type QuestionInput = z.input<typeof QuestionSchema>
+export type QuestionOutput = z.output<typeof QuestionSchema>
