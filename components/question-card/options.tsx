@@ -3,7 +3,6 @@ import { FieldArrayWithId } from 'react-hook-form'
 
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
-import { LabelDiv } from '../ui/label-div'
 
 interface OptionsProps {
   register: any
@@ -38,28 +37,40 @@ export function Options({ fields, register, append, remove }: OptionsProps) {
   }
 
   return (
-    <LabelDiv title="Opções" styles="space-y-3 pr-8">
+    <section className="space-y-3">
+      <div className="flex items-center justify-between">
+        <h2 className="text-sm font-medium">Opções</h2>
+
+        <Button onClick={newOption} size="sm" variant="ghost">
+          <Plus size={20} />
+        </Button>
+      </div>
       {fields.map((field, index) => (
         <li
           key={`option-${index}`}
           className="flex items-center gap-2 text-muted-foreground"
         >
-          <button
+          <Button
             onClick={() => removeOption(index)}
             className="hover:text-red-500"
+            size="icon"
+            variant="ghost"
           >
             <Trash2 />
-          </button>
+          </Button>
           <Input
             {...register(`options.${index}.text`)}
-            placeholder="Option text"
+            placeholder="Texto da opção"
             styles="flex-1"
+          />
+          <Input
+            {...register(`options.${index}.value`)}
+            placeholder="Valor"
+            defaultValue={index}
+            styles="flex w-20"
           />
         </li>
       ))}
-      <Button onClick={newOption} size="sm" variant="link">
-        <Plus size={20} /> Opção
-      </Button>
-    </LabelDiv>
+    </section>
   )
 }
