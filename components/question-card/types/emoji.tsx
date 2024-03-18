@@ -1,3 +1,5 @@
+import { Smile } from 'lucide-react'
+
 interface EmojiScaleProps {
   options: {
     id: string
@@ -15,9 +17,13 @@ export function EmojiScale({ options }: EmojiScaleProps) {
         <button
           className="aspect-square rounded-full bg-transparent p-2 transition-colors hover:bg-background"
           onClick={(e) => e.preventDefault()}
-          key={option.id}
+          key={`${option.id}-emoji`}
         >
-          <span className="h-12 text-5xl">😃</span>
+          <span className="h-12 text-5xl">
+            {option.emoji || (
+              <Smile className="h-14 w-14 text-muted-foreground" />
+            )}
+          </span>
         </button>
       ))}
     </div>

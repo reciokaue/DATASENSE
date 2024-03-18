@@ -12,7 +12,7 @@ export function Options({ options }: OptionsProps) {
     <button
       className="h-10 items-center justify-center rounded-md bg-background px-4 py-2 transition-colors hover:bg-accent "
       onClick={(e) => e.preventDefault()}
-      key={option.id}
+      key={`${option.id}-options`}
     >
       <p className="text-sm font-medium hover:text-accent-foreground">
         {option.text}

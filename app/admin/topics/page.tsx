@@ -30,7 +30,7 @@ export default function TopicCreation() {
 
   const handleSaveNewTags = async () => {
     if (createdTags.length === 0) return
-    await api.post('/topic', {
+    await api.post('/topics', {
       topics: createdTags,
     })
     setAllTags([...allTags, ...createdTags])
@@ -38,7 +38,7 @@ export default function TopicCreation() {
   }
   const handleRemoveTags = async () => {
     if (removedTags.length === 0) return
-    await api.delete('/topic', {
+    await api.delete('/topics', {
       data: {
         topics: removedTags,
       },
@@ -48,7 +48,7 @@ export default function TopicCreation() {
 
   useEffect(() => {
     async function fetchData() {
-      const topics = await api.get('/topic', {
+      const topics = await api.get('/topics', {
         params: { pageSize: 500 },
       })
       setAllTags(topics.data as string[])

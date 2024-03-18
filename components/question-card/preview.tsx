@@ -12,6 +12,7 @@ interface PreviewProps {
     text: string
     value: number
     questionId: string
+    emoji?: string
   }[]
 }
 

@@ -4,6 +4,7 @@ export const OptionSchema = z.object({
   id: z.string().optional(),
   text: z.string(),
   value: z.number(),
+  emoji: z.string().optional(),
 })
 
 export const QuestionSchema = z.object({

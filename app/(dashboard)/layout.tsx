@@ -4,7 +4,7 @@ import { Navbar } from '@/components/navbar'
 
 const routes = [
   { title: 'Dashboard', href: '/dashboard' },
-  { title: 'Admin', href: '/admin/topic' },
+  { title: 'Admin', href: '/admin/topics' },
 ]
 
 export default function Layout({ children }: { children: ReactNode }) {

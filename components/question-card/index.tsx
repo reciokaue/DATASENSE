@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Check } from 'lucide-react'
 import { useState } from 'react'
-import { useFieldArray, useForm } from 'react-hook-form'
+import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import {
@@ -36,8 +36,6 @@ const questionTypes = [
 type Props = z.infer<typeof QuestionSchema>
 
 export function QuestionCard({ item }: QuestionCardProps) {
-  const [questionType, setQuestionType] = useState('options')
-
   const {
     register,
     handleSubmit,
@@ -46,6 +44,11 @@ export function QuestionCard({ item }: QuestionCardProps) {
     formState: { isSubmitting },
   } = useForm<QuestionInput, any, QuestionOutput>({
     resolver: zodResolver(QuestionSchema),
+    defaultValues: {
+      type: 'options',
+      text: 'Questão',
+      options: [{ text: 'Opção', value: 1 }],
+    },
   })
 
   const { fields, append, remove } = useFieldArray({
@@ -54,6 +57,7 @@ export function QuestionCard({ item }: QuestionCardProps) {
   })
   const questionText = watch('text')
   const formOptions = watch('options')
+  const questionType = watch('type')
 
   async function handleSign(data: Props) {
     console.log(data)
@@ -88,11 +92,20 @@ export function QuestionCard({ item }: QuestionCardProps) {
             title="Tipo de questão"
             tooltip="O tipo da pergunta é muito importante para se ter o resultado desejado da melhor maneira possível"
           >
-            <Combobox
-              defaultValue="options"
-              handleSetValue={setQuestionType}
-              title="Selecione um tipo..."
-              frameworks={questionTypes}
+            <Controller
+              control={control}
+              name="type"
+              render={(type) => (
+                <Combobox
+                  defaultValue="options"
+                  handleSetValue={(t) => {
+                    type.field.onChange(t)
+                    console.log(t)
+                  }}
+                  title="Selecione um tipo..."
+                  frameworks={questionTypes}
+                />
+              )}
             />
           </LabelDiv>
         </div>
@@ -105,6 +118,8 @@ export function QuestionCard({ item }: QuestionCardProps) {
             register={register}
             append={append}
             remove={remove}
+            control={control}
+            questionType={questionType}
           />
         )}
 
