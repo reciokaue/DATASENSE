@@ -4,9 +4,8 @@ import { NextRequest } from 'next/server'
 
 import { prisma } from '@/lib/prisma'
 import { paramsToObject } from '@/utils/paramsToObject'
+import { FormSchema } from '@/utils/schemas/form'
 import { paginationSchema } from '@/utils/schemas/pagination'
-
-import { FormSchema } from './schemas'
 
 export async function GET(req: NextRequest) {
   const { page, pageSize, query, isDefault } = paginationSchema.parse(
