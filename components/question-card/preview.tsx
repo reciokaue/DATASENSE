@@ -6,13 +6,13 @@ import { Options } from './types/options'
 import { Text } from './types/text'
 
 interface PreviewProps {
-  type: 'cards' | 'options' | 'emoji' | 'classification' | 'text'
+  type: 'cards' | 'options' | 'emoji' | 'classification' | 'text' | string
   options?: {
     id: string
     text: string
     value: number
     questionId: string
-    emoji?: string
+    emoji?: string | undefined
   }[]
 }
 
