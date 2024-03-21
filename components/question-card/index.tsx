@@ -2,28 +2,25 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Check } from 'lucide-react'
-import { useState } from 'react'
-import { Controller, useFieldArray, useForm } from 'react-hook-form'
+import {
+  Controller,
+  useFieldArray,
+  useForm,
+  UseFormProps,
+} from 'react-hook-form'
 import { z } from 'zod'
 
-import {
-  QuestionInput,
-  QuestionOutput,
-  QuestionSchema,
-} from '@/app/api/form/schemas'
-
+import { QuestionSchema } from '../../utils/schemas/form'
+import { TopicPicker } from '../topic-picker'
 import { Button } from '../ui/button'
 import { Card } from '../ui/card'
 import { Combobox } from '../ui/combobox'
 import { Input } from '../ui/input'
 import { LabelDiv } from '../ui/label-div'
+import { Dropdown } from '../ui/select'
 import { Header } from './header'
 import { Options } from './options'
 import { Preview } from './preview'
-
-interface QuestionCardProps {
-  item: { id: number }
-}
 
 const questionTypes = [
   { label: 'Opções', value: 'options' },
@@ -35,21 +32,13 @@ const questionTypes = [
 
 type Props = z.infer<typeof QuestionSchema>
 
-export function QuestionCard({ item }: QuestionCardProps) {
-  const {
-    register,
-    handleSubmit,
-    control,
-    watch,
-    formState: { isSubmitting },
-  } = useForm<QuestionInput, any, QuestionOutput>({
-    resolver: zodResolver(QuestionSchema),
-    defaultValues: {
-      type: 'options',
-      text: 'Questão',
-      options: [{ text: 'Opção', value: 1 }],
-    },
-  })
+interface QuestionCardProps {
+  item: { id: number }
+  form: UseFormProps | any
+}
+
+export function QuestionCard({ item, form }: QuestionCardProps) {
+  const { register, handleSubmit, control, watch } = form
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -82,11 +71,7 @@ export function QuestionCard({ item }: QuestionCardProps) {
             title="Tópico"
             tooltip="O Tópico é relacionado a pergunta e é utilizado para mostrar e filtrar melhor o resultado das perguntas do formulário"
           >
-            <Combobox
-              defaultValue="options"
-              title="Selecione um tópico..."
-              frameworks={[]}
-            />
+            {/* <TopicPicker setTopic={() => {}} /> */}
           </LabelDiv>
           <LabelDiv
             title="Tipo de questão"
@@ -96,14 +81,12 @@ export function QuestionCard({ item }: QuestionCardProps) {
               control={control}
               name="type"
               render={(type) => (
-                <Combobox
-                  defaultValue="options"
-                  handleSetValue={(t) => {
+                <Dropdown
+                  setSelected={(t) => {
                     type.field.onChange(t)
-                    console.log(t)
                   }}
-                  title="Selecione um tipo..."
-                  frameworks={questionTypes}
+                  placeholder="Selecione um tipo..."
+                  options={questionTypes}
                 />
               )}
             />
