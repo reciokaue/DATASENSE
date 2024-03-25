@@ -9,10 +9,9 @@ import { Tag, TagProps } from './tag'
 
 export type TagListProps = {
   tags: string[]
-  customTagRenderer?: (tag: string) => React.ReactNode
   direction?: TagProps['direction']
-  onSortEnd?: (oldIndex: number, newIndex: number) => void
   className?: string
+  addIcon?: boolean
 } & Omit<TagProps, 'tagObj'>
 
 const DropTarget: React.FC = () => {
@@ -21,11 +20,10 @@ const DropTarget: React.FC = () => {
 
 export const TagList: React.FC<TagListProps> = ({
   tags,
-  customTagRenderer = false,
   direction = 'row',
   draggable = false,
-  onSortEnd,
   className,
+  addIcon = false,
   ...tagListProps
 }) => {
   const [draggedTagId, setDraggedTagId] = React.useState<string | null>(null)
@@ -47,7 +45,6 @@ export const TagList: React.FC<TagListProps> = ({
     >
       {draggable ? (
         <SortableList
-          onSortEnd={onSortEnd}
           className="list flex flex-wrap gap-2"
           dropTarget={<DropTarget />}
         >
@@ -64,34 +61,28 @@ export const TagList: React.FC<TagListProps> = ({
                   'transition-all duration-200 ease-in-out',
                 )}
               >
-                {customTagRenderer ? (
-                  customTagRenderer(tagObj)
-                ) : (
-                  <Tag
-                    draggable={undefined}
-                    direction={undefined}
-                    tagObj={tagObj}
-                    {...tagListProps}
-                  />
-                )}
+                <Tag
+                  draggable={undefined}
+                  direction={undefined}
+                  tagObj={tagObj}
+                  {...tagListProps}
+                  addIcon={addIcon}
+                />
               </div>
             </SortableItem>
           ))}
         </SortableList>
       ) : (
-        tags.map((tagObj) =>
-          customTagRenderer ? (
-            customTagRenderer(tagObj)
-          ) : (
-            <Tag
-              draggable={undefined}
-              direction={undefined}
-              key={tagObj}
-              tagObj={tagObj}
-              {...tagListProps}
-            />
-          ),
-        )
+        tags.map((tagObj) => (
+          <Tag
+            draggable={undefined}
+            direction={undefined}
+            key={tagObj}
+            tagObj={tagObj}
+            {...tagListProps}
+            addIcon={addIcon}
+          />
+        ))
       )}
     </div>
   )

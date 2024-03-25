@@ -68,10 +68,10 @@ export function QuestionCard({ item, form }: QuestionCardProps) {
         </LabelDiv>
         <div className="flex items-center justify-between gap-4">
           <LabelDiv
-            title="Tópico"
+            title="Tópicos"
             tooltip="O Tópico é relacionado a pergunta e é utilizado para mostrar e filtrar melhor o resultado das perguntas do formulário"
           >
-            {/* <TopicPicker setTopic={() => {}} /> */}
+            <TopicPicker setTopic={() => {}} selectedTopics={[]} />
           </LabelDiv>
           <LabelDiv
             title="Tipo de questão"

@@ -1,3 +1,5 @@
+'use client'
+
 import * as SelectPrimitive from '@radix-ui/react-select'
 import { Check, ChevronDown, ChevronsUpDown, ChevronUp } from 'lucide-react'
 import * as React from 'react'
@@ -174,7 +176,7 @@ export function Dropdown({
 }: DropdownProps) {
   return (
     <Select onValueChange={(option) => setSelected(option)}>
-      <SelectTrigger>
+      <SelectTrigger className="h-10 px-4 py-2">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

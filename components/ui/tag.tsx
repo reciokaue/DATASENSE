@@ -1,7 +1,7 @@
 'use client'
 
 import { cva } from 'class-variance-authority'
-import { X } from 'lucide-react'
+import { Plus, X } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
@@ -82,6 +82,7 @@ export type TagProps = {
   animation?: TagInputProps['animation']
   textStyle?: TagInputProps['textStyle']
   onRemoveTag: (id: string) => void
+  addIcon?: boolean
 } & Pick<TagInputProps, 'direction' | 'onTagClick' | 'draggable'>
 
 export const Tag: React.FC<TagProps> = ({
@@ -98,6 +99,7 @@ export const Tag: React.FC<TagProps> = ({
   interaction,
   animation,
   textStyle,
+  addIcon = false,
 }) => {
   return (
     <span
@@ -119,7 +121,7 @@ export const Tag: React.FC<TagProps> = ({
           'cursor-pointer': draggable,
         },
       )}
-      onClick={() => onTagClick?.(tagObj)}
+      onClick={() => onTagClick?.(tagObj || '')}
     >
       {tagObj}
       <Button
@@ -127,11 +129,11 @@ export const Tag: React.FC<TagProps> = ({
         variant="ghost"
         onClick={(e) => {
           e.stopPropagation() // Prevent event from bubbling up to the tag span
-          onRemoveTag(tagObj)
+          onRemoveTag(tagObj || '')
         }}
         className={cn('h-full px-3 py-1 hover:bg-transparent')}
       >
-        <X size={14} />
+        {addIcon ? <Plus size={14} /> : <X size={14} />}
       </Button>
     </span>
   )
