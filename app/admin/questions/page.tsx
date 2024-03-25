@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 import { QuestionCard } from '@/components/question-card'
 import {
@@ -22,7 +21,7 @@ export default function QuestionsPage() {
   })
 
   return (
-    <div className="mx-auto flex max-w-2xl justify-center pt-20">
+    <div className="mx-auto flex max-w-2xl justify-center py-10">
       <QuestionCard form={form} item={{ id: 1 }} />
     </div>
   )

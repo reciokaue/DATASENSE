@@ -63,7 +63,9 @@ export function TopicPicker({ setTopics, selectedTopics }: TopicPickerProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Adicionar Tópicos</Button>
+        <Button variant="outline" className="w-full justify-start">
+          Adicionar Tópicos
+        </Button>
       </DialogTrigger>
       <DialogContent className="gap-2 sm:max-w-[825px]">
         <DialogHeader className="p-0">

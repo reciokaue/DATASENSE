@@ -1,5 +1,5 @@
 import { Plus, Trash2 } from 'lucide-react'
-import { Controller, FieldArrayWithId } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 
 import { EmojiPicker } from '../emoji-picker'
 import { Button } from '../ui/button'
@@ -11,25 +11,7 @@ interface OptionsProps {
   remove: any
   control: any
   questionType: string
-  fields: FieldArrayWithId<
-    {
-      text: string
-      type: string
-      topic: string
-      id?: string | undefined
-      isDefault?: boolean | undefined
-      options?:
-        | {
-            text: string
-            value: number
-            id?: string | undefined
-            emoji?: string
-          }[]
-        | undefined
-    },
-    'options',
-    'id'
-  >[]
+  fields: Record<'id', string>[]
 }
 
 export function Options({
@@ -50,17 +32,13 @@ export function Options({
   return (
     <section className="space-y-3">
       <div className="flex items-center justify-between">
-        {questionType}
         <h2 className="text-sm font-medium">Opções </h2>
         <Button onClick={newOption} size="sm" variant="ghost">
           <Plus size={20} />
         </Button>
       </div>
       {fields.map((field, index) => (
-        <li
-          key={`option-${index}`}
-          className="flex items-center gap-2 text-muted-foreground"
-        >
+        <li key={`option-${index}`} className="flex items-center gap-2">
           <Button
             onClick={() => removeOption(index)}
             className="hover:text-red-500"
@@ -69,9 +47,7 @@ export function Options({
           >
             <Trash2 />
           </Button>
-          {(questionType === 'emoji' ||
-            questionType === 'cards' ||
-            questionType === 'classification') && (
+          {['emoji', 'cards', 'classification'].includes(questionType) && (
             <Controller
               control={control}
               name={`options.${index}.emoji`}
@@ -84,7 +60,6 @@ export function Options({
               )}
             />
           )}
-
           <Input
             {...register(`options.${index}.text`)}
             placeholder="Texto da opção"

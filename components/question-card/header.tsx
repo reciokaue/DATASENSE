@@ -30,7 +30,7 @@ const questionInfo: {
 export function Header({ questionText, questionType, index }: HeaderProps) {
   return (
     <header>
-      <section className="mb-4 flex items-center justify-end">
+      <section className="mb-1 flex items-center justify-end">
         {/* <label className="flex items-center gap-2 self-end text-sm text-muted-foreground">
           <SmilePlus size={20} /> 1
         </label> */}
@@ -42,7 +42,7 @@ export function Header({ questionText, questionType, index }: HeaderProps) {
         <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
           {index}
         </span>
-        <p className="w-full break-words pr-10  text-lg font-medium leading-relaxed text-neutral-700">
+        <p className="w-full break-words text-left text-lg font-medium leading-relaxed text-neutral-700">
           {questionText}
         </p>
       </div>

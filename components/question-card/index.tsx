@@ -1,20 +1,13 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Check } from 'lucide-react'
-import {
-  Controller,
-  useFieldArray,
-  useForm,
-  UseFormProps,
-} from 'react-hook-form'
+import { Controller, useFieldArray, UseFormProps } from 'react-hook-form'
 import { z } from 'zod'
 
 import { QuestionSchema } from '../../utils/schemas/form'
 import { TopicPicker } from '../topic-picker'
 import { Button } from '../ui/button'
 import { Card } from '../ui/card'
-import { Combobox } from '../ui/combobox'
 import { Input } from '../ui/input'
 import { LabelDiv } from '../ui/label-div'
 import { Dropdown } from '../ui/select'
@@ -53,7 +46,7 @@ export function QuestionCard({ item, form }: QuestionCardProps) {
   }
 
   return (
-    <Card className="group relative flex w-full min-w-[520px] max-w-xl flex-col px-6 py-8">
+    <Card className="group relative flex w-full min-w-[520px] max-w-xl flex-col p-5">
       <Header
         index={1}
         questionText={questionText}
@@ -61,7 +54,7 @@ export function QuestionCard({ item, form }: QuestionCardProps) {
       />
       <form
         onSubmit={handleSubmit(handleSign)}
-        className="mt-8 flex flex-col gap-4"
+        className="mt-4 flex flex-col gap-3"
       >
         <LabelDiv title="Questão" labelFor="question">
           <Input id="question" {...register('text')} />
@@ -71,7 +64,18 @@ export function QuestionCard({ item, form }: QuestionCardProps) {
             title="Tópicos"
             tooltip="O Tópico é relacionado a pergunta e é utilizado para mostrar e filtrar melhor o resultado das perguntas do formulário"
           >
-            <TopicPicker setTopic={() => {}} selectedTopics={[]} />
+            <Controller
+              control={control}
+              name="topics"
+              render={(topics) => (
+                <TopicPicker
+                  setTopics={(t: string[]) => {
+                    topics.field.onChange(t)
+                  }}
+                  selectedTopics={topics.field.value || []}
+                />
+              )}
+            />
           </LabelDiv>
           <LabelDiv
             title="Tipo de questão"

@@ -12,7 +12,7 @@ export const QuestionSchema = z.object({
   text: z.string(),
   isDefault: z.boolean().optional(),
   type: z.string(),
-  topic: z.string(),
+  topics: z.array(z.string()),
   options: z
     .array(OptionSchema)
     .optional()
@@ -32,7 +32,7 @@ export const FormSchema = z.object({
   createdAt: z.string().nullable().optional(),
   endedAt: z.string().nullable().optional(),
   userId: z.string().nullable().optional(),
-  topic: z.string(),
+  topics: z.array(z.string()),
   logoUrl: z.string().nullable().optional(),
   questions: z
     .array(QuestionSchema)
