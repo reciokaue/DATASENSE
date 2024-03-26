@@ -57,7 +57,7 @@ export default function TopicCreation() {
   }, [])
 
   return (
-    <main className="flex h-full flex-col justify-start gap-10 pb-10 pt-20">
+    <main className="flex h-full flex-col justify-start gap-10 py-10">
       <div className="flex flex-col gap-10 md:flex-row">
         <section className="flex max-w-[450px] flex-col items-start space-y-6">
           <div className="flex flex-col items-start space-y-2">

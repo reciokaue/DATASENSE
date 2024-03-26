@@ -19,7 +19,7 @@ export default function QuestionsPage() {
         </Button>
       </header>
       <section>
-        <div className="mt-2 flex flex-wrap gap-2">
+        <div className="mt-2 flex flex-wrap gap-1">
           {['Todas', ...topics, '...'].map((tag) => (
             <Badge
               variant={['Todas', '...'].includes(tag) ? 'default' : 'ghost'}
