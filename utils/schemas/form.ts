@@ -15,10 +15,10 @@ export const QuestionSchema = z.object({
   topics: z
     .array(z.string())
     .optional()
-    .transform((options) => {
+    .transform((topics) => {
       return {
-        create: options?.map((option) => {
-          return { name: option }
+        create: topics?.map((topic) => {
+          return { name: topic }
         }),
       }
     }),

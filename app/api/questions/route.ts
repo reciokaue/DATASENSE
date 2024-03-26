@@ -4,7 +4,6 @@ import { prisma } from '@/lib/prisma'
 import { paramsToObject } from '@/utils/paramsToObject'
 import { QuestionSchema } from '@/utils/schemas/form'
 import { paginationSchema } from '@/utils/schemas/pagination'
-// import { QuestionSchema } from '@/utils/schemas/question'
 
 export async function GET(req: NextRequest) {
   const { page, pageSize, query, isPublic } = paginationSchema.parse(
