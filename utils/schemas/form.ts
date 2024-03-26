@@ -10,9 +10,18 @@ export const OptionSchema = z.object({
 export const QuestionSchema = z.object({
   id: z.string().optional(),
   text: z.string(),
-  isDefault: z.boolean().optional(),
+  isPublic: z.boolean().optional(),
   type: z.string(),
-  topics: z.array(z.string()),
+  topics: z
+    .array(z.string())
+    .optional()
+    .transform((options) => {
+      return {
+        create: options?.map((option) => {
+          return { name: option }
+        }),
+      }
+    }),
   options: z
     .array(OptionSchema)
     .optional()
@@ -28,7 +37,7 @@ export const FormSchema = z.object({
   name: z.string(),
   about: z.string().nullable().optional(),
   active: z.boolean().nullable().optional().default(false),
-  isDefault: z.boolean().optional().default(false),
+  isPublic: z.boolean().optional().default(false),
   createdAt: z.string().nullable().optional(),
   endedAt: z.string().nullable().optional(),
   userId: z.string().nullable().optional(),

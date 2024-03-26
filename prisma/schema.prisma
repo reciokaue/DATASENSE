@@ -27,7 +27,7 @@ model Form {
   active    Boolean   @default(false)
   topic     String // Chave estrangeira para o Topic
   logoUrl   String?
-  isDefault Boolean   @default(false) // Define se é padrão ou personalizada
+  isPublic  Boolean   @default(false) // Define se é padrão ou personalizada
   createdAt DateTime  @default(now())
   endedAt   DateTime?
 
@@ -36,8 +36,7 @@ model Form {
   questions Question[]
   answers   Answer[]
   Sessions  Session[]
-  Topic     Topic?     @relation(fields: [topicName], references: [name])
-  topicName String?
+  Topics    Topic[]
 }
 
 model User {
@@ -53,21 +52,17 @@ model User {
 }
 
 model Question {
-  id        String  @id @default(uuid())
-  text      String
-  isDefault Boolean @default(false) // Define se é padrão ou personalizada
-  type      String // Pode ser 'text', 'number', 'image', etc.
-  topic     String // Chave estrangeira para o Topic
+  id       String  @id @default(uuid())
+  text     String
+  isPublic Boolean @default(false) // Define se é padrão ou personalizada
+  type     String // Pode ser 'text', 'number', 'image', etc.
 
-  form   Form   @relation(fields: [formId], references: [id], onDelete: Cascade)
-  formId String
+  form   Form?   @relation(fields: [formId], references: [id], onDelete: Cascade)
+  formId String?
 
-  options          Option[]
-  Answer           Answer[]
-  Topic            Topic?        @relation(fields: [topicName], references: [name])
-  topicName        String?
-  QuestionType     QuestionType? @relation(fields: [questionTypeType], references: [type])
-  questionTypeType String?
+  options Option[]
+  answer  Answer[]
+  topics  Topic[]
 }
 
 model Option {
@@ -100,10 +95,5 @@ model Answer {
 model Topic {
   name     String     @id @unique
   form     Form[]
-  question Question[]
-}
-
-model QuestionType {
-  type     String     @id @unique
   question Question[]
 }

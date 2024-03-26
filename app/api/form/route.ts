@@ -8,7 +8,7 @@ import { FormSchema } from '@/utils/schemas/form'
 import { paginationSchema } from '@/utils/schemas/pagination'
 
 export async function GET(req: NextRequest) {
-  const { page, pageSize, query, isDefault } = paginationSchema.parse(
+  const { page, pageSize, query, isPublic } = paginationSchema.parse(
     paramsToObject(req),
   )
 
@@ -19,8 +19,8 @@ export async function GET(req: NextRequest) {
         name: { contains: query },
         about: { contains: query },
       }),
-      ...(isDefault && {
-        isDefault: true,
+      ...(isPublic && {
+        isPublic: true,
       }),
     },
     take: pageSize,

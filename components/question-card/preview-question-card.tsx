@@ -8,7 +8,7 @@ interface Question {
   active: boolean
   topics: string[]
   logoUrl: null
-  isDefault: boolean
+  isPublic: boolean
   createdAt: string
   endedAt: null
   userId: string
@@ -52,7 +52,7 @@ export function PreviewQuestionCard() {
 const question = {
   id: 'fd559d3c-658d-4993-8e6d-67a29d6f6090',
   text: 'Qual é a sua idade?',
-  isDefault: false,
+  isPublic: false,
   type: 'multiple-choice',
   topics: ['Teste', 'Big data', 'Blockchain'],
   formId: '2ee84efd-0e81-4943-95e3-26aadc7cb2ad',

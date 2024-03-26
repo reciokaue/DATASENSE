@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input'
 export default async function Page() {
   // const forms = await api.get('/form', {
   //   params: {
-  //     isDefault: true,
+  //     isPublic: true,
   //   },
   // })
   // const topics = await api.get('/form')
