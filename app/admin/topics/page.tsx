@@ -1,7 +1,8 @@
 'use client'
 
 import { Label } from '@radix-ui/react-label'
-import { useEffect, useState } from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { TagInput } from '@/components/ui/tag-input'
@@ -11,50 +12,49 @@ import { api } from '@/lib/api'
 
 export default function TopicCreation() {
   const [removedTags, setRemovedTags] = useState<string[]>([])
-  const [allTags, setAllTags] = useState<string[]>([])
   const [manual, setManual] = useState(false)
   const [createdTags, setCreatedTags] = useState<string[]>([])
 
+  const queryClient = useQueryClient()
+
   const removeTag = (tagRemoved: string) => {
-    setRemovedTags([...removedTags, tagRemoved])
-    setAllTags(allTags.filter((tag: string) => tag !== tagRemoved))
+    setRemovedTags((prev) => [...prev, tagRemoved])
   }
   const undoRemoveTag = (tagRemoved: string) => {
-    setAllTags([...allTags, tagRemoved])
-    setRemovedTags(removedTags.filter((tag: string) => tag !== tagRemoved))
-  }
-  const cancelRemoveTags = () => {
-    setAllTags([...removedTags, ...allTags])
-    setRemovedTags([])
+    setRemovedTags((prev) => prev.filter((tag: string) => tag !== tagRemoved))
   }
 
+  const handleRemoveTags = async () => {
+    if (removedTags.length === 0) return
+    console.log(removedTags)
+    await api.delete('/topics', {
+      data: { topics: removedTags },
+    })
+    setRemovedTags([])
+  }
   const handleSaveNewTags = async () => {
     if (createdTags.length === 0) return
+
     await api.post('/topics', {
       topics: createdTags,
     })
-    setAllTags([...allTags, ...createdTags])
+    queryClient.setQueryData(['topics'], (prevData: string[]) => [
+      ...prevData,
+      createdTags,
+    ])
     setCreatedTags([])
   }
-  const handleRemoveTags = async () => {
-    if (removedTags.length === 0) return
-    await api.delete('/topics', {
-      data: {
-        topics: removedTags,
-      },
-    })
-    setRemovedTags([])
-  }
 
-  useEffect(() => {
-    async function fetchData() {
-      const topics = await api.get('/topics', {
-        params: { pageSize: 500 },
+  const { data: topics } = useQuery({
+    queryKey: ['topics'],
+    queryFn: async () => {
+      const response = await api.get(`/topics`, {
+        params: { pageSize: 100 },
       })
-      setAllTags(topics.data as string[])
-    }
-    fetchData()
-  }, [])
+
+      return response.data
+    },
+  })
 
   return (
     <main className="flex h-full flex-col justify-start gap-10 py-10">
@@ -110,13 +110,19 @@ export default function TopicCreation() {
             <Button onClick={handleRemoveTags} variant="destructive">
               Deletar
             </Button>
-            <Button onClick={cancelRemoveTags} variant="secondary">
+            <Button onClick={() => setRemovedTags([])} variant="secondary">
               Cancelar
             </Button>
           </div>
         </section>
       </div>
-      <TagList tags={allTags} onRemoveTag={removeTag} className="max-w-full" />
+      {topics && (
+        <TagList
+          tags={topics.filter((tag: string) => !removedTags.includes(tag))}
+          onRemoveTag={removeTag}
+          className="max-w-full"
+        />
+      )}
     </main>
   )
 }
