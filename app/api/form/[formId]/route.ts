@@ -17,3 +17,19 @@ export async function GET(
 
   return Response.json(form, { status: 200 })
 }
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { formId: string } },
+) {
+  const { formId } = params
+
+  await prisma.form.delete({
+    where: {
+      id: formId,
+    },
+    include: { questions: { include: { options: true } } },
+  })
+
+  return Response.json('deleted', { status: 200 })
+}

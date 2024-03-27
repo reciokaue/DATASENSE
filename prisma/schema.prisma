@@ -2,15 +2,15 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// datasource db {
-//   provider = "mysql"
-//   url      = env("DATABASE_URL")
-// }
-
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
+
+// datasource db {
+//   provider = "sqlite"
+//   url      = "file:./dev.db"
+// }
 
 generator erd {
   provider                  = "prisma-erd-generator"
@@ -25,18 +25,18 @@ model Form {
   name      String
   about     String?
   active    Boolean   @default(false)
-  topic     String // Chave estrangeira para o Topic
   logoUrl   String?
   isPublic  Boolean   @default(false) // Define se é padrão ou personalizada
   createdAt DateTime  @default(now())
   endedAt   DateTime?
 
-  userId    String // Chave estrangeira para o User
-  user      User       @relation(fields: [userId], references: [id], onDelete: NoAction)
+  userId String? // Chave estrangeira para o User
+  user   User?   @relation(fields: [userId], references: [id], onDelete: NoAction)
+
   questions Question[]
   answers   Answer[]
-  Sessions  Session[]
-  Topics    Topic[]
+  sessions  Session[]
+  topics    Topic[]
 }
 
 model User {
@@ -69,6 +69,7 @@ model Option {
   id         String   @id @default(uuid())
   text       String
   value      Int // 1 to 10
+  emoji      String?
   questionId String
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 }

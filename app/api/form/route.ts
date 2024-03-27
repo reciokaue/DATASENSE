@@ -36,22 +36,21 @@ export async function POST(req: NextRequest) {
   const decoded = token && jwt.verify(token?.value, 'B9S1G094LXL')
 
   const validated = FormSchema.safeParse(await req.json())
+  // console.log(JSON.stringify(await req.json()))
   if (!validated.success) {
     return Response.json({ message: 'Data invalid' }, { status: 400 })
   }
+
   validated.data.userId = String(decoded?.sub)
 
-  const topicExistis = await prisma.topic.findUnique({
-    where: {
-      name: validated.data.topic,
-    },
-  })
-  if (!topicExistis)
-    return Response.json({ message: 'Topic not found' }, { status: 404 })
-
-  const form = await prisma.form.create({
-    data: validated.data as any,
-  })
-
-  return Response.json(form, { status: 200 })
+  try {
+    const form = await prisma.form.create({
+      data: validated.data as any,
+    })
+    return Response.json(form, { status: 200 })
+  } catch (e) {
+    return Response.json({ error: e, data: validated.data }, { status: 400 })
+  }
 }
+
+// {"name":"Formulário de Pesquisa 123","about":"Este formulário tem o objetivo de coletar dados sobre...","active":true,"isPublic":true,"topics":{"create":[{"name":"Teste"}]},"questions":{"create":[{"text":"Qual é a sua idade?","type":"multiple-choice","topics":{},"options":{"create":[{"text":"Menos de 18 anos","value":1},{"text":"18-24 anos","value":2},{"text":"25-34 anos","value":3},{"text":"35-44 anos","value":4},{"text":"45-54 anos","value":5},{"text":"55-64 anos","value":6},{"text":"65 anos ou mais","value":7}]}},{"text":"Você possui experiência prévia com pesquisa de mercado?","type":"multiple-choice","topics":{},"options":{"create":[{"text":"Sim","value":1},{"text":"Não","value":2}]}}]}}
