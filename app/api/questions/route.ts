@@ -36,8 +36,6 @@ export async function POST(req: NextRequest) {
     return Response.json({ message: 'Data invalid' }, { status: 400 })
   }
 
-  console.log(validated.data)
-
   const question = await prisma.question.create({
     data: validated.data as any,
   })

@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
 
   const forms = await prisma.form.findMany({
     where: {
-      userId: 'fcbe6ae0-ad79-4b76-9a29-3664893f030c',
+      userId: '2a9aabf6-8e7a-4be8-92fc-3c0f373d8230',
       ...(query && {
         name: { contains: query },
         about: { contains: query },
@@ -36,7 +36,6 @@ export async function POST(req: NextRequest) {
   const decoded = token && jwt.verify(token?.value, 'B9S1G094LXL')
 
   const validated = FormSchema.safeParse(await req.json())
-  // console.log(JSON.stringify(await req.json()))
   if (!validated.success) {
     return Response.json({ message: 'Data invalid' }, { status: 400 })
   }
@@ -49,6 +48,7 @@ export async function POST(req: NextRequest) {
     })
     return Response.json(form, { status: 200 })
   } catch (e) {
+    console.log(e)
     return Response.json({ error: e, data: validated.data }, { status: 400 })
   }
 }
