@@ -17,7 +17,7 @@ export const QuestionSchema = z.object({
     .optional()
     .transform((topics) => {
       return {
-        create: topics?.map((topic) => {
+        connect: topics?.map((topic) => {
           return { name: topic }
         }),
       }
@@ -46,7 +46,7 @@ export const FormSchema = z.object({
     .optional()
     .transform((topics) => {
       return {
-        create: topics?.map((topic) => {
+        connect: topics?.map((topic) => {
           return { name: topic }
         }),
       }

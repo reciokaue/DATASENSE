@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Plus, Search } from 'lucide-react'
 import Link from 'next/link'
 
+import { FormCard } from '@/components/form-card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -13,10 +14,20 @@ export default function FormsPage() {
   const { data: topics } = useQuery({
     queryKey: ['topics'],
     queryFn: async () => {
-      const response = await api.get(`/forms`, {
+      const response = await api.get(`/topics`, {
         params: { pageSize: 100 },
       })
 
+      return response.data
+    },
+  })
+
+  const { data: forms } = useQuery({
+    queryKey: ['public-forms'],
+    queryFn: async () => {
+      const response = await api.get(`/forms`, {
+        params: { pageSize: 6, isPublic: true },
+      })
       return response.data
     },
   })
@@ -39,7 +50,7 @@ export default function FormsPage() {
             ['Todas', ...topics, '...'].map((tag) => (
               <Badge
                 variant={['Todas', '...'].includes(tag) ? 'default' : 'ghost'}
-                key={tag}
+                key={`form-${tag}`}
               >
                 {tag}
               </Badge>
@@ -56,13 +67,10 @@ export default function FormsPage() {
           />
         </div>
         <h1 className="mt-8 text-xl font-semibold">Todas</h1>
-        <section className="g mt-5 grid grid-flow-col justify-start ">
-          {/* {forms.data?.map((form: any) => (
-          <FormCard data={form} key={form.id} />
-        ))} */}
-          {/* <PreviewFormCard />
-          <PreviewFormCard /> */}
-        </section>
+        <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3">
+          {forms &&
+            forms.map((form: any) => <FormCard data={form} key={form.id} />)}
+        </div>
       </section>
     </div>
   )
