@@ -5,9 +5,15 @@ import { ReactNode } from 'react'
 
 import { Toaster } from './ui/toaster'
 
-export function Providers({ children }: { children: ReactNode }) {
-  const queryClient = new QueryClient()
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+    },
+  },
+})
 
+export function Providers({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       {children}
