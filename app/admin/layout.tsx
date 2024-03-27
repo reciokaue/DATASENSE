@@ -6,6 +6,7 @@ const routes = [
   { title: 'Documentation', href: '/docs', disabled: true },
   { title: 'Tópicos', href: '/admin/topics' },
   { title: 'Questões', href: '/admin/questions' },
+  { title: 'Formulários', href: '/admin/forms' },
   { title: 'Support', href: '/support', disabled: true },
   { title: 'Dashboard', href: '/dashboard' },
 ]
