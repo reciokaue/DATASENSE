@@ -12,24 +12,8 @@ export const QuestionSchema = z.object({
   text: z.string(),
   isPublic: z.boolean().optional(),
   type: z.string(),
-  topics: z
-    .array(z.string())
-    .optional()
-    .transform((topics) => {
-      return {
-        connect: topics?.map((topic) => {
-          return { name: topic }
-        }),
-      }
-    }),
-  options: z
-    .array(OptionSchema)
-    .optional()
-    .transform((options) => {
-      return {
-        create: options,
-      }
-    }),
+  topics: z.array(z.string()).optional(),
+  options: z.array(OptionSchema).optional(),
 })
 
 export const FormSchema = z.object({
@@ -41,24 +25,28 @@ export const FormSchema = z.object({
   createdAt: z.string().nullable().optional(),
   endedAt: z.string().nullable().optional(),
   userId: z.string().nullable().optional(),
-  topics: z
-    .array(z.string())
-    .optional()
-    .transform((topics) => {
-      return {
-        connect: topics?.map((topic) => {
-          return { name: topic }
-        }),
-      }
-    }),
+  topics: z.array(z.string()),
   logoUrl: z.string().nullable().optional(),
+  questions: z.array(QuestionSchema).optional(),
+})
+
+export const FormSchemaForPrisma = FormSchema.extend({
+  topics: z.array(z.string()).transform((topics) => {
+    return { connect: topics?.map((topic) => ({ name: topic })) }
+  }),
   questions: z
-    .array(QuestionSchema)
-    .optional()
+    .array(
+      QuestionSchema.extend({
+        topics: z.array(z.string()).transform((topics) => {
+          return { connect: topics?.map((topic) => ({ name: topic })) }
+        }),
+        options: z.array(OptionSchema).transform((options) => {
+          return { create: options }
+        }),
+      }),
+    )
     .transform((questions) => {
-      return {
-        create: questions,
-      }
+      return { create: questions }
     }),
 })
 

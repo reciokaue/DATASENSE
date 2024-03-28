@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server'
 
 import { prisma } from '@/lib/prisma'
 import { paramsToObject } from '@/utils/paramsToObject'
-import { FormSchema } from '@/utils/schemas/form'
+import { FormSchemaForPrisma } from '@/utils/schemas/form'
 import { paginationSchema } from '@/utils/schemas/pagination'
 
 export async function GET(req: NextRequest) {
@@ -34,12 +34,12 @@ export async function POST(req: NextRequest) {
   const token = cookies().get('@feedback.view:auth-token')
   const decoded = token && jwt.verify(token?.value, 'B9S1G094LXL')
 
-  const validated = FormSchema.safeParse(await req.json())
+  const validated = FormSchemaForPrisma.safeParse(await req.json())
   if (!validated.success) {
     return Response.json({ message: 'Data invalid' }, { status: 400 })
   }
 
-  validated.data.userId = !validated.data.isPublic ? String(decoded?.sub) : null
+  validated.data.userId = String(decoded?.sub)
 
   try {
     const form = await prisma.form.create({
