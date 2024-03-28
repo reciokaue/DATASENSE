@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
 import { api } from '@/lib/api'
@@ -21,16 +22,13 @@ interface TopicPickerProps {
 }
 
 export function TopicPicker({ setTopics, selectedTopics }: TopicPickerProps) {
-  const [formTags, setFormTags] = useState<string[]>([])
-  const [tags, setTags] = useState<string[]>(selectedTopics)
+  const [formTags, setFormTags] = useState<string[]>(selectedTopics)
   const [search, setSearch] = useState('')
 
   const addTag = (tagRemoved: string) => {
     setFormTags([...formTags, tagRemoved])
-    setTags(tags.filter((tag: string) => tag !== tagRemoved))
   }
   const undoAddTag = (tagRemoved: string) => {
-    setTags([...tags, tagRemoved])
     setFormTags(formTags.filter((tag: string) => tag !== tagRemoved))
   }
 
@@ -38,20 +36,16 @@ export function TopicPicker({ setTopics, selectedTopics }: TopicPickerProps) {
     setTopics(formTags)
   }
 
-  useEffect(() => {
-    async function fetchData() {
-      const allTopics = await api.get('/topics', {
-        params: { pageSize: 500 },
+  const { data: topics } = useQuery({
+    queryKey: ['topics'],
+    queryFn: async () => {
+      const response = await api.get(`/topics`, {
+        params: { pageSize: 100 },
       })
-      setTags(
-        tags.length > 0
-          ? allTopics.data.filter((item: string) => !tags.includes(item))
-          : allTopics.data,
-      )
-    }
-    fetchData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+
+      return response.data
+    },
+  })
 
   function normalize(string: string) {
     return string
@@ -85,14 +79,18 @@ export function TopicPicker({ setTopics, selectedTopics }: TopicPickerProps) {
             value={search}
             placeholder="Buscar tópicos"
           />
-          <TagList
-            className="max-w-full"
-            addIcon
-            tags={tags.filter((tag: string) => {
-              return normalize(tag).includes(normalize(search))
-            })}
-            onRemoveTag={addTag}
-          />
+          {topics && (
+            <TagList
+              className="max-w-full"
+              addIcon
+              tags={topics.filter(
+                (tag: string) =>
+                  !formTags.includes(tag) &&
+                  normalize(tag).includes(normalize(search)),
+              )}
+              onRemoveTag={addTag}
+            />
+          )}
         </section>
         <footer className="flex w-full justify-end gap-2 px-4 ">
           <DialogClose asChild>

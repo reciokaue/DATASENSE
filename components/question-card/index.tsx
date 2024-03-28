@@ -26,11 +26,11 @@ const questionTypes = [
 type Props = z.infer<typeof QuestionSchema>
 
 interface QuestionCardProps {
-  item: { id: number }
+  // item: { id: number }
   form: UseFormProps | any
 }
 
-export function QuestionCard({ item, form }: QuestionCardProps) {
+export function QuestionCard({ form }: QuestionCardProps) {
   const { register, handleSubmit, control, watch } = form
 
   const { fields, append, remove } = useFieldArray({

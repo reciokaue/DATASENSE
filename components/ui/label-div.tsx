@@ -13,7 +13,7 @@ interface LabelDivProps extends HTMLProps<HTMLDivElement> {
   title: string
   tooltip?: string
   labelFor?: string
-  control?: ControllerProps['control']
+  control?: any
   render?: ControllerProps['render']
 }
 

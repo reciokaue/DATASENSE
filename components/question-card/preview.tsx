@@ -18,11 +18,11 @@ interface PreviewProps {
 
 export function Preview({ type, options }: PreviewProps) {
   return (
-    <div className="flex">
+    <div className="flex w-full">
       <LabelDiv
         title="Preview"
         tooltip="Este é o formato das questões que o usuário vai responder"
-        styles="bg-stone-100 rounded-lg p-6 flex gap-3 justify-center items-center flex-wrap"
+        className="flex min-h-[150px] flex-wrap items-center justify-center gap-3 rounded-lg bg-stone-100 p-6"
       >
         {options &&
           {

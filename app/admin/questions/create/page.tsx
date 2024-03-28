@@ -1,22 +1,18 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 
-import { QuestionCard } from '@/components/question-card'
-import { Header } from '@/components/question-card/header'
 import { Options } from '@/components/question-card/options'
 import { Preview } from '@/components/question-card/preview'
 import { TopicPicker } from '@/components/topic-picker'
+import { Button } from '@/components/ui/button'
 import { LabelDiv } from '@/components/ui/label-div'
 import { Dropdown } from '@/components/ui/select'
+import { Switch } from '@/components/ui/switch'
 import { TagList } from '@/components/ui/tag-list'
 import { Textarea } from '@/components/ui/textarea'
-import {
-  QuestionInput,
-  QuestionOutput,
-  QuestionSchema,
-} from '@/utils/schemas/form'
+import { QuestionSchema } from '@/utils/schemas/form'
 
 const questionTypes = [
   { label: 'Opções', value: 'options' },
@@ -27,29 +23,42 @@ const questionTypes = [
 ]
 
 export default function CreateQuestionPage() {
-  // const form = useForm<QuestionInput, any, QuestionOutput>({
-  //   resolver: zodResolver(QuestionSchema),
-  //   defaultValues: {
-  //     type: 'options',
-  //     text: 'Questão',
-  //     options: [{ text: 'Opção', value: 1 }],
-  //   },
-  // })
+  const Question = useForm<QuestionSchema>({
+    resolver: zodResolver(QuestionSchema),
+    defaultValues: {
+      type: 'options',
+      options: [{ text: 'Opção', value: 1 }],
+    },
+  })
+  const { register, handleSubmit, control, watch } = Question
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'options',
+  })
+  const options = watch('options')
+  const questionType = watch('type')
+  const topics = watch('topics')
 
   return (
-    <div className="mx-auto flex w-full  flex-col space-y-4 py-10">
-      <TagList tags={['tag1', 'tag2', 'tag3']} onRemoveTag={() => {}} />
+    <div className="mx-auto flex w-full flex-col space-y-4 py-10">
+      <TagList
+        className="max-w-full"
+        tags={topics || []}
+        onRemoveTag={() => {}}
+      />
 
       <article className="flex space-x-6">
         <section className="flex min-w-[400px] flex-col space-y-4">
           <LabelDiv title="Questão" labelFor="question">
-            <Textarea id="question" />
+            <Textarea id="question" {...register('text')} />
           </LabelDiv>
           <div className="flex space-x-4">
-            {/* <LabelDiv
+            <LabelDiv
               title="Tópicos"
               tooltip="O Tópico é relacionado a pergunta e é utilizado para mostrar e filtrar melhor o resultado das perguntas do formulário"
               name="topics"
+              control={control}
               render={(topics) => (
                 <TopicPicker
                   setTopics={(t: string[]) => {
@@ -58,25 +67,30 @@ export default function CreateQuestionPage() {
                   selectedTopics={topics.field.value || []}
                 />
               )}
-            /> */}
+            />
             <LabelDiv
               title="Tipo de questão"
               tooltip="O tipo da pergunta é muito importante para se ter o resultado desejado da melhor maneira possível"
-            >
-              <Dropdown
-                placeholder="Selecione um tipo..."
-                options={questionTypes}
-                setSelected={() => {}}
-              />
-            </LabelDiv>
+              name="type"
+              control={control}
+              render={(type) => (
+                <Dropdown
+                  setSelected={(t) => {
+                    type.field.onChange(t)
+                  }}
+                  placeholder="Selecione um tipo..."
+                  options={questionTypes}
+                />
+              )}
+            />
           </div>
         </section>
         <aside className="flex w-full">
-          {/* <Preview type={questionTypes[0]} options={{}} /> */}
+          <Preview type={questionType} options={options} />
         </aside>
       </article>
 
-      {/* {questionType !== 'text' && (
+      {questionType !== 'text' && (
         <Options
           fields={fields}
           register={register}
@@ -85,8 +99,17 @@ export default function CreateQuestionPage() {
           control={control}
           questionType={questionType}
         />
-      )} */}
-
+      )}
+      <footer className="flex w-full items-center justify-end gap-4">
+        {/* <Button variant="ghost" size="icon">
+          <Copy />
+        </Button> */}
+        <div className="mr-4 flex items-center gap-2 leading-10">
+          Obrigatória <Switch />
+        </div>
+        <Button variant="secondary">Limpar</Button>
+        <Button>Salvar</Button>
+      </footer>
       {/* <QuestionCard form={form} item={{ id: 1 }} /> */}
     </div>
   )

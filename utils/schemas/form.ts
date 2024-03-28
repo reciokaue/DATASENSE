@@ -50,5 +50,6 @@ export const FormSchemaForPrisma = FormSchema.extend({
     }),
 })
 
-export type QuestionInput = z.input<typeof QuestionSchema>
-export type QuestionOutput = z.output<typeof QuestionSchema>
+export type QuestionSchema = z.input<typeof QuestionSchema>
+export type FormSchema = z.input<typeof FormSchema>
+export type OptionSchema = z.input<typeof OptionSchema>
