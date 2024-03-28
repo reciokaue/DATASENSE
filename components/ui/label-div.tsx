@@ -1,5 +1,6 @@
 import { HelpCircle } from 'lucide-react'
-import { ReactNode } from 'react'
+import { HTMLProps } from 'react'
+import { Controller, ControllerProps } from 'react-hook-form'
 
 import {
   Tooltip,
@@ -8,22 +9,21 @@ import {
   TooltipTrigger,
 } from '../ui/tooltip'
 
-interface LabelDivProps {
+interface LabelDivProps extends HTMLProps<HTMLDivElement> {
   title: string
   tooltip?: string
   labelFor?: string
-  child?: ReactNode
-  children?: ReactNode
-  styles?: string
+  control?: ControllerProps['control']
+  render?: ControllerProps['render']
 }
 
 export function LabelDiv({
   title,
   tooltip,
   labelFor,
-  styles,
-  child,
-  children,
+  render,
+  control,
+  ...rest
 }: LabelDivProps) {
   return (
     <TooltipProvider>
@@ -37,13 +37,22 @@ export function LabelDiv({
               <HelpCircle size={18} className="text-muted-foreground" />
             )}
           </TooltipTrigger>
-          <div className={styles}>
-            {child} {children}
+          <div {...rest}>
+            {rest.children}
+            {render && (
+              <Controller
+                control={control}
+                name={rest.name || ''}
+                render={render}
+              />
+            )}
           </div>
         </div>
-        <TooltipContent className="max-w-xs">
-          <p>{tooltip}</p>
-        </TooltipContent>
+        {tooltip && (
+          <TooltipContent className="max-w-xs">
+            <p>{tooltip}</p>
+          </TooltipContent>
+        )}
       </Tooltip>
     </TooltipProvider>
   )
