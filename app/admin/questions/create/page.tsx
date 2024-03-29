@@ -45,7 +45,7 @@ export default function CreateQuestionPage() {
       <TagList
         className="max-w-full"
         tags={topics || []}
-        onRemoveTag={() => {}}
+        onTagClick={() => {}}
       />
 
       <article className="flex space-x-6">

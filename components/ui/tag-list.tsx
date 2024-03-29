@@ -1,89 +1,41 @@
 'use client'
 
-import React from 'react'
-import SortableList, { SortableItem } from 'react-easy-sort'
+import { Plus, X } from 'lucide-react'
+import React, { HTMLProps } from 'react'
 
 import { cn } from '@/lib/utils'
 
-import { Tag, TagProps } from './tag'
+import { Badge } from './badge'
 
-export type TagListProps = {
+interface TagListProps extends HTMLProps<HTMLDivElement> {
   tags: string[]
-  direction?: TagProps['direction']
-  className?: string
+  direction?: 'vertical' | 'horizontal'
   addIcon?: boolean
-} & Omit<TagProps, 'tagObj'>
-
-const DropTarget: React.FC = () => {
-  return <div className={cn('h-full rounded-md bg-secondary/50')} />
+  variant?: 'default' | 'secondary' | 'destructive' | 'outline' | 'ghost'
+  onTagClick: (tag: string) => void
 }
 
-export const TagList: React.FC<TagListProps> = ({
+export function TagList({
   tags,
-  direction = 'row',
-  draggable = false,
-  className,
+  direction = 'horizontal',
   addIcon = false,
-  ...tagListProps
-}) => {
-  const [draggedTagId, setDraggedTagId] = React.useState<string | null>(null)
-
-  const handleMouseDown = (id: string) => {
-    setDraggedTagId(id)
-  }
-
-  const handleMouseUp = () => {
-    setDraggedTagId(null)
-  }
-
+  variant = 'secondary',
+  onTagClick,
+  ...rest
+}: TagListProps) {
   return (
     <div
-      className={cn('max-w-[450px] rounded-md', className, {
-        'flex flex-wrap gap-2': direction === 'row',
-        'flex flex-col gap-2': direction === 'column',
-      })}
-    >
-      {draggable ? (
-        <SortableList
-          className="list flex flex-wrap gap-2"
-          dropTarget={<DropTarget />}
-        >
-          {tags.map((tagObj) => (
-            <SortableItem key={tagObj}>
-              <div
-                onMouseDown={() => handleMouseDown(tagObj)}
-                onMouseLeave={handleMouseUp}
-                className={cn(
-                  {
-                    'rounded-md border border-solid border-primary':
-                      draggedTagId === tagObj,
-                  },
-                  'transition-all duration-200 ease-in-out',
-                )}
-              >
-                <Tag
-                  draggable={undefined}
-                  direction={undefined}
-                  tagObj={tagObj}
-                  {...tagListProps}
-                  addIcon={addIcon}
-                />
-              </div>
-            </SortableItem>
-          ))}
-        </SortableList>
-      ) : (
-        tags.map((tagObj) => (
-          <Tag
-            draggable={undefined}
-            direction={undefined}
-            key={tagObj}
-            tagObj={tagObj}
-            {...tagListProps}
-            addIcon={addIcon}
-          />
-        ))
+      className={cn(
+        'flex max-w-[450px] gap-2 py-2',
+        rest.className,
+        direction === 'horizontal' ? 'flex-wrap' : 'flex-col',
       )}
+    >
+      {tags.map((tag) => (
+        <Badge onClick={() => onTagClick(tag)} key={tag} variant={variant}>
+          {tag} {addIcon ? <Plus size={14} /> : <X size={14} />}
+        </Badge>
+      ))}
     </div>
   )
 }

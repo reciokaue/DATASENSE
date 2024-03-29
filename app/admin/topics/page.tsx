@@ -17,21 +17,14 @@ export default function TopicCreation() {
 
   const queryClient = useQueryClient()
 
-  const removeTag = (tagRemoved: string) => {
-    setRemovedTags((prev) => [...prev, tagRemoved])
-  }
-  const undoRemoveTag = (tagRemoved: string) => {
-    setRemovedTags((prev) => prev.filter((tag: string) => tag !== tagRemoved))
-  }
-
   const handleRemoveTags = async () => {
     if (removedTags.length === 0) return
-    console.log(removedTags)
     await api.delete('/topics', {
       data: { topics: removedTags },
     })
     setRemovedTags([])
   }
+
   const handleSaveNewTags = async () => {
     if (createdTags.length === 0) return
 
@@ -66,21 +59,18 @@ export default function TopicCreation() {
               placeholder="digite um tópico"
               tags={createdTags}
               className="sm:min-w-[450px]"
-              setTags={(tags) => {
-                setCreatedTags(tags)
-              }}
+              setTags={setCreatedTags}
+              subtext="Estes são os tópicos nos quais você está interessado."
+              variant="default"
             />
-            <p className="text-[0.8rem] text-muted-foreground">
-              Estes são os tópicos nos quais você está interessado.
-            </p>
           </div>
           {manual && (
             <Textarea
               className="h-32 resize-none"
+              placeholder='Digite os valores separados por virgula, ex: "tópico1, tópico2"'
               onChange={(e) =>
                 setCreatedTags(e.target.value.split(',').map((v) => v.trim()))
               }
-              placeholder='Digite os valores separados por virgula, ex: "tópico1, tópico2"'
             />
           )}
           <div className="flex w-full justify-start gap-2">
@@ -96,15 +86,11 @@ export default function TopicCreation() {
             <TagInput
               placeholder="digite um tópico"
               tags={removedTags}
+              setTags={setRemovedTags}
               className="sm:min-w-[450px]"
-              setTags={(tags) => {
-                setRemovedTags(tags)
-              }}
-              onTagRemove={(tag) => undoRemoveTag(tag)}
+              subtext="Selecione todos os tópicos que deseja excluir"
+              variant="default"
             />
-            <p className="text-[0.8rem] text-muted-foreground">
-              Selecione todos os tópicos que deseja excluir
-            </p>
           </div>
           <div className="flex w-full justify-start gap-2">
             <Button onClick={handleRemoveTags} variant="destructive">
@@ -119,7 +105,7 @@ export default function TopicCreation() {
       {topics && (
         <TagList
           tags={topics.filter((tag: string) => !removedTags.includes(tag))}
-          onRemoveTag={removeTag}
+          onTagClick={(tag) => setRemovedTags((prev) => [...prev, tag])}
           className="max-w-full"
         />
       )}

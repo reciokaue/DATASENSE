@@ -72,7 +72,8 @@ export function TopicPicker({ setTopics, selectedTopics }: TopicPickerProps) {
           <TagList
             className="max-w-full"
             tags={formTags}
-            onRemoveTag={undoAddTag}
+            onTagClick={undoAddTag}
+            variant="default"
           />
           <Input
             onChange={(e) => setSearch(e.currentTarget.value)}
@@ -82,13 +83,13 @@ export function TopicPicker({ setTopics, selectedTopics }: TopicPickerProps) {
           {topics && (
             <TagList
               className="max-w-full"
-              addIcon
               tags={topics.filter(
                 (tag: string) =>
                   !formTags.includes(tag) &&
                   normalize(tag).includes(normalize(search)),
               )}
-              onRemoveTag={addTag}
+              onTagClick={addTag}
+              addIcon
             />
           )}
         </section>
