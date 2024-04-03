@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { api } from '@/lib/api'
 
@@ -89,7 +89,7 @@ export function TopicPicker({ setTopics, selectedTopics }: TopicPickerProps) {
                   normalize(tag).includes(normalize(search)),
               )}
               onTagClick={addTag}
-              addIcon
+              icon="add"
             />
           )}
         </section>
@@ -98,7 +98,7 @@ export function TopicPicker({ setTopics, selectedTopics }: TopicPickerProps) {
             <Button variant="secondary">Cancelar</Button>
           </DialogClose>
           <DialogClose asChild>
-            <Button onClick={handleChangeTopics}>Adicionar</Button>
+            <Button onClick={handleChangeTopics}>Salvar</Button>
           </DialogClose>
         </footer>
       </DialogContent>

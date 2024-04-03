@@ -1,23 +1,18 @@
 # DATASENSE
 
-# Sistema de avaliação da satisfação do cliente 
+Sistema de captação e analise de dados através de formulários online
 
 Grupo:  
 
-- Gustavo de Almeida Prado.  
-- João Pedro Monteiro de Souza.  
 - Kauê Recio Carpim Sala.  
 - Leonardo Marcel Hyppolito.  
-- Mateus da Silva Pardim.  
 
 ## Tecnologias: 
 
 - React. 
 - Node. 
 
-O objetivo do presente projeto visa disponibilizar uma forma mais apurada e precisa de coletar e analisar dados referentes a satisfação do cliente referentes a produtos e/ou serviços. É fundamental saber se o que está sendo oferecido ao cliente está satisfazendo as suas necessidades e para que o negócio se mantenha sustentável, é fundamental conhecer melhor o cliente para se estabelecer o seu perfil, isto é, definir a sua persona, definir a sua jornada (montar o storytelling do cliente) e definir qual estratégia usar para topo, meio e fundo de funil. 
-
-Para que haja um melhor controle por parte do dono do negócio, se torna necessário e fundamental uma metodologia para coleta e análise dos dados dos clientes por meio de questionários a serem estabelecidos por meio de uma entrevista entre o dono do negócio e o analista.  
+O objetivo do projeto é disponibilizar uma forma apurada e precisa de coletar e analisar dados de pesquisas de mercado em geral, sem a necessidade de experiencia previa na area, disponibilizando modelos testados e aprovados, por um preço acessível
 
 ## Público alvo 
 

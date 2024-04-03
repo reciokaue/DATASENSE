@@ -10,15 +10,15 @@ import { Badge } from './badge'
 interface TagListProps extends HTMLProps<HTMLDivElement> {
   tags: string[]
   direction?: 'vertical' | 'horizontal'
-  addIcon?: boolean
+  icon?: 'remove' | 'add' | 'no-icon'
   variant?: 'default' | 'secondary' | 'destructive' | 'outline' | 'ghost'
-  onTagClick: (tag: string) => void
+  onTagClick?: (tag: string) => void
 }
 
 export function TagList({
   tags,
   direction = 'horizontal',
-  addIcon = false,
+  icon = 'remove',
   variant = 'secondary',
   onTagClick,
   ...rest
@@ -33,7 +33,14 @@ export function TagList({
     >
       {tags.map((tag) => (
         <Badge onClick={() => onTagClick(tag)} key={tag} variant={variant}>
-          {tag} {addIcon ? <Plus size={14} /> : <X size={14} />}
+          {tag}
+          {
+            {
+              add: <Plus size={14} />,
+              remove: <X size={14} />,
+              'no-icon': null,
+            }[icon]
+          }
         </Badge>
       ))}
     </div>

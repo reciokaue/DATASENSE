@@ -41,17 +41,23 @@ export default function CreateQuestionPage() {
   const topics = watch('topics')
 
   return (
-    <div className="mx-auto flex w-full flex-col space-y-4 py-10">
-      <TagList
-        className="max-w-full"
-        tags={topics || []}
-        onTagClick={() => {}}
-      />
-
+    <div className="mx-auto flex w-full flex-col space-y-2 pb-10 pt-3">
+      {topics && (
+        <TagList
+          className="max-w-full"
+          tags={topics}
+          variant="default"
+          icon="no-icon"
+        />
+      )}
       <article className="flex space-x-6">
-        <section className="flex min-w-[400px] flex-col space-y-4">
+        <section className="flex h-full max-h-[180px] min-w-[400px] flex-col justify-between space-y-4">
           <LabelDiv title="Questão" labelFor="question">
-            <Textarea id="question" {...register('text')} />
+            <Textarea
+              className="h-full resize-none"
+              id="question"
+              {...register('text')}
+            />
           </LabelDiv>
           <div className="flex space-x-4">
             <LabelDiv
@@ -110,7 +116,6 @@ export default function CreateQuestionPage() {
         <Button variant="secondary">Limpar</Button>
         <Button>Salvar</Button>
       </footer>
-      {/* <QuestionCard form={form} item={{ id: 1 }} /> */}
     </div>
   )
 }
