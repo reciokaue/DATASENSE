@@ -1,10 +1,8 @@
-import { LayoutGrid, List, Search } from 'lucide-react'
+import { LayoutGrid, List, Plus, Search } from 'lucide-react'
+import Link from 'next/link'
 
-import { NewFormButton } from './new-form-button'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
-
-// interface SearchBarProps {}
 
 export function SearchBar() {
   return (
@@ -21,7 +19,12 @@ export function SearchBar() {
       <Button variant="outline" size="icon" className="shrink-0">
         <LayoutGrid className="h-4 w-4" />
       </Button>
-      <NewFormButton />
+      <Link href="/form/new">
+        <Button type="submit" className="gap-2">
+          New
+          <Plus className="h-4 w-4" />
+        </Button>
+      </Link>
     </div>
   )
 }

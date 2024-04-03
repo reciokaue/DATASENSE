@@ -29,7 +29,10 @@ export function LabelDiv({
     <TooltipProvider>
       <Tooltip>
         <div className="flex w-full flex-col justify-start gap-2">
-          <TooltipTrigger className="flex items-center gap-2">
+          <TooltipTrigger
+            onClick={(e) => e.preventDefault()}
+            className="flex items-center gap-2"
+          >
             <label className="text-sm font-medium" htmlFor={labelFor}>
               {title}
             </label>
