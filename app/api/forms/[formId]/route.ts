@@ -12,10 +12,17 @@ export async function GET(
     where: {
       id: formId,
     },
-    include: { questions: { include: { options: true } } },
+    include: { questions: { include: { topics: true, options: true } } },
   })
+  const formatedForm = {
+    ...form,
+    questions: form?.questions.map((question) => ({
+      ...question,
+      topics: question.topics.map((topic) => topic.name),
+    })),
+  }
 
-  return Response.json(form, { status: 200 })
+  return Response.json(formatedForm, { status: 200 })
 }
 
 export async function DELETE(
