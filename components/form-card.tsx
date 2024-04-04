@@ -21,7 +21,7 @@ export interface FormData {
 
 export function FormCard({ data }: { data: FormData }) {
   return (
-    <Link href={`/form/${data.id}`} className="group">
+    <Link href={`/form/${data.id}/questions`} className="group">
       <Card className="flex h-full max-h-52 flex-col justify-between group-hover:border-primary">
         <CardHeader className="p flex-1">
           <CardTitle className="mb-2 flex items-center gap-2">
