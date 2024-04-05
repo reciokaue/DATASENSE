@@ -8,6 +8,7 @@ import { PreviewQuestionCard } from '@/components/question-card/preview-question
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Skeleton } from '@/components/ui/skeleton'
 import { api } from '@/lib/api'
 
 export default function QuestionsPage() {
@@ -16,6 +17,16 @@ export default function QuestionsPage() {
     queryFn: async () => {
       const response = await api.get(`/topics`, {
         params: { pageSize: 100 },
+      })
+
+      return response.data
+    },
+  })
+  const { data: questions } = useQuery({
+    queryKey: ['public-questions'],
+    queryFn: async () => {
+      const response = await api.get(`/questions`, {
+        params: { pageSize: 6, isPublic: true },
       })
 
       return response.data
@@ -57,12 +68,17 @@ export default function QuestionsPage() {
           />
         </div>
         <h1 className="mt-8 text-xl font-semibold">Todas</h1>
-        <section className="g mt-5 grid grid-flow-col justify-start ">
-          {/* {forms.data?.map((form: any) => (
-          <FormCard data={form} key={form.id} />
-        ))} */}
-          <PreviewQuestionCard />
-          <PreviewQuestionCard />
+        <section className="g mt-5 flex flex-wrap justify-stretch gap-2">
+          {questions
+            ? questions?.map((question: any) => (
+                <PreviewQuestionCard question={question} key={question.id} />
+              ))
+            : [1, 2, 3, 4, 5, 6].map((i) => (
+                <Skeleton
+                  key={`skeleton-${i}`}
+                  className=" min-h-32 min-w-[309px]"
+                />
+              ))}
         </section>
       </section>
     </div>
