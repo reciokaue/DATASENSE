@@ -22,6 +22,9 @@ export default function TopicCreation() {
     await api.delete('/topics', {
       data: { topics: removedTags },
     })
+    queryClient.setQueryData(['topics'], (data: string[]) =>
+      data.filter((topic) => !removedTags.includes(topic)),
+    )
     setRemovedTags([])
   }
 
@@ -31,9 +34,9 @@ export default function TopicCreation() {
     await api.post('/topics', {
       topics: createdTags,
     })
-    queryClient.setQueryData(['topics'], (prevData: string[]) => [
-      ...prevData,
-      createdTags,
+    queryClient.setQueryData(['topics'], (data: string[]) => [
+      ...data,
+      ...createdTags,
     ])
     setCreatedTags([])
   }
