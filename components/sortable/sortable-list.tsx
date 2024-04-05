@@ -22,8 +22,8 @@ interface BaseItem {
 
 interface Props<T extends BaseItem> {
   items: T[]
-  onChange(items: T[]): void
-  renderItem(item: T): ReactNode
+  onChange: (items: T[]) => void
+  renderItem: (item: T, index: number) => ReactNode
 }
 
 export function SortableList<T extends BaseItem>({
@@ -64,13 +64,15 @@ export function SortableList<T extends BaseItem>({
     >
       <SortableContext items={items}>
         <ul className="flex list-none flex-col gap-3 p-0" role="application">
-          {items.map((item) => (
-            <React.Fragment key={item.id}>{renderItem(item)}</React.Fragment>
+          {items.map((item, index) => (
+            <React.Fragment key={item.id}>
+              {renderItem(item, index)}
+            </React.Fragment>
           ))}
         </ul>
       </SortableContext>
       <SortableOverlay>
-        {activeItem ? renderItem(activeItem) : null}
+        {activeItem ? renderItem(activeItem, 0) : null}
       </SortableOverlay>
     </DndContext>
   )
