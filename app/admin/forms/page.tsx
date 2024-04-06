@@ -8,19 +8,11 @@ import { FormCard } from '@/components/form-card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { useTopics } from '@/contexts/topics'
 import { api } from '@/lib/api'
 
 export default function FormsPage() {
-  const { data: topics } = useQuery({
-    queryKey: ['topics'],
-    queryFn: async () => {
-      const response = await api.get(`/topics`, {
-        params: { pageSize: 100 },
-      })
-
-      return response.data
-    },
-  })
+  const { topics } = useTopics()
 
   const { data: forms } = useQuery({
     queryKey: ['public-forms'],

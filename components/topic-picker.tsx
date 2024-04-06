@@ -1,7 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
-import { api } from '@/lib/api'
+import { useTopics } from '@/contexts/topics'
 
 import { Button } from './ui/button'
 import {
@@ -24,6 +23,7 @@ interface TopicPickerProps {
 export function TopicPicker({ setTopics, selectedTopics }: TopicPickerProps) {
   const [formTags, setFormTags] = useState<string[]>(selectedTopics)
   const [search, setSearch] = useState('')
+  const { topics } = useTopics()
 
   const addTag = (tagRemoved: string) => {
     setFormTags([...formTags, tagRemoved])
@@ -35,17 +35,6 @@ export function TopicPicker({ setTopics, selectedTopics }: TopicPickerProps) {
   function handleChangeTopics() {
     setTopics(formTags)
   }
-
-  const { data: topics } = useQuery({
-    queryKey: ['topics'],
-    queryFn: async () => {
-      const response = await api.get(`/topics`, {
-        params: { pageSize: 100 },
-      })
-
-      return response.data
-    },
-  })
 
   function normalize(string: string) {
     return string

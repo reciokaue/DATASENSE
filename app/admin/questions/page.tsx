@@ -9,19 +9,12 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useTopics } from '@/contexts/topics'
 import { api } from '@/lib/api'
 
 export default function QuestionsPage() {
-  const { data: topics } = useQuery({
-    queryKey: ['topics'],
-    queryFn: async () => {
-      const response = await api.get(`/topics`, {
-        params: { pageSize: 100 },
-      })
+  const { topics } = useTopics()
 
-      return response.data
-    },
-  })
   const { data: questions } = useQuery({
     queryKey: ['public-questions'],
     queryFn: async () => {
