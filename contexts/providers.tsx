@@ -5,6 +5,7 @@ import { ReactNode } from 'react'
 
 import { Toaster } from '@/components/ui/toaster'
 
+import { SelectedFormProvider } from './selected-form'
 import { TopicsProvider } from './topics'
 
 export const queryClient = new QueryClient({
@@ -18,7 +19,9 @@ export const queryClient = new QueryClient({
 export function Providers({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <TopicsProvider>{children}</TopicsProvider>
+      <TopicsProvider>
+        <SelectedFormProvider>{children}</SelectedFormProvider>
+      </TopicsProvider>
       <Toaster />
     </QueryClientProvider>
   )

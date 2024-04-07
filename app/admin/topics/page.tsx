@@ -15,13 +15,13 @@ export default function TopicCreation() {
   const [manual, setManual] = useState(false)
   const { topics, addNewTopics, removeTopics } = useTopics()
 
-  const handleRemoveTags = async () => {
-    addNewTopics(newTopics)
+  const handleRemoveTopics = async () => {
+    await removeTopics(removedTopics)
     setRemovedTopics([])
   }
 
-  const handleSaveNewTags = async () => {
-    removeTopics(removedTopics)
+  const handleSaveNewTopics = async () => {
+    await addNewTopics(removedTopics)
     setNewTopics([])
   }
 
@@ -50,7 +50,7 @@ export default function TopicCreation() {
             />
           )}
           <div className="flex w-full justify-start gap-2">
-            <Button onClick={handleSaveNewTags}>Salvar</Button>
+            <Button onClick={handleSaveNewTopics}>Salvar</Button>
             <Button onClick={() => setManual(!manual)} variant="secondary">
               Manual
             </Button>
@@ -69,7 +69,7 @@ export default function TopicCreation() {
             />
           </div>
           <div className="flex w-full justify-start gap-2">
-            <Button onClick={handleRemoveTags} variant="destructive">
+            <Button onClick={handleRemoveTopics} variant="destructive">
               Deletar
             </Button>
             <Button onClick={() => setRemovedTopics([])} variant="secondary">
@@ -85,6 +85,7 @@ export default function TopicCreation() {
           className="max-w-full"
         />
       )}
+      {JSON.stringify(removedTopics)}
     </main>
   )
 }

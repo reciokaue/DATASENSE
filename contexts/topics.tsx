@@ -9,13 +9,13 @@ interface topicsProviderProps {
   children: ReactNode
 }
 
-interface topicsContextData {
-  topics: string[]
-  removeTopics: (removedTopics: string[]) => Promise<void>
-  addNewTopics: (newTopics: string[]) => Promise<void>
+interface TopicsContextData {
+  topics: Array<string>
+  removeTopics: (removedTopics: Array<string>) => Promise<void>
+  addNewTopics: (newTopics: Array<string>) => Promise<void>
 }
 
-const topicsContext = createContext({} as topicsContextData)
+const TopicsContext = createContext({} as TopicsContextData)
 
 export function TopicsProvider({ children }: topicsProviderProps) {
   const queryClient = useQueryClient()
@@ -31,35 +31,32 @@ export function TopicsProvider({ children }: topicsProviderProps) {
     },
   })
 
-  const addNewTopics = async (newTopics: string[]) => {
+  const addNewTopics = async (newTopics: Array<string>) => {
     if (newTopics.length === 0) return
-
     await api.post('/topics', {
       topics: newTopics,
     })
 
-    queryClient.setQueryData(['topics'], (data: string[]) => [
-      ...data,
-      ...newTopics,
-    ])
+    const newData = [...topics, newTopics]
+    queryClient.setQueryData(['topics'], newData)
   }
-  const removeTopics = async (removedTopics: string[]) => {
+  async function removeTopics(removedTopics: Array<string>) {
     if (removedTopics.length === 0) return
 
     await api.delete('/topics', {
       data: { topics: removedTopics },
     })
 
-    queryClient.setQueryData(['topics'], (data: string[]) =>
+    queryClient.setQueryData(['topics'], (data: Array<string>) =>
       data.filter((topic) => !removedTopics.includes(topic)),
     )
   }
 
   return (
-    <topicsContext.Provider value={{ topics, addNewTopics, removeTopics }}>
+    <TopicsContext.Provider value={{ topics, addNewTopics, removeTopics }}>
       {children}
-    </topicsContext.Provider>
+    </TopicsContext.Provider>
   )
 }
 
-export const useTopics = () => useContext(topicsContext)
+export const useTopics = () => useContext(TopicsContext)
