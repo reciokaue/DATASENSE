@@ -85,7 +85,6 @@ export default function TopicCreation() {
           className="max-w-full"
         />
       )}
-      {JSON.stringify(removedTopics)}
     </main>
   )
 }
