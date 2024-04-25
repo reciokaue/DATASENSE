@@ -37,7 +37,7 @@ export function TopicsProvider({ children }: topicsProviderProps) {
       topics: newTopics,
     })
 
-    const newData = [...topics, newTopics]
+    const newData = [...topics, ...newTopics]
     queryClient.setQueryData(['topics'], newData)
   }
   async function removeTopics(removedTopics: Array<string>) {

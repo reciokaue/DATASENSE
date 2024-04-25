@@ -21,7 +21,7 @@ export default function TopicCreation() {
   }
 
   const handleSaveNewTopics = async () => {
-    await addNewTopics(removedTopics)
+    await addNewTopics(newTopics)
     setNewTopics([])
   }
 
