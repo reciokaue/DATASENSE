@@ -1,7 +1,7 @@
 'use client'
 
 import { Label } from '@radix-ui/react-label'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { TagInput } from '@/components/ui/tag-input'
@@ -14,15 +14,16 @@ export default function TopicCreation() {
   const [newTopics, setNewTopics] = useState<string[]>([])
   const [manual, setManual] = useState(false)
   const { topics, addNewTopics, removeTopics } = useTopics()
-
-  const handleRemoveTopics = async () => {
-    await removeTopics(removedTopics)
-    setRemovedTopics([])
-  }
+  const inputRef: any = useRef(null)
 
   const handleSaveNewTopics = async () => {
     await addNewTopics(newTopics)
     setNewTopics([])
+    if (manual) inputRef.current.value = ''
+  }
+  const handleRemoveTopics = async () => {
+    await removeTopics(removedTopics)
+    setRemovedTopics([])
   }
 
   return (
@@ -44,6 +45,7 @@ export default function TopicCreation() {
             <Textarea
               className="h-32 resize-none"
               placeholder='Digite os valores separados por virgula, ex: "tópico1, tópico2"'
+              ref={inputRef}
               onChange={(e) =>
                 setNewTopics(e.target.value.split(',').map((v) => v.trim()))
               }
