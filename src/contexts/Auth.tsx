@@ -32,6 +32,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const response = await api.post('/login', { email, password })
 
     setCookie('datasense-token', response.data)
+    api.defaults.headers.common.Authorization = `Bearer ${response.data}`
 
     if (remember) {
       localStorage.setItem('datasense_email', email)
@@ -50,7 +51,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     async function loadData() {
       const token = getCookie('datasense-token')
+
       if (token) router.push('/dashboard')
+      else router.push('/dashboard')
+
+      api.defaults.headers.common.Authorization = `Bearer ${token}`
     }
     loadData()
   }, [])

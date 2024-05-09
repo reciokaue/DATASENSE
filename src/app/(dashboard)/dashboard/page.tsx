@@ -1,12 +1,73 @@
-import { SearchBar } from '@/src/components/search-bar'
+'use client'
 
-import { Forms } from './forms'
+import { useQuery } from '@tanstack/react-query'
+import { Plus } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
-export default async function Dashboard() {
+import { FormCard } from '@/src/components/form-card'
+import { Button } from '@/src/components/ui/button'
+import { Input } from '@/src/components/ui/input'
+import { api } from '@/src/lib/api'
+
+export default function Dashboard() {
+  const [search, setSearch] = useState('')
+
+  const { data: forms } = useQuery({
+    queryKey: ['user-forms'],
+    queryFn: async () => {
+      const response = await api.get(`/forms`)
+      return response.data
+    },
+  })
+
+  const { data: queryForms, refetch } = useQuery({
+    queryKey: ['query-user-forms'],
+    queryFn: async () => {
+      const response = await api.get(`/forms`, {
+        params: {
+          query: search,
+        },
+      })
+      return response.data
+    },
+    enabled: false,
+  })
+
+  const onChange = (event: any) => {
+    setSearch(event.target.value)
+  }
+
+  useEffect(() => {
+    if (search) {
+      const timeoutId = setTimeout(() => {
+        refetch()
+      }, 500)
+      return () => clearTimeout(timeoutId)
+    }
+  }, [refetch, search])
+
   return (
     <>
-      <SearchBar />
-      <Forms />
+      <div className="flex w-full items-center space-x-3">
+        <div className="w-full">
+          <Input
+            type="email"
+            placeholder="Procurar..."
+            className="w-full"
+            onChange={onChange}
+            value={search}
+          />
+        </div>
+        <Button link="/form/new" type="submit" className="gap-2">
+          New
+          <Plus className="h-4 w-4" />
+        </Button>
+      </div>
+      <div className="mt-8 grid grid-cols-1 gap-3 md:grid-cols-3">
+        {(search ? queryForms : forms)?.map((form: any) => (
+          <FormCard data={form} key={form.id} />
+        ))}
+      </div>
     </>
   )
 }

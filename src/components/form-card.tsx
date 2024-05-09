@@ -13,9 +13,17 @@ export interface FormData {
   id: string
   name: string
   about: string
+  active: boolean
+  logoUrl: string
+  isPublic: boolean
+  createdAt: Date
+  endedAt: Date
+  userId: string
   _count: {
     questions: number
-    Answer: number
+    sessions: number
+    topics: number
+    responses: number
   }
 }
 
