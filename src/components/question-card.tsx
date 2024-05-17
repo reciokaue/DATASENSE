@@ -6,7 +6,6 @@ interface QuestionCardProps {
 }
 
 const colors = [
-  'green-500',
   '#ff6384',
   '#36a3eb',
   '#ffce56',

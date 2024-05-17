@@ -8,4 +8,5 @@ export interface QuestionDTO {
   topics: string[]
   options: OptionDTO[]
   responses?: number
+  index: number
 }

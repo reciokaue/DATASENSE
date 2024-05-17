@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { ClipboardType, Mails } from 'lucide-react'
 
 import { QuestionCard } from '@/src/components/question-card'
+import { Button } from '@/src/components/ui/button'
 import { FormDTO } from '@/src/DTOs/form'
 import { QuestionDTO } from '@/src/DTOs/question'
 import { api } from '@/src/lib/api'
@@ -25,6 +26,7 @@ export default function FormDetail({ params }: FormLayoutProps) {
     <div className="flex flex-col space-y-6">
       <h1 className="pb-2 text-2xl font-semibold">{form?.name || ''}</h1>
       <p>{form?.about || ''}</p>
+      <Button link={`/form/${formId}/edit`}>Editar</Button>
       <div className="mt-2 flex gap-3">
         <div className="flex items-center gap-2">
           <ClipboardType className="h-3 w-3 text-violet-400" />

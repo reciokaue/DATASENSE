@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { deleteCookie, getCookie, setCookie } from 'cookies-next'
+import { jwtDecode } from 'jwt-decode'
 import { useRouter } from 'next/navigation'
 import {
   createContext,
@@ -30,16 +31,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function login(email: string, password: string, remember?: boolean) {
     const response = await api.post('/login', { email, password })
+    const decoded: any = await jwtDecode(response.data)
 
     setCookie('datasense-token', response.data)
     api.defaults.headers.common.Authorization = `Bearer ${response.data}`
 
     if (remember) {
       localStorage.setItem('datasense_email', email)
-      localStorage.setItem('datasense_password', password)
     }
-
-    router.push('/dashboard')
+    if (decoded.access > 0) router.push('/admin/forms')
+    else router.push('/dashboard')
   }
 
   async function logout() {
@@ -51,9 +52,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     async function loadData() {
       const token = getCookie('datasense-token')
+      const decoded: any = await jwtDecode(token as string)
 
-      if (token) router.push('/dashboard')
-      else router.push('/dashboard')
+      setUser({
+        ...decoded,
+        id: decoded.sub,
+        accessLevel: decoded.access,
+      } as UserDTO)
+      console.log(decoded)
+
+      if (token) {
+        if (decoded.access > 0) router.push('/admin/forms')
+        else router.push('/dashboard')
+      }
 
       api.defaults.headers.common.Authorization = `Bearer ${token}`
     }

@@ -1,10 +1,19 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Check } from 'lucide-react'
-import { Controller, useFieldArray, UseFormProps } from 'react-hook-form'
+import { useState } from 'react'
+import {
+  Controller,
+  useFieldArray,
+  useForm,
+  UseFormProps,
+} from 'react-hook-form'
 import { z } from 'zod'
 
-import { QuestionSchema } from '../../schemas/form'
+import { QuestionDTO } from '@/src/DTOs/question'
+
+import { QuestionSchema, QuestionSchemaType } from '../../schemas/form'
 import { TopicPicker } from '../topic-picker'
 import { Button } from '../ui/button'
 import { Card } from '../ui/card'
@@ -26,17 +35,22 @@ const questionTypes = [
 type Props = z.infer<typeof QuestionSchema>
 
 interface QuestionCardProps {
-  // item: { id: number }
-  form: UseFormProps | any
+  question: QuestionDTO
 }
 
-export function QuestionCard({ form }: QuestionCardProps) {
-  const { register, handleSubmit, control, watch } = form
+export function QuestionCard({ question }: QuestionCardProps) {
+  const [isEditing, setIsEditing] = useState(false)
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'options',
-  })
+  const { register, handleSubmit, watch, control } =
+    useForm<QuestionSchemaType>({
+      resolver: zodResolver(QuestionSchema),
+      defaultValues: question as any,
+    })
+
+  // const { fields, append, remove } = useFieldArray({
+  //   control,
+  //   name: 'options',
+  // })
   const questionText = watch('text')
   const formOptions = watch('options')
   const questionType = watch('type')
@@ -46,60 +60,65 @@ export function QuestionCard({ form }: QuestionCardProps) {
   }
 
   return (
-    <Card className="group relative flex w-full min-w-[520px] max-w-xl flex-col p-5">
+    <Card
+      onClick={() => setIsEditing(true)}
+      // onAbort={() => setIsEditing(false)}
+      className="group relative flex w-full min-w-[520px] max-w-xl flex-col p-5"
+    >
       <Header
-        index={1}
+        index={question.index}
         questionText={questionText}
         questionType={questionType}
       />
-      <form
-        onSubmit={handleSubmit(handleSign)}
-        className="mt-4 flex flex-col gap-3"
-      >
-        <LabelDiv title="Questão" labelFor="question">
-          <Input id="question" {...register('text')} />
-        </LabelDiv>
-        <div className="flex items-center justify-between gap-4">
-          <LabelDiv
-            title="Tópicos"
-            tooltip="O Tópico é relacionado a pergunta e é utilizado para mostrar e filtrar melhor o resultado das perguntas do formulário"
-          >
-            <Controller
-              control={control}
-              name="topics"
-              render={(topics) => (
-                <TopicPicker
-                  setTopics={(t: string[]) => {
-                    topics.field.onChange(t)
-                  }}
-                  selectedTopics={topics.field.value || []}
-                />
-              )}
-            />
+      {isEditing && (
+        <form
+          onSubmit={handleSubmit(handleSign)}
+          className="mt-4 flex flex-col gap-3"
+        >
+          <LabelDiv title="Questão" labelFor="question">
+            <Input id="question" {...register('text')} />
           </LabelDiv>
-          <LabelDiv
-            title="Tipo de questão"
-            tooltip="O tipo da pergunta é muito importante para se ter o resultado desejado da melhor maneira possível"
-          >
-            <Controller
-              control={control}
-              name="type"
-              render={(type) => (
-                <Dropdown
-                  setSelected={(t) => {
-                    type.field.onChange(t)
-                  }}
-                  placeholder="Selecione um tipo..."
-                  options={questionTypes}
-                />
-              )}
-            />
-          </LabelDiv>
-        </div>
+          <div className="flex items-center justify-between gap-4">
+            <LabelDiv
+              title="Tópicos"
+              tooltip="O Tópico é relacionado a pergunta e é utilizado para mostrar e filtrar melhor o resultado das perguntas do formulário"
+            >
+              <Controller
+                control={control}
+                name="topics"
+                render={(topics) => (
+                  <TopicPicker
+                    setTopics={(t: string[]) => {
+                      topics.field.onChange(t)
+                    }}
+                    selectedTopics={topics.field.value || []}
+                  />
+                )}
+              />
+            </LabelDiv>
+            <LabelDiv
+              title="Tipo de questão"
+              tooltip="O tipo da pergunta é muito importante para se ter o resultado desejado da melhor maneira possível"
+            >
+              <Controller
+                control={control}
+                name="type"
+                render={(type) => (
+                  <Dropdown
+                    setSelected={(t) => {
+                      type.field.onChange(t)
+                    }}
+                    placeholder="Selecione um tipo..."
+                    options={questionTypes}
+                  />
+                )}
+              />
+            </LabelDiv>
+          </div>
 
-        <Preview type={questionType} options={formOptions} />
+          {/* <Preview type={questionType} options={formOptions} /> */}
 
-        {questionType !== 'text' && (
+          {/* {questionType !== 'text' && (
           <Options
             fields={fields}
             register={register}
@@ -108,15 +127,16 @@ export function QuestionCard({ form }: QuestionCardProps) {
             control={control}
             questionType={questionType}
           />
-        )}
+        )} */}
 
-        <div className="mt-3 flex justify-end gap-2">
-          <Button variant="secondary">Cancelar</Button>
-          <Button type="submit" className="gap-2 bg-primary">
-            Salvar questão <Check size={20} />
-          </Button>
-        </div>
-      </form>
+          <div className="mt-3 flex justify-end gap-2">
+            <Button variant="secondary">Cancelar</Button>
+            <Button type="submit" className="gap-2 bg-primary">
+              Salvar questão <Check size={20} />
+            </Button>
+          </div>
+        </form>
+      )}
     </Card>
   )
 }

@@ -17,6 +17,11 @@ const questionInfo: {
   [key: string]: QuestionInfoItem
 } = {
   options: { label: 'Opções', value: 'options', Icon: <CircleDot size={20} /> },
+  multiple_choice: {
+    label: 'Multiplas opções',
+    value: 'multiple_choice',
+    Icon: <CircleDot size={20} />,
+  },
   cards: { label: 'Cards', value: 'cards', Icon: <Copy size={20} /> },
   emoji: { label: 'Emoji', value: 'emoji', Icon: <Smile size={20} /> },
   classification: {

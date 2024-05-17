@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -12,16 +11,16 @@ import { Checkbox } from '@/src/components/ui/checkbox'
 import { Input } from '@/src/components/ui/input'
 import { useToast } from '@/src/components/ui/use-toast'
 import { useAuth } from '@/src/contexts/Auth'
-import { api } from '@/src/lib/api'
+
+import { treatError } from './erros'
 
 export default function Login() {
-  const router = useRouter()
   const { toast } = useToast()
   const { login } = useAuth()
 
   const schema = z.object({
     email: z.string().email('Deve ser um email valido'),
-    password: z.string().min(3, 'Deve ter no mínimo 3 caracteres').trim(),
+    password: z.string().min(6, 'Deve ter no mínimo 6 caracteres').trim(),
     rememberMe: z.boolean().nullable(),
   })
   type Props = z.infer<typeof schema>
@@ -38,32 +37,17 @@ export default function Login() {
 
   async function handleSign(data: Props) {
     try {
-      login(data.email, data.password, data.rememberMe || false)
+      await login(data.email, data.password, data.rememberMe || false)
     } catch (e: any) {
-      const message = e?.response.data.message
-      if (message === 'Invalid Password.')
-        toast({
-          title: 'Senha incorreta',
-          description: 'Não lembra a senha? clique em esqueci minha senha',
-          variant: 'destructive',
-        })
-      if (message === 'User does not exist.')
-        toast({
-          title: 'Email não existe',
-          description: 'Verifique se digitou corretamente',
-          variant: 'destructive',
-        })
+      toast(treatError(e))
     }
   }
 
   useEffect(() => {
     async function getLoginInfo() {
-      const email = localStorage.getItem('feedback-view_email')
-      const password = localStorage.getItem('feedback-view_password')
+      const email = localStorage.getItem('datasense_email')
       if (email !== '') setValue('rememberMe', true)
-
       setValue('email', email || '')
-      setValue('password', password || '')
     }
 
     getLoginInfo()
