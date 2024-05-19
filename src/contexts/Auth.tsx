@@ -51,22 +51,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     async function loadData() {
-      const token = getCookie('datasense-token')
-      const decoded: any = await jwtDecode(token as string)
+      try {
+        const token = getCookie('datasense-token')
+        const decoded: any = await jwtDecode(token as string)
 
-      setUser({
-        ...decoded,
-        id: decoded.sub,
-        accessLevel: decoded.access,
-      } as UserDTO)
-      console.log(decoded)
+        setUser({
+          ...decoded,
+          id: decoded.sub,
+          accessLevel: decoded.access,
+        } as UserDTO)
 
-      if (token) {
         if (decoded.access > 0) router.push('/admin/forms')
         else router.push('/dashboard')
-      }
 
-      api.defaults.headers.common.Authorization = `Bearer ${token}`
+        api.defaults.headers.common.Authorization = `Bearer ${token}`
+      } catch (e) {
+        router.push('/login')
+      }
     }
     loadData()
   }, [])

@@ -33,9 +33,7 @@ export function TopicsProvider({ children }: topicsProviderProps) {
 
   const addNewTopics = async (newTopics: Array<string>) => {
     if (newTopics.length === 0) return
-    await api.post('/topics', {
-      topics: newTopics,
-    })
+    await api.post('/topics', newTopics)
 
     const newData = [...topics, ...newTopics]
     queryClient.setQueryData(['topics'], newData)
