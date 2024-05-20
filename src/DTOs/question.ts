@@ -1,12 +1,10 @@
 import { OptionDTO } from './option'
+import { QuestionTypeDTO } from './questionType'
 
 export interface QuestionDTO {
-  id: string
+  id: number
   text: string
-  type: string
-  isPublic: boolean
-  topics: string[]
-  options: OptionDTO[]
-  responses?: number
   index: number
+  questionType: QuestionTypeDTO
+  options: OptionDTO[]
 }

@@ -1,18 +1,14 @@
 import { QuestionDTO } from './question'
+import { TopicDTO } from './topic'
 
 export interface FormDTO {
-  id: string
+  id: number
   name: string
   about: string
   active: boolean
   logoUrl: string
   isPublic: boolean
-  topics: string[]
+  createdAt: string
   questions: QuestionDTO[]
-  _count?: {
-    questions: number
-    sessions: number
-    topics: number
-    responses: number
-  }
+  topics: TopicDTO[]
 }

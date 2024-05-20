@@ -1,8 +1,5 @@
 export interface OptionDTO {
-  id: string | null
-  value: number
-  emoji: string | null
-  text: string
-  responses: number
+  id: number
   index: number
+  text: string
 }
