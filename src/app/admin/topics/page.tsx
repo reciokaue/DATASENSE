@@ -8,10 +8,11 @@ import { TagInput } from '@/src/components/ui/tag-input'
 import { TagList } from '@/src/components/ui/tag-list'
 import { Textarea } from '@/src/components/ui/textarea'
 import { useTopics } from '@/src/contexts/topics'
+import { TopicDTO } from '@/src/DTOs/topic'
 
 export default function TopicCreation() {
-  const [removedTopics, setRemovedTopics] = useState<string[]>([])
-  const [newTopics, setNewTopics] = useState<string[]>([])
+  const [removedTopics, setRemovedTopics] = useState<TopicDTO[]>([])
+  const [newTopics, setNewTopics] = useState<TopicDTO[]>([])
   const [manual, setManual] = useState(false)
   const { topics, addNewTopics, removeTopics } = useTopics()
   const inputRef: any = useRef(null)
@@ -47,7 +48,12 @@ export default function TopicCreation() {
               placeholder='Digite os valores separados por virgula, ex: "tópico1, tópico2"'
               ref={inputRef}
               onChange={(e) =>
-                setNewTopics(e.target.value.split(',').map((v) => v.trim()))
+                setNewTopics(
+                  e.target.value.split(',').map((v) => ({
+                    id: Math.random() * 100,
+                    name: v.trim(),
+                  })),
+                )
               }
             />
           )}

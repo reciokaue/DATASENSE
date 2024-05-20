@@ -5,14 +5,16 @@ import { createContext, ReactNode, useContext } from 'react'
 
 import { api } from '@/src/lib/api'
 
+import { TopicDTO } from '../DTOs/topic'
+
 interface topicsProviderProps {
   children: ReactNode
 }
 
 interface TopicsContextData {
-  topics: Array<string>
-  removeTopics: (removedTopics: Array<string>) => Promise<void>
-  addNewTopics: (newTopics: Array<string>) => Promise<void>
+  topics: Array<TopicDTO>
+  removeTopics: (removedTopics: Array<TopicDTO>) => Promise<void>
+  addNewTopics: (newTopics: Array<TopicDTO>) => Promise<void>
 }
 
 const TopicsContext = createContext({} as TopicsContextData)
@@ -31,23 +33,32 @@ export function TopicsProvider({ children }: topicsProviderProps) {
     },
   })
 
-  const addNewTopics = async (newTopics: Array<string>) => {
-    if (newTopics.length === 0) return
-    await api.post('/topics', newTopics)
+  async function addNewTopics(newTopics: Array<TopicDTO>) {
+    try {
+      if (newTopics.length === 0) return
+      const topicNames = newTopics.map((topic) => topic.name)
+      const response = await api.post('/topics', topicNames)
 
-    const newData = [...topics, ...newTopics]
-    queryClient.setQueryData(['topics'], newData)
+      const newData = [...topics, ...response.data]
+      queryClient.setQueryData(['topics'], newData)
+    } catch (e) {
+      console.log(e)
+    }
   }
-  async function removeTopics(removedTopics: Array<string>) {
-    if (removedTopics.length === 0) return
+  async function removeTopics(removedTopics: Array<TopicDTO>) {
+    try {
+      if (removedTopics.length === 0) return
+      const topicIds = removedTopics.map((topic) => topic.id)
+      await api.delete('/topics', {
+        data: [8, 9, 10],
+      })
 
-    await api.delete('/topics', {
-      data: { topics: removedTopics },
-    })
-
-    queryClient.setQueryData(['topics'], (data: Array<string>) =>
-      data.filter((topic) => !removedTopics.includes(topic)),
-    )
+      queryClient.setQueryData(['topics'], (data: Array<TopicDTO>) =>
+        data.filter((topic) => !topicIds.includes(topic.id)),
+      )
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   return (

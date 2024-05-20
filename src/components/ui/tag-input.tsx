@@ -5,13 +5,15 @@ import React, { HTMLProps } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { TopicDTO } from '@/src/DTOs/topic'
+
 import { Input } from './input'
 import { TagList } from './tag-list'
 
 export interface TagInputProps extends HTMLProps<HTMLInputElement> {
-  tags: string[]
+  tags: TopicDTO[]
   subtext?: string
-  setTags: (tags: string[]) => void
+  setTags: (tags: TopicDTO[]) => void
   variant?: 'default' | 'secondary' | 'destructive' | 'outline' | 'ghost'
 }
 
@@ -23,12 +25,7 @@ export function TagInput({
   ...rest
 }: TagInputProps) {
   const schema = z.object({
-    tag: z
-      .string()
-      .min(3, 'Mínimo de 3 caracteres')
-      .refine((tag) => !tags.includes(tag), {
-        message: 'Este tópico já existe',
-      }),
+    tag: z.string().min(3, 'Mínimo de 3 caracteres'),
   })
   type Props = z.infer<typeof schema>
 
@@ -41,12 +38,18 @@ export function TagInput({
     resolver: zodResolver(schema),
   })
 
-  function handleRemoveTag(removedTag: string) {
-    setTags(tags.filter((tag) => tag !== removedTag))
+  function handleRemoveTag(removedTag: TopicDTO) {
+    setTags(tags.filter((tag) => tag.id !== removedTag.id))
   }
 
   function handleKeyDown(data: Props) {
-    setTags([...tags, data.tag])
+    setTags([
+      ...tags,
+      {
+        id: 0,
+        name: data.tag,
+      },
+    ])
     reset()
   }
 

@@ -3,16 +3,17 @@
 import { Plus, X } from 'lucide-react'
 import React, { HTMLProps } from 'react'
 
+import { TopicDTO } from '@/src/DTOs/topic'
 import { cn } from '@/src/lib/utils'
 
 import { Badge } from './badge'
 
 interface TagListProps extends HTMLProps<HTMLDivElement> {
-  tags: string[]
+  tags: TopicDTO[]
   direction?: 'vertical' | 'horizontal'
   icon?: 'remove' | 'add' | 'no-icon'
   variant?: 'default' | 'secondary' | 'destructive' | 'outline' | 'ghost'
-  onTagClick?: (tag: string) => void
+  onTagClick: (tag: TopicDTO) => void
 }
 
 export function TagList({
@@ -31,9 +32,13 @@ export function TagList({
         direction === 'horizontal' ? 'flex-wrap' : 'flex-col',
       )}
     >
-      {tags.map((tag) => (
-        <Badge onClick={() => onTagClick(tag)} key={tag} variant={variant}>
-          {tag}
+      {tags.map((tag: TopicDTO) => (
+        <Badge
+          onClick={() => onTagClick(tag)}
+          key={`tag-${tag.id}`}
+          variant={variant}
+        >
+          {tag.name}
           {
             {
               add: <Plus size={14} />,

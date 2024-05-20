@@ -61,8 +61,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
           accessLevel: decoded.access,
         } as UserDTO)
 
-        if (decoded.access > 0) router.push('/admin/forms')
-        else router.push('/dashboard')
+        // if (decoded.access > 0) router.push('/admin/forms')
+        // else router.push('/dashboard')
 
         api.defaults.headers.common.Authorization = `Bearer ${token}`
       } catch (e) {
