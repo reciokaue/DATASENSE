@@ -3,8 +3,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 
-import { Options } from '@/src/components/question-card/options'
-import { Preview } from '@/src/components/question-card/preview'
+import { Options } from '@/src/components/question/options'
+import { Preview } from '@/src/components/question/preview'
 import { TopicPicker } from '@/src/components/topic-picker'
 import { Button } from '@/src/components/ui/button'
 import { LabelDiv } from '@/src/components/ui/label-div'

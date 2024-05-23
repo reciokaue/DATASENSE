@@ -1,8 +1,8 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
 
-import { QuestionCard } from '@/src/components/question-card/index'
-import { Options } from '@/src/components/question-card/options'
+import { QuestionCard } from '@/src/components/question/index'
+import { Options } from '@/src/components/question/options'
 import { FormDTO } from '@/src/DTOs/form'
 import { api } from '@/src/lib/api'
 

@@ -22,7 +22,7 @@ export const QuestionSchema = z.object({
   id: z.string().optional(),
   text: z.string(),
   isPublic: z.boolean().optional(),
-  type: z.string(),
+  typeId: z.number(),
   topics: z.array(z.string()).optional(),
   options: z.array(OptionSchema).optional(),
   index: z.number().optional().default(0),

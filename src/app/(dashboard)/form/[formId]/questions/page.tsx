@@ -2,7 +2,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
-import { QuestionCardClosed } from '@/src/components/question-card/closed'
+import { QuestionCardClosed } from '@/src/components/question/closed'
 import { SortableItem } from '@/src/components/sortable/sortable-item'
 import { SortableList } from '@/src/components/sortable/sortable-list'
 import { api } from '@/src/lib/api'

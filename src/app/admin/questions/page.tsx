@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Plus, Search } from 'lucide-react'
 import Link from 'next/link'
 
-import { PreviewQuestionCard } from '@/src/components/question-card/preview-question-card'
+import { PreviewQuestionCard } from '@/src/components/question/preview-question-card'
 import { Badge } from '@/src/components/ui/badge'
 import { Button } from '@/src/components/ui/button'
 import { Input } from '@/src/components/ui/input'
