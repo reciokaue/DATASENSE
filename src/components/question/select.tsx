@@ -1,15 +1,20 @@
 import { Controller } from 'react-hook-form'
 
 import { useQuestionType } from '@/src/contexts/questionType'
+import { QuestionTypeDTO } from '@/src/DTOs/questionType'
 
 import { LabelDiv } from '../ui/label-div'
 import { Dropdown } from '../ui/select'
 
 interface SelectProps {
   control: any
+  previousQuestionType?: QuestionTypeDTO
 }
 
-export function SelectQuestionType({ control }: SelectProps) {
+export function SelectQuestionType({
+  control,
+  previousQuestionType,
+}: SelectProps) {
   const { questionTypes } = useQuestionType()
 
   return (
@@ -23,8 +28,12 @@ export function SelectQuestionType({ control }: SelectProps) {
           name="typeId"
           render={(type) => (
             <Dropdown
-              setSelected={(t: any) => type.field.onChange(t)}
-              placeholder="Selecione um tipo..."
+              setSelected={(questionType: string) =>
+                type.field.onChange(JSON.parse(questionType))
+              }
+              placeholder={
+                previousQuestionType?.label || 'Selecione um tipo...'
+              }
               options={questionTypes}
             />
           )}

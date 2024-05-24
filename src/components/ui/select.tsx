@@ -162,9 +162,11 @@ interface DropdownProps {
   placeholder: string
   listTitle?: string
   options?: {
-    label: string
-    value: string
     id?: number
+    label?: string
+    value?: string
+    name?: string
+    icon: string
   }[]
   setSelected: (value: string) => void
 }
@@ -186,7 +188,7 @@ export function Dropdown({
           {options?.map((option) => (
             <SelectItem
               key={`option-${option.value}`}
-              value={String(option.id || option.value)}
+              value={JSON.stringify(option)}
             >
               {option.label}
             </SelectItem>

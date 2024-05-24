@@ -38,17 +38,16 @@ export function QuestionCard({ question, editing }: QuestionCardProps) {
     resolver: zodResolver(questionSchema),
     defaultValues: {
       ...question,
-      typeId: question.questionType.id,
-    } as any,
+    },
   })
 
-  const { questionTypesById } = useQuestionType()
+  // const { questionTypesById } = useQuestionType()
   const { register, handleSubmit, watch, control } = questionForm
 
   const questionText = watch('text')
-  const questionTypeId = watch('typeId')
-  const selectedQuestionType =
-    questionTypesById && questionTypesById[questionTypeId]
+  const questionType = watch('questionType')
+  // const selectedQuestionType =
+  //   questionTypesById && questionTypesById[questionTypeId]
 
   async function handleSign(data: questionSchemaType) {
     console.log(data)
@@ -66,18 +65,15 @@ export function QuestionCard({ question, editing }: QuestionCardProps) {
         <p className="w-full break-words text-left text-lg font-medium leading-relaxed text-neutral-700">
           {questionText}
         </p>
-        {selectedQuestionType ? (
+        {/* {selectedQuestionType ? (
           <label className="flex gap-2 text-sm text-muted-foreground">
             {selectedQuestionType.label}
             <Icon name={selectedQuestionType.icon} />
           </label>
-        ) : null}
+        ) : null} */}
       </header>
       {editing.id === question.id && (
-        <form
-          onSubmit={handleSubmit(handleSign, console.log)}
-          className="mt-4 flex flex-col gap-3"
-        >
+        <form className="mt-4 flex flex-col gap-3">
           <LabelDiv title="Questão" labelFor="question">
             <Input id="question" {...register('text')} />
           </LabelDiv>
@@ -89,7 +85,11 @@ export function QuestionCard({ question, editing }: QuestionCardProps) {
 
           <div className="mt-3 flex justify-end gap-2">
             <Button variant="secondary">Cancelar</Button>
-            <Button type="submit" className="gap-2 bg-primary">
+            <Button
+              onClick={handleSubmit(handleSign, console.log)}
+              type="submit"
+              className="gap-2 bg-primary"
+            >
               Salvar questão <Check size={20} />
             </Button>
           </div>
