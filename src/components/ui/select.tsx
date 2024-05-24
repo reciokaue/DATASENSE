@@ -187,7 +187,7 @@ export function Dropdown({
           {listTitle && <SelectLabel>{listTitle}</SelectLabel>}
           {options?.map((option) => (
             <SelectItem
-              key={`option-${option.value}`}
+              key={`dropdown-option-${Math.round(Math.random() * 10000)}`}
               value={JSON.stringify(option)}
             >
               {option.label}

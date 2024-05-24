@@ -25,11 +25,11 @@ export function SelectQuestionType({
       >
         <Controller
           control={control}
-          name="typeId"
-          render={(type) => (
+          name="questionType"
+          render={(questionType) => (
             <Dropdown
-              setSelected={(questionType: string) =>
-                type.field.onChange(JSON.parse(questionType))
+              setSelected={(type: string) =>
+                questionType.field.onChange(JSON.parse(type))
               }
               placeholder={
                 previousQuestionType?.label || 'Selecione um tipo...'

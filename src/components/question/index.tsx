@@ -46,8 +46,6 @@ export function QuestionCard({ question, editing }: QuestionCardProps) {
 
   const questionText = watch('text')
   const questionType = watch('questionType')
-  // const selectedQuestionType =
-  //   questionTypesById && questionTypesById[questionTypeId]
 
   async function handleSign(data: questionSchemaType) {
     console.log(data)
@@ -65,19 +63,20 @@ export function QuestionCard({ question, editing }: QuestionCardProps) {
         <p className="w-full break-words text-left text-lg font-medium leading-relaxed text-neutral-700">
           {questionText}
         </p>
-        {/* {selectedQuestionType ? (
-          <label className="flex gap-2 text-sm text-muted-foreground">
-            {selectedQuestionType.label}
-            <Icon name={selectedQuestionType.icon} />
-          </label>
-        ) : null} */}
+        <label className="flex gap-2 text-sm text-muted-foreground">
+          {questionType?.label}
+          <Icon name={questionType?.icon || ''} />
+        </label>
       </header>
       {editing.id === question.id && (
         <form className="mt-4 flex flex-col gap-3">
           <LabelDiv title="Questão" labelFor="question">
             <Input id="question" {...register('text')} />
           </LabelDiv>
-          <SelectQuestionType control={control} />
+          <SelectQuestionType
+            control={control}
+            previousQuestionType={question.questionType}
+          />
 
           {/* <Preview type={questionType} options={formOptions} /> */}
 

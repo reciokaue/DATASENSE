@@ -23,13 +23,13 @@ export default function Edit() {
     <div>
       {form ? (
         <div className="flex flex-col space-y-1">
-          <input type="text" value={form?.id} />
-          <input type="text" value={form?.name} />
-          <input type="text" value={form?.about} />
-          <input type="text" value={String(form?.active)} />
-          <input type="text" value={form?.logoUrl} />
-          <input type="text" value={String(form?.isPublic)} />
-          <input type="text" value={form?.createdAt} />
+          <input type="text" defaultValue={form?.id} />
+          <input type="text" defaultValue={form?.name} />
+          <input type="text" defaultValue={form?.about} />
+          <input type="text" defaultValue={String(form?.active)} />
+          <input type="text" defaultValue={form?.logoUrl} />
+          <input type="text" defaultValue={String(form?.isPublic)} />
+          <input type="text" defaultValue={form?.createdAt} />
           <div className="ml-4 flex flex-col space-y-4 pt-4">
             {form?.questions.map((question) => (
               <QuestionCard
