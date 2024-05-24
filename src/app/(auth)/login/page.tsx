@@ -1,10 +1,10 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { LoaderIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 import { Button } from '@/src/components/ui/button'
 import { Checkbox } from '@/src/components/ui/checkbox'
@@ -13,29 +13,22 @@ import { useToast } from '@/src/components/ui/use-toast'
 import { useAuth } from '@/src/contexts/Auth'
 
 import { treatError } from './erros'
+import { loginSchema, loginSchemaProps } from './schema'
 
 export default function Login() {
   const { toast } = useToast()
   const { login } = useAuth()
-
-  const schema = z.object({
-    email: z.string().email('Deve ser um email valido'),
-    password: z.string().min(6, 'Deve ter no mínimo 6 caracteres').trim(),
-    rememberMe: z.boolean().nullable(),
-  })
-  type Props = z.infer<typeof schema>
-
   const {
     register,
     handleSubmit,
     control,
     setValue,
     formState: { isSubmitting, errors },
-  } = useForm<Props>({
-    resolver: zodResolver(schema),
+  } = useForm<loginSchemaProps>({
+    resolver: zodResolver(loginSchema),
   })
 
-  async function handleSign(data: Props) {
+  async function handleSign(data: loginSchemaProps) {
     try {
       await login(data.email, data.password, data.rememberMe || false)
     } catch (e: any) {
@@ -118,7 +111,7 @@ export default function Login() {
           </div>
         </section>
         <Button className="mt-4 w-full py-6 font-bold" disabled={isSubmitting}>
-          Login
+          {isSubmitting ? <LoaderIcon className="animate-spin" /> : 'Login'}
         </Button>
         <Link href="/register">
           <p className="text-center text-sm text-muted-foreground">

@@ -1,29 +1,28 @@
 import { Plus, Trash2 } from 'lucide-react'
-import { Controller } from 'react-hook-form'
+import { Controller, useFieldArray, UseFormReturn } from 'react-hook-form'
 
 import { EmojiPicker } from '../emoji-picker'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 
 interface OptionsProps {
-  register: any
-  append: any
-  remove: any
-  control: any
-  questionType: string
-  fields: Record<'id', string>[]
+  useForm: UseFormReturn<any>
 }
 
-export function Options({
-  fields,
-  register,
-  append,
-  remove,
-  control,
-  questionType,
-}: OptionsProps) {
+export function Options({ useForm }: OptionsProps) {
+  const { register, control } = useForm
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'options',
+  })
+
   function newOption() {
-    append({ text: '', value: 0 })
+    append({
+      id: Math.round(Math.random() * 10000),
+      text: '',
+      index: fields.length + 1,
+    })
   }
   function removeOption(index: number) {
     remove(index)
@@ -38,7 +37,7 @@ export function Options({
         </Button>
       </div>
       {fields.map((field, index) => (
-        <li key={`option-${index}`} className="flex items-center gap-2">
+        <li key={`option-${field.id}`} className="flex items-center gap-2">
           <Button
             onClick={() => removeOption(index)}
             className="hover:text-red-500"

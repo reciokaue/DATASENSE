@@ -15,7 +15,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div>
       <Navbar routes={routes} />
-      <div className="container mx-auto flex max-w-6xl flex-col">
+      <div className="screen:px-0 mx-auto flex w-full max-w-6xl flex-col p-10">
         {children}
       </div>
     </div>

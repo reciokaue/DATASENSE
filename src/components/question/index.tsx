@@ -12,22 +12,18 @@ import {
 } from 'react-hook-form'
 import { z } from 'zod'
 
+import { useQuestionType } from '@/src/contexts/questionType'
 import { QuestionDTO } from '@/src/DTOs/question'
-import { QuestionTypeDTO } from '@/src/DTOs/questionType'
-import { api } from '@/src/lib/api'
 
-import { QuestionSchema, QuestionSchemaType } from '../../schemas/form'
-import { TopicPicker } from '../topic-picker'
+import { questionSchema, questionSchemaType } from '../../schemas/question'
+import Icon from '../icon'
 import { Button } from '../ui/button'
 import { Card } from '../ui/card'
 import { Input } from '../ui/input'
 import { LabelDiv } from '../ui/label-div'
-import { Dropdown } from '../ui/select'
-import { Header } from './header'
 import { Options } from './options'
 import { Preview } from './preview'
-
-type Props = z.infer<typeof QuestionSchema>
+import { SelectQuestionType } from './select'
 
 interface QuestionCardProps {
   question: QuestionDTO
@@ -38,32 +34,23 @@ interface QuestionCardProps {
 }
 
 export function QuestionCard({ question, editing }: QuestionCardProps) {
-  const { register, handleSubmit, watch, control } =
-    useForm<QuestionSchemaType>({
-      resolver: zodResolver(QuestionSchema),
-      defaultValues: {
-        ...question,
-        typeId: question.questionType.id,
-      },
-    })
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'options',
+  const questionForm = useForm<questionSchemaType>({
+    resolver: zodResolver(questionSchema),
+    defaultValues: {
+      ...question,
+      typeId: question.questionType.id,
+    } as any,
   })
+
+  const { questionTypesById } = useQuestionType()
+  const { register, handleSubmit, watch, control } = questionForm
+
   const questionText = watch('text')
-  const questionType = watch('typeId')
-  const formOptions = watch('options')
+  const questionTypeId = watch('typeId')
+  const selectedQuestionType =
+    questionTypesById && questionTypesById[questionTypeId]
 
-  const { data: questionTypes } = useQuery({
-    queryKey: ['questionTypes'],
-    queryFn: async () => {
-      const response = await api.get('/question-types')
-      return response.data as QuestionTypeDTO[]
-    },
-  })
-
-  async function handleSign(data: Props) {
+  async function handleSign(data: questionSchemaType) {
     console.log(data)
   }
 
@@ -72,51 +59,34 @@ export function QuestionCard({ question, editing }: QuestionCardProps) {
       onClick={() => editing.set(question.id)}
       className="group relative flex w-full min-w-[520px] max-w-xl flex-col p-5"
     >
-      <Header
-        index={question.index}
-        text={questionText}
-        typeId={questionType}
-        types={questionTypes}
-      />
+      <header className="flex flex-1 gap-4">
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+          {question.index}
+        </span>
+        <p className="w-full break-words text-left text-lg font-medium leading-relaxed text-neutral-700">
+          {questionText}
+        </p>
+        {selectedQuestionType ? (
+          <label className="flex gap-2 text-sm text-muted-foreground">
+            {selectedQuestionType.label}
+            <Icon name={selectedQuestionType.icon} />
+          </label>
+        ) : null}
+      </header>
       {editing.id === question.id && (
         <form
-          onSubmit={handleSubmit(handleSign)}
+          onSubmit={handleSubmit(handleSign, console.log)}
           className="mt-4 flex flex-col gap-3"
         >
           <LabelDiv title="Questão" labelFor="question">
             <Input id="question" {...register('text')} />
           </LabelDiv>
-          <div className="flex items-center justify-between gap-4">
-            <LabelDiv
-              title="Tipo de questão"
-              tooltip="O tipo da pergunta é muito importante para se ter o resultado desejado da melhor maneira possível"
-            >
-              <Controller
-                control={control}
-                name="typeId"
-                render={(type) => (
-                  <Dropdown
-                    setSelected={(t: any) => type.field.onChange(t)}
-                    placeholder="Selecione um tipo..."
-                    options={questionTypes}
-                  />
-                )}
-              />
-            </LabelDiv>
-          </div>
+          <SelectQuestionType control={control} />
 
           {/* <Preview type={questionType} options={formOptions} /> */}
 
-          {questionType !== 'text' && (
-            <Options
-              fields={fields}
-              register={register}
-              append={append}
-              remove={remove}
-              control={control}
-              questionType={questionType}
-            />
-          )}
+          <Options useForm={questionForm} />
+
           <div className="mt-3 flex justify-end gap-2">
             <Button variant="secondary">Cancelar</Button>
             <Button type="submit" className="gap-2 bg-primary">
