@@ -10,6 +10,7 @@ export const questionSchema = z.object({
   formId: z.coerce.number().positive().int().optional(),
   questionType: questionTypeSchema.optional(),
   options: z.array(optionSchema).optional(),
+  deletedOptions: z.array(optionSchema).optional(),
 })
 
 export type questionSchemaType = z.input<typeof questionSchema>

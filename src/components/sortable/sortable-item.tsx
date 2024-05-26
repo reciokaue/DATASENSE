@@ -5,11 +5,11 @@ import type {
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { GripVertical } from 'lucide-react'
-import type { CSSProperties, PropsWithChildren } from 'react'
+import type { CSSProperties, HTMLProps, PropsWithChildren } from 'react'
 import React, { createContext, useContext, useMemo } from 'react'
 
-interface Props {
-  id: UniqueIdentifier
+interface Props extends HTMLProps<HTMLLIElement> {
+  sortableId: UniqueIdentifier
 }
 
 interface Context {
@@ -24,7 +24,11 @@ const SortableItemContext = createContext<Context>({
   ref() {},
 })
 
-export function SortableItem({ children, id }: PropsWithChildren<Props>) {
+export function SortableItem({
+  children,
+  sortableId,
+  ...rest
+}: PropsWithChildren<Props>) {
   const {
     attributes,
     isDragging,
@@ -33,7 +37,7 @@ export function SortableItem({ children, id }: PropsWithChildren<Props>) {
     setActivatorNodeRef,
     transform,
     transition,
-  } = useSortable({ id })
+  } = useSortable({ id: sortableId })
   const context = useMemo(
     () => ({
       attributes,
@@ -54,8 +58,10 @@ export function SortableItem({ children, id }: PropsWithChildren<Props>) {
         className="flex flex-grow items-center"
         ref={setNodeRef}
         style={style}
+        {...rest}
       >
         {children}
+        {/* {JSON.stringify()} */}
         <DragHandle />
       </li>
     </SortableItemContext.Provider>
@@ -71,6 +77,7 @@ export function DragHandle() {
       {...attributes}
       {...listeners}
       ref={ref}
+      onClick={(e) => e.preventDefault()}
     >
       <GripVertical className="h-5 w-5" />
     </button>

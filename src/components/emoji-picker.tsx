@@ -14,11 +14,15 @@ import {
 
 interface EmojiPickerProps {
   onSelect: (emoji: string) => void
+  selectedEmoji?: string
 }
 
-export function EmojiPicker({ onSelect }: EmojiPickerProps) {
+export function EmojiPicker({
+  onSelect,
+  selectedEmoji = '',
+}: EmojiPickerProps) {
   const [open, setOpen] = useState(false)
-  const [selected, setSelected] = useState('')
+  const [selected, setSelected] = useState(selectedEmoji)
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

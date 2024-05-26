@@ -18,6 +18,7 @@ import { SortableOverlay } from './sortable-overlay'
 
 interface BaseItem {
   id: UniqueIdentifier
+  index: number
 }
 
 interface Props<T extends BaseItem> {
@@ -72,7 +73,7 @@ export function SortableList<T extends BaseItem>({
         </ul>
       </SortableContext>
       <SortableOverlay>
-        {activeItem ? renderItem(activeItem, 0) : null}
+        {activeItem ? renderItem(activeItem, activeItem?.index || 0) : null}
       </SortableOverlay>
     </DndContext>
   )

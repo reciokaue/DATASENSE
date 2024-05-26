@@ -1,9 +1,8 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useQuery } from '@tanstack/react-query'
-import { Check } from 'lucide-react'
-import { useState } from 'react'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { Check, Loader2Icon } from 'lucide-react'
 import {
   Controller,
   useFieldArray,
@@ -14,6 +13,7 @@ import { z } from 'zod'
 
 import { useQuestionType } from '@/src/contexts/questionType'
 import { QuestionDTO } from '@/src/DTOs/question'
+import { api } from '@/src/lib/api'
 
 import { questionSchema, questionSchemaType } from '../../schemas/question'
 import Icon from '../icon'
@@ -36,20 +36,36 @@ interface QuestionCardProps {
 export function QuestionCard({ question, editing }: QuestionCardProps) {
   const questionForm = useForm<questionSchemaType>({
     resolver: zodResolver(questionSchema),
-    defaultValues: {
-      ...question,
-    },
+    defaultValues: question,
   })
 
-  // const { questionTypesById } = useQuestionType()
-  const { register, handleSubmit, watch, control } = questionForm
-
+  const { register, handleSubmit, watch, control, reset } = questionForm
   const questionText = watch('text')
   const questionType = watch('questionType')
 
   async function handleSign(data: questionSchemaType) {
-    console.log(data)
+    const formatedToUpdate = {
+      ...data,
+      typeId: data?.questionType?.id,
+      deletedOptions: (data?.deletedOptions || []).map((option) => option.id),
+    }
+    delete formatedToUpdate.questionType
+    await onUpdateQuestion(formatedToUpdate)
   }
+
+  const { mutateAsync: onUpdateQuestion, isPending: isUpdateQuestionPending } =
+    useMutation({
+      mutationFn: async (newQuestion: any) =>
+        await api.put(`/question/${question.id}`, newQuestion),
+      onMutate: async (newQuestion: any) => {
+        // NEED FIX - atualiza o formulário antigo usando o setQueryData
+        // queryClient.setQueryData('items', (old) => [...old, newQuestion])
+        reset(newQuestion)
+      },
+      onError: (err, newQuestion) => {
+        console.log(newQuestion, err)
+      },
+    })
 
   return (
     <Card
@@ -65,7 +81,7 @@ export function QuestionCard({ question, editing }: QuestionCardProps) {
         </p>
         <label className="flex gap-2 text-sm text-muted-foreground">
           {questionType?.label}
-          <Icon name={questionType?.icon || ''} />
+          {questionType?.icon ? <Icon name={questionType?.icon} /> : null}
         </label>
       </header>
       {editing.id === question.id && (
@@ -89,7 +105,8 @@ export function QuestionCard({ question, editing }: QuestionCardProps) {
               type="submit"
               className="gap-2 bg-primary"
             >
-              Salvar questão <Check size={20} />
+              Salvar questão {isUpdateQuestionPending ? <Loader2Icon /> : null}
+              {/* <Check size={20} /> */}
             </Button>
           </div>
         </form>
