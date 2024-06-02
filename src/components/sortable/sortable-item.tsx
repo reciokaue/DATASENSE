@@ -10,6 +10,7 @@ import React, { createContext, useContext, useMemo } from 'react'
 
 interface Props extends HTMLProps<HTMLLIElement> {
   sortableId: UniqueIdentifier
+  isEditing?: boolean
 }
 
 interface Context {
@@ -27,6 +28,7 @@ const SortableItemContext = createContext<Context>({
 export function SortableItem({
   children,
   sortableId,
+  isEditing = true,
   ...rest
 }: PropsWithChildren<Props>) {
   const {
@@ -55,14 +57,14 @@ export function SortableItem({
   return (
     <SortableItemContext.Provider value={context}>
       <li
+        id={`sortable-${sortableId}`}
         className="flex flex-grow items-center"
         ref={setNodeRef}
         style={style}
         {...rest}
       >
         {children}
-        {/* {JSON.stringify()} */}
-        <DragHandle />
+        {isEditing ? <DragHandle /> : null}
       </li>
     </SortableItemContext.Provider>
   )
@@ -73,7 +75,7 @@ export function DragHandle() {
 
   return (
     <button
-      className="ml-1 rounded-sm px-1 py-2 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+      className="x-1 ml-1 py-2 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
       {...attributes}
       {...listeners}
       ref={ref}

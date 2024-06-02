@@ -13,9 +13,9 @@ interface OptionsProps {
 
 export function Options({ useForm }: OptionsProps) {
   const { register, control, watch, getValues } = useForm
-  const questionType = watch('questionType')
+  // const questionType = watch('questionType')
   // const optionsObject = watch('options')
-  const isEmojiInput = questionType.name === 'emoji'
+  // const isEmojiInput = questionType.name === 'emoji'
 
   const { fields, append, remove, replace } = useFieldArray({
     control,

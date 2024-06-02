@@ -1,17 +1,10 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { Check, Loader2Icon } from 'lucide-react'
-import {
-  Controller,
-  useFieldArray,
-  useForm,
-  UseFormProps,
-} from 'react-hook-form'
-import { z } from 'zod'
+import { useMutation } from '@tanstack/react-query'
+import { Loader2Icon } from 'lucide-react'
+import { useForm } from 'react-hook-form'
 
-import { useQuestionType } from '@/src/contexts/questionType'
 import { QuestionDTO } from '@/src/DTOs/question'
 import { api } from '@/src/lib/api'
 
@@ -52,6 +45,11 @@ export function QuestionCard({ question, editing }: QuestionCardProps) {
     delete formatedToUpdate.questionType
     await onUpdateQuestion(formatedToUpdate)
   }
+  function handleCancel(event: any) {
+    event.preventDefault()
+    console.log('A')
+    editing.set(0)
+  }
 
   const { mutateAsync: onUpdateQuestion, isPending: isUpdateQuestionPending } =
     useMutation({
@@ -67,14 +65,16 @@ export function QuestionCard({ question, editing }: QuestionCardProps) {
       },
     })
 
+  function onClickCard() {
+    if (editing.id === question.id) editing.set(0)
+    else editing.set(question.id)
+  }
+
   return (
-    <Card
-      onClick={() => editing.set(question.id)}
-      className="group relative flex w-full min-w-[520px] max-w-xl flex-col p-5"
-    >
-      <header className="flex flex-1 gap-4">
+    <Card className="group relative flex w-full min-w-[520px] max-w-xl flex-col  ">
+      <header onClick={onClickCard} className="flex flex-1 gap-4 p-5">
         <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
-          {question.index}
+          {question.index + 1}
         </span>
         <p className="w-full break-words text-left text-lg font-medium leading-relaxed text-neutral-700">
           {questionText}
@@ -85,7 +85,7 @@ export function QuestionCard({ question, editing }: QuestionCardProps) {
         </label>
       </header>
       {editing.id === question.id && (
-        <form className="mt-4 flex flex-col gap-3">
+        <form className="flex flex-col gap-3  p-5">
           <LabelDiv title="Questão" labelFor="question">
             <Input id="question" {...register('text')} />
           </LabelDiv>
@@ -99,7 +99,9 @@ export function QuestionCard({ question, editing }: QuestionCardProps) {
           <Options useForm={questionForm} />
 
           <div className="mt-3 flex justify-end gap-2">
-            <Button variant="secondary">Cancelar</Button>
+            <Button variant="secondary" onClick={handleCancel}>
+              Cancelar
+            </Button>
             <Button
               onClick={handleSubmit(handleSign, console.log)}
               type="submit"
