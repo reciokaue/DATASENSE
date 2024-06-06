@@ -19,7 +19,7 @@ export default function QuestionsPage() {
     queryKey: ['public-questions'],
     queryFn: async () => {
       const response = await api.get(`/questions`, {
-        params: { pageSize: 6, isPublic: true },
+        params: { pageSize: 10, isPublic: true },
       })
 
       return response.data

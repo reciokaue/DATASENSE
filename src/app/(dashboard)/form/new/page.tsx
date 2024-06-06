@@ -72,12 +72,13 @@ export default function NewForm() {
             name="topics"
             control={control}
             render={(topics) => (
-              <TopicPicker
-                setTopics={(t: string[]) => {
-                  topics.field.onChange(t)
-                }}
-                selectedTopics={topics.field.value || []}
-              />
+              <></>
+              // <TopicPicker
+              //   setTopics={(t: string[]) => {
+              //     topics.field.onChange(t)
+              //   }}
+              //   selectedTopics={topics.field.value || []}
+              // />
             )}
           />
           <ToggleGroup type="single">

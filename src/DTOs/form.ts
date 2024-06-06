@@ -11,4 +11,8 @@ export interface FormDTO {
   createdAt: string
   questions: QuestionDTO[]
   topics: TopicDTO[]
+  _count: {
+    questions: number
+    sessions: number
+  }
 }

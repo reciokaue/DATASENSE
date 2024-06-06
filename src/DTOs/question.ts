@@ -7,4 +7,7 @@ export interface QuestionDTO {
   index: number
   questionType: QuestionTypeDTO
   options: OptionDTO[]
+  _count: {
+    responses: number
+  }
 }

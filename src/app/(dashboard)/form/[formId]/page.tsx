@@ -30,22 +30,22 @@ export default function FormDetail({ params }: FormLayoutProps) {
       <div className="mt-2 flex gap-3">
         <div className="flex items-center gap-2">
           <ClipboardType className="h-3 w-3 text-violet-400" />
-          {form?._count?.questions || 0}
+          {form?._count.questions || 0}
         </div>
         <div className="flex items-center gap-2">
           <Mails className="h-3 w-3 text-sky-400" />
-          {form?._count?.responses || 0}
+          {form?._count?.sessions || 0}
         </div>
       </div>
       <h1>Questões</h1>
-      {form &&
+      {/* {form &&
         form.questions.map((question: QuestionDTO) => (
           <QuestionCard
             key={question.id}
             data={question}
-            responses={question?.responses || 1}
+            responses={question?._count.responses || 1}
           />
-        ))}
+        ))} */}
     </div>
   )
 }
