@@ -2,25 +2,22 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Button } from '@/src/components/ui/button'
 import { Input } from '@/src/components/ui/input'
-import { useToast } from '@/src/components/ui/use-toast'
-import { api } from '@/src/lib/api'
+import { useAuth } from '@/src/contexts/Auth'
+
+const schema = z.object({
+  name: z.string().min(6, 'Deve ter no mínimo 3 caracteres'),
+  email: z.string().email('Deve ser um email valido'),
+  password: z.string().min(6, 'Deve ter no mínimo 3 caracteres').trim(),
+})
+type Props = z.infer<typeof schema>
 
 export default function Login() {
-  const router = useRouter()
-  const { toast } = useToast()
-
-  const schema = z.object({
-    name: z.string().min(3, 'Deve ter no mínimo 3 caracteres'),
-    email: z.string().email('Deve ser um email valido'),
-    password: z.string().min(3, 'Deve ter no mínimo 3 caracteres').trim(),
-  })
-  type Props = z.infer<typeof schema>
+  const { createAccount } = useAuth()
 
   const {
     register,
@@ -31,24 +28,7 @@ export default function Login() {
   })
 
   async function handleSign(data: Props) {
-    try {
-      const { email, password, name } = data
-      await api.post('/register', {
-        email,
-        password,
-        name,
-      })
-      router.push('/dashboard')
-    } catch (e: any) {
-      const message = e?.response.data.message
-      console.log(message)
-      if (message === 'User already exists.')
-        toast({
-          title: 'Email já cadastrado',
-          description: 'Cadastre outro email ou faça login',
-          variant: 'destructive',
-        })
-    }
+    createAccount(data.email, data.password, data.name)
   }
 
   return (

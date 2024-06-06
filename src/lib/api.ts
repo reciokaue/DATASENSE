@@ -1,29 +1,30 @@
-import axios, { AxiosInstance } from 'axios'
+import axios from 'axios'
 
 import { AppError } from '../utils/AppError'
 
-type APIInstanceProps = AxiosInstance & {
-  registerErrorInterceptor: () => () => void
-}
-
-export const api = axios.create({
+const api = axios.create({
   baseURL: 'http://localhost:3333',
-}) as APIInstanceProps
+})
 
-api.registerErrorInterceptor = () => {
-  const errorInterceptor = api.interceptors.response.use(
-    (response) => response,
-    async (requestError) => {
-      if (requestError.response && requestError.response.data) {
-        return Promise.reject(new AppError(requestError.response.data.message))
-      } else {
-        return Promise.reject(
-          new AppError('Error no servidor. Tente novamente mais tarde'),
-        )
-      }
-    },
-  )
-  return () => {
-    api.interceptors.response.eject(errorInterceptor)
-  }
-}
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.data) {
+      return Promise.reject(
+        new AppError(
+          error.response.data.message,
+          error.response.data?.description || '',
+        ),
+      )
+    } else {
+      const message =
+        error.message === 'Network Error'
+          ? 'Erro na conexão'
+          : 'Error no servidor. Tente novamente mais tarde'
+
+      return Promise.reject(new AppError(message, ''))
+    }
+  },
+)
+
+export { api }

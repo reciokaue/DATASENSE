@@ -5,18 +5,21 @@ import { LoaderIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 import { Button } from '@/src/components/ui/button'
 import { Checkbox } from '@/src/components/ui/checkbox'
 import { Input } from '@/src/components/ui/input'
-import { useToast } from '@/src/components/ui/use-toast'
 import { useAuth } from '@/src/contexts/Auth'
 
-import { treatError } from './erros'
-import { loginSchema, loginSchemaProps } from './schema'
+const loginSchema = z.object({
+  email: z.string().email('Deve ser um email valido'),
+  password: z.string().min(6, 'Deve ter no mínimo 6 caracteres').trim(),
+  rememberMe: z.boolean().nullable(),
+})
+type loginSchemaProps = z.infer<typeof loginSchema>
 
 export default function Login() {
-  const { toast } = useToast()
   const { login } = useAuth()
   const {
     register,
@@ -29,11 +32,7 @@ export default function Login() {
   })
 
   async function handleSign(data: loginSchemaProps) {
-    try {
-      await login(data.email, data.password, data.rememberMe || false)
-    } catch (e: any) {
-      toast(treatError(e))
-    }
+    await login(data.email, data.password, data.rememberMe || false)
   }
 
   useEffect(() => {
