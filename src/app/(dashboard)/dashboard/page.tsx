@@ -7,31 +7,14 @@ import { useEffect, useState } from 'react'
 import { FormCard } from '@/src/components/form-card'
 import { Button } from '@/src/components/ui/button'
 import { Input } from '@/src/components/ui/input'
-import { api } from '@/src/lib/api'
+
+import { searchForms, userForms } from './querys'
 
 export default function Dashboard() {
   const [search, setSearch] = useState('')
 
-  const { data: forms } = useQuery({
-    queryKey: ['user-forms'],
-    queryFn: async () => {
-      const response = await api.get(`/forms`)
-      return response.data
-    },
-  })
-
-  const { data: queryForms, refetch } = useQuery({
-    queryKey: ['query-user-forms'],
-    queryFn: async () => {
-      const response = await api.get(`/forms`, {
-        params: {
-          query: search,
-        },
-      })
-      return response.data
-    },
-    enabled: false,
-  })
+  const { data: forms } = useQuery(userForms())
+  const { data: queryForms, refetch } = useQuery(searchForms(search))
 
   const onChange = (event: any) => {
     setSearch(event.target.value)

@@ -1,5 +1,5 @@
 - User
-[] Testar tela de criação de conta
+[X] Testar tela de criação de conta
 [] listagem de formulários
 [] detalhe do formulário
 [] gráficos do formulário
