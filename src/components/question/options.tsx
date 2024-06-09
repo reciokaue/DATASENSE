@@ -12,7 +12,7 @@ interface OptionsProps {
 }
 
 export function Options({ useForm }: OptionsProps) {
-  const { register, control, watch, getValues } = useForm
+  const { register, control, getValues } = useForm
   // const questionType = watch('questionType')
   // const optionsObject = watch('options')
   // const isEmojiInput = questionType.name === 'emoji'
@@ -43,12 +43,11 @@ export function Options({ useForm }: OptionsProps) {
   }
 
   function onChangeSorting(data: any[]) {
-    const options = getValues('options')
-    const indexSorted = data.map((option: any, index: number) => ({
-      ...options[option.index],
+    const indexSortedOptions = data.map((option: any, index: number) => ({
+      ...option,
       index,
     }))
-    replace(indexSorted)
+    replace(indexSortedOptions)
   }
 
   return (
@@ -102,18 +101,16 @@ export function Options({ useForm }: OptionsProps) {
 //     />
 //   )
 // }
-{
-  /* <Controller
-                control={control}
-                name={`options.${index}.text`}
-                render={(text) => (
-                  <EmojiPicker
-                    selectedEmoji={text.field.value}
-                    onSelect={(e: any) => {
-                      text.field.onChange(e)
-                      console.log(e)
-                    }}
-                  />
-                )}
-              /> */
-}
+/* <Controller
+  control={control}
+  name={`options.${index}.text`}
+  render={(text) => (
+    <EmojiPicker
+      selectedEmoji={text.field.value}
+      onSelect={(e: any) => {
+        text.field.onChange(e)
+        console.log(e)
+      }}
+    />
+  )}
+/> */

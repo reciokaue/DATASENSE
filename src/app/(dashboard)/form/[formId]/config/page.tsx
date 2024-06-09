@@ -43,6 +43,20 @@ export default function ConfigPage({ params }: FormLayoutProps) {
             Copiar link
             <Copy />
           </Button>
+          <header className="flex w-full items-start justify-start gap-2 py-4">
+            <div className="flex flex-col space-y-2">
+              <Input placeholder="Nome do formulário" />
+              <Textarea
+                className="h-36 w-full resize-none"
+                placeholder="descrição"
+              />
+            </div>
+            <div className="flex flex-col">
+              <LabelDiv title="Publico">
+                <Switch />
+              </LabelDiv>
+            </div>
+          </header>
         </section>
       )}
     </div>

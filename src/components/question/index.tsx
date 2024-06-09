@@ -71,7 +71,7 @@ export function QuestionCard({ question, editing }: QuestionCardProps) {
   }
 
   return (
-    <Card className="group relative flex w-full min-w-[520px] max-w-xl flex-col  ">
+    <Card className="group relative flex w-full min-w-[520px] flex-col  ">
       <header onClick={onClickCard} className="flex flex-1 gap-4 p-5">
         <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
           {question.index + 1}
