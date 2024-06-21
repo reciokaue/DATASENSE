@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import { useTopics } from '@/src/contexts/topics'
 
+import { TopicDTO } from '../DTOs/topic'
 import { Button } from './ui/button'
 import {
   Dialog,
@@ -16,28 +17,28 @@ import { Input } from './ui/input'
 import { TagList } from './ui/tag-list'
 
 interface TopicPickerProps {
-  setTopics: (topic: string[]) => void
-  selectedTopics: Array<string>
+  setTopics: (topic: TopicDTO[]) => void
+  selectedTopics: Array<TopicDTO>
 }
 
 export function TopicPicker({ setTopics, selectedTopics }: TopicPickerProps) {
-  const [formTags, setFormTags] = useState<string[]>(selectedTopics)
+  const [formTags, setFormTags] = useState<TopicDTO[]>(selectedTopics)
   const [search, setSearch] = useState('')
   const { topics } = useTopics()
 
-  const addTag = (tagRemoved: string) => {
+  const addTag = (tagRemoved: TopicDTO) => {
     setFormTags([...formTags, tagRemoved])
   }
-  const undoAddTag = (tagRemoved: string) => {
-    setFormTags(formTags.filter((tag: string) => tag !== tagRemoved))
+  const undoAddTag = (tagRemoved: TopicDTO) => {
+    setFormTags(formTags.filter((tag: TopicDTO) => tag.id !== tagRemoved.id))
   }
 
   function handleChangeTopics() {
     setTopics(formTags)
   }
 
-  function normalize(string: string) {
-    return string
+  function normalize(text: string) {
+    return text
       .toUpperCase()
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
@@ -73,9 +74,9 @@ export function TopicPicker({ setTopics, selectedTopics }: TopicPickerProps) {
             <TagList
               className="max-w-full"
               tags={topics.filter(
-                (tag: string) =>
+                (tag: TopicDTO) =>
                   !formTags.includes(tag) &&
-                  normalize(tag).includes(normalize(search)),
+                  normalize(tag.name).includes(normalize(search)),
               )}
               onTagClick={addTag}
               icon="add"

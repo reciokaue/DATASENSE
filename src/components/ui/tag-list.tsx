@@ -24,6 +24,14 @@ export function TagList({
   onTagClick,
   ...rest
 }: TagListProps) {
+  function normalize(text: string) {
+    return text
+      .toLowerCase() // Converte o texto todo para minúsculas
+      .replace(/(?:^|\s)\S/g, function (a) {
+        return a.toUpperCase()
+      }) // Capitaliza a primeira letra de cada palavra
+  }
+
   return (
     <div
       className={cn(
@@ -38,7 +46,7 @@ export function TagList({
           key={`tag-${tag.id}`}
           variant={variant}
         >
-          {tag.name}
+          {normalize(tag.name)}
           {
             {
               add: <Plus size={14} />,

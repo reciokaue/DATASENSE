@@ -5,15 +5,15 @@ import { Plus, Search } from 'lucide-react'
 import Link from 'next/link'
 
 import { PreviewQuestionCard } from '@/src/components/question/preview-question-card'
-import { Badge } from '@/src/components/ui/badge'
+// import { Badge } from '@/src/components/ui/badge'
 import { Button } from '@/src/components/ui/button'
 import { Input } from '@/src/components/ui/input'
 import { Skeleton } from '@/src/components/ui/skeleton'
-import { useTopics } from '@/src/contexts/topics'
+// import { useTopics } from '@/src/contexts/topics'
 import { api } from '@/src/lib/api'
 
 export default function QuestionsPage() {
-  const { topics } = useTopics()
+  // const { topics } = useTopics()
 
   const { data: questions } = useQuery({
     queryKey: ['public-questions'],
@@ -40,7 +40,7 @@ export default function QuestionsPage() {
       </header>
       <section>
         <div className="mt-2 flex flex-wrap gap-1">
-          {topics &&
+          {/* {topics &&
             ['Todas', ...topics, '...'].map((tag) => (
               <Badge
                 variant={['Todas', '...'].includes(tag) ? 'default' : 'ghost'}
@@ -48,7 +48,7 @@ export default function QuestionsPage() {
               >
                 {tag}
               </Badge>
-            ))}
+            ))} */}
         </div>
         <div className="relative mt-4 w-full">
           <span className="absolute left-0 z-10 flex h-10 w-10 items-center justify-center">

@@ -9,9 +9,9 @@ import { FormDTO } from '@/src/DTOs/form'
 import { QuestionDTO } from '@/src/DTOs/question'
 import { api } from '@/src/lib/api'
 
-import { FormLayoutProps } from './layout'
+import { PageFormSlugProps } from './layout'
 
-export default function FormDetail({ params }: FormLayoutProps) {
+export default function FormDetail({ params }: PageFormSlugProps) {
   const { formId } = params
 
   const { data: form } = useQuery({
@@ -38,14 +38,14 @@ export default function FormDetail({ params }: FormLayoutProps) {
         </div>
       </div>
       <h1>Questões</h1>
-      {/* {form &&
+      {form &&
         form.questions.map((question: QuestionDTO) => (
           <QuestionCard
             key={question.id}
             data={question}
             responses={question?._count.responses || 1}
           />
-        ))} */}
+        ))}
     </div>
   )
 }

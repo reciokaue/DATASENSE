@@ -22,7 +22,7 @@ export function Classification({ options }: ClassificationProps) {
 
   return (
     <div className="flex w-full flex-col gap-2">
-      <SortableList
+      {/* <SortableList
         items={items}
         onChange={setItems}
         renderItem={(item) => (
@@ -41,7 +41,7 @@ export function Classification({ options }: ClassificationProps) {
             </button>
           </SortableItem>
         )}
-      />
+      /> */}
     </div>
   )
 }

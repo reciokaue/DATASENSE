@@ -20,7 +20,7 @@ export function EmojiScale({ options }: EmojiScaleProps) {
           key={`${option.id}-emoji`}
         >
           <span className="h-12 text-5xl">
-            {option.emoji || (
+            {option.text || (
               <Smile className="h-14 w-14 text-muted-foreground" />
             )}
           </span>

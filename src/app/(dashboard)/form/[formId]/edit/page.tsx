@@ -13,9 +13,9 @@ import { QuestionDTO } from '@/src/DTOs/question'
 import { api } from '@/src/lib/api'
 import { findMovedPosition } from '@/src/utils/findMovedPosition'
 
-import { FormLayoutProps } from '../layout'
+import { PageFormSlugProps } from '../layout'
 
-export default function FormQuestions({ params }: FormLayoutProps) {
+export default function FormQuestions({ params }: PageFormSlugProps) {
   const [questions, setQuestions] = useState<QuestionDTO[]>([])
   const [editingQuestionId, setEditingQuestionId] = useState(0)
   const queryClient = useQueryClient()

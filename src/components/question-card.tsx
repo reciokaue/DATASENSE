@@ -15,9 +15,9 @@ const colors = [
 ]
 
 export function QuestionCard({ data, responses }: QuestionCardProps) {
-  const greater = data.options.reduce((acc, op) =>
-    op.responses > acc.responses ? op : acc,
-  )
+  // const greater = data.options.reduce((acc, op) =>
+  //   op._count.responses > acc._count.responses ? op : acc,
+  // )
 
   return (
     <div className="flex max-w-[50%] flex-col gap-2 rounded-md bg-muted">
@@ -25,14 +25,14 @@ export function QuestionCard({ data, responses }: QuestionCardProps) {
         <h1 className="w-full p-4 text-2xl font-medium text-primary/80">
           {data.text}
         </h1>
-        <div className="flex flex-col items-center justify-center border-l  p-4">
+        {/* <div className="flex flex-col items-center justify-center border-l  p-4">
           <h2 className="text-3xl">
-            {Math.trunc((greater.responses / responses) * 100)}%
-          </h2>
-          <span className="text-sm text-primary">{greater.text}</span>
-        </div>
+            {/* {Math.trunc((greater.responses / responses) * 100)}% */}
+        {/* </h2> */}
+        {/* <span className="text-sm text-primary">{greater.text}</span> */}
+        {/* </div> */}
       </header>
-      <footer className="flex flex-col gap-1 p-4">
+      {/* <footer className="flex flex-col gap-1 p-4">
         {data.options.map((option, index) => {
           const size =
             option.responses !== 0
@@ -40,7 +40,7 @@ export function QuestionCard({ data, responses }: QuestionCardProps) {
               : '1%'
 
           return (
-            <div className="flex gap-2" key={option.text + option.emoji}>
+            <div className="flex gap-2" key={option.text}>
               <div className="h-5 w-full overflow-hidden rounded-sm bg-primary/5">
                 <div
                   style={{ width: size, background: colors[index] }}
@@ -49,14 +49,13 @@ export function QuestionCard({ data, responses }: QuestionCardProps) {
               </div>
               <div className="flex min-w-36 justify-end gap-2">
                 <p className="text-primary/65">
-                  {option.text} {option.emoji}
+                  {option.text}
                 </p>
-                {option.responses}
               </div>
             </div>
           )
         })}
-      </footer>
+      </footer> */}
     </div>
   )
 }

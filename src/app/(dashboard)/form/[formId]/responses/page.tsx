@@ -1,8 +1,10 @@
-import { useQuery } from '@tanstack/react-query'
+// import { useQuery } from '@tanstack/react-query'
 
-import { api } from '@/src/lib/api'
+// import { api } from '@/src/lib/api'
 
-export default function AnswersPage(params) {
+import { PageFormSlugProps } from '../layout'
+
+export default function AnswersPage({ params }: PageFormSlugProps) {
   const { formId } = params
 
   // const { data: form } = useQuery({

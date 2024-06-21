@@ -50,7 +50,7 @@ export function TopicsProvider({ children }: topicsProviderProps) {
       if (removedTopics.length === 0) return
       const topicIds = removedTopics.map((topic) => topic.id)
       await api.delete('/topics', {
-        data: [8, 9, 10],
+        data: topicIds,
       })
 
       queryClient.setQueryData(['topics'], (data: Array<TopicDTO>) =>

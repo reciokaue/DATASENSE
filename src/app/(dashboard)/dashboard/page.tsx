@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 import { FormCard } from '@/src/components/form-card'
@@ -42,13 +43,14 @@ export default function Dashboard() {
           />
         </div>
         <Button link="/form/new" type="submit" className="gap-2">
-          New
-          <Plus className="h-4 w-4" />
+          Novo <Plus className="h-4 w-4" />
         </Button>
       </div>
-      <div className="mt-8 grid grid-cols-1 gap-3 md:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
         {(search ? queryForms : forms)?.map((form: any) => (
-          <FormCard data={form} key={form.id} />
+          <Link href={`/form/${form.id}/edit`} key={form.id} className="group">
+            <FormCard data={form} />
+          </Link>
         ))}
       </div>
     </>

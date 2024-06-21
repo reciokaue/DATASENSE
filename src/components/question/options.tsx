@@ -1,7 +1,7 @@
 import { Plus, Trash2 } from 'lucide-react'
 import { Controller, useFieldArray, UseFormReturn } from 'react-hook-form'
 
-import { EmojiPicker } from '../emoji-picker'
+// import { EmojiPicker } from '../emoji-picker'
 import { SortableItem } from '../sortable/sortable-item'
 import { SortableList } from '../sortable/sortable-list'
 import { Button } from '../ui/button'

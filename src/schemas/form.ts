@@ -1,10 +1,6 @@
 import { z } from 'zod'
 
-import {
-  questionSchema,
-  questionSchemaCreate,
-  questionSchemaUpdate,
-} from './question'
+import { questionSchema } from './question'
 import { topicSchema } from './topic'
 
 export const formSchema = z.object({
@@ -20,10 +16,16 @@ export const formSchema = z.object({
   questions: z.array(questionSchema).optional(),
 })
 
+export const createFormSchema = z.object({
+  name: z.string(),
+  about: z.string().nullable(),
+  topics: z.array(topicSchema),
+})
+
 export const formSchemaCreate = formSchema.extend({
   topics: z.array(z.number()).optional(),
   questions: z
-    .array(questionSchemaCreate)
+    .array(questionSchema)
     .transform((questions) => ({ create: questions }))
     .optional(),
 })
@@ -31,7 +33,7 @@ export const formSchemaCreate = formSchema.extend({
 export const formSchemaUpdate = formSchema.extend({
   topics: z.array(z.number()).optional(),
   questions: z
-    .array(questionSchemaUpdate)
+    .array(questionSchema)
     .transform((questions) => ({ updateMany: questions }))
     .optional(),
 })

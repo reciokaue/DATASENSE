@@ -1,12 +1,12 @@
 import { CircleDot } from 'lucide-react'
 
-import { QuestionSchema } from '@/src/schemas/form'
+import { questionSchemaType } from '@/src/schemas/question'
 
 // import { TagList } from '../ui/tag-list'
 
 interface ClosedProps {
   index: number
-  question: QuestionSchema
+  question: questionSchemaType
 }
 
 export function QuestionCardClosed({ question, index }: ClosedProps) {
@@ -15,7 +15,7 @@ export function QuestionCardClosed({ question, index }: ClosedProps) {
       <header className="flex items-start justify-end pt-2">
         {/* <TagList tags={question.topics || []} icon="no-icon" className="pt-0" /> */}
         <div className="flex items-center gap-2  text-sm text-muted-foreground">
-          {question.type} <CircleDot size={20} />
+          {question.questionType?.label} <CircleDot size={20} />
         </div>
       </header>
       <div className="flex flex-1 gap-2">

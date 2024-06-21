@@ -3,7 +3,7 @@ import axios from 'axios'
 import { AppError } from '../utils/AppError'
 
 const api = axios.create({
-  baseURL: 'http://localhost:3333',
+  baseURL: 'http://192.168.15.12:3333',
 })
 
 api.interceptors.response.use(
@@ -14,6 +14,7 @@ api.interceptors.response.use(
         new AppError(
           error.response.data.message,
           error.response.data?.description || '',
+          error,
         ),
       )
     } else {

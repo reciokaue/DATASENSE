@@ -88,7 +88,9 @@ export default function TopicCreation() {
       </div>
       {topics && (
         <TagList
-          tags={topics.filter((tag: string) => !removedTopics.includes(tag))}
+          tags={topics.filter(
+            (topic: TopicDTO) => !removedTopics.includes(topic),
+          )}
           onTagClick={(tag) => setRemovedTopics((prev) => [...prev, tag])}
           className="max-w-full"
         />
