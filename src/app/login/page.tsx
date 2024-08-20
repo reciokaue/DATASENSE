@@ -93,7 +93,7 @@ export default function Login() {
                 <>
                   <Checkbox
                     checked={checkbox.field.value || false}
-                    onCheckedChange={(checked) => {
+                    onCheckedChange={(checked: boolean) => {
                       checkbox.field.onChange(checked === true)
                     }}
                     id="remember"

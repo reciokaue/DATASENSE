@@ -2,19 +2,27 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-import { FormCard } from '@/src/components/form-card'
+import { getForms } from '@/src/api/get-forms'
 import { Button } from '@/src/components/ui/button'
 import { Input } from '@/src/components/ui/input'
 
-import { searchForms, userForms } from './querys'
+import { Card } from './card'
 
 export default function Dashboard() {
   const [search, setSearch] = useState('')
 
-  const { data: forms } = useQuery(userForms())
-  const { data: queryForms, refetch } = useQuery(searchForms(search))
+  const { data: forms } = useQuery({
+    queryKey: ['user-forms'],
+    queryFn: () => getForms(),
+  })
+  const { data: queryForms, refetch } = useQuery({
+    queryKey: ['query-user-forms'],
+    queryFn: () => getForms(search),
+    enabled: false,
+  })
 
   const onChange = (event: any) => {
     setSearch(event.target.value)
@@ -47,8 +55,10 @@ export default function Dashboard() {
         </Button>
       </div>
       <div className="mt-8 grid grid-cols-1 gap-3 md:grid-cols-3">
-        {(search ? queryForms : forms)?.map((form: any) => (
-          <FormCard data={form} key={form.id} />
+        {(search ? queryForms : forms)?.map((form) => (
+          <Link key={form.id} href={`/form/${form.id}`} className="group">
+            <Card form={form} />
+          </Link>
         ))}
       </div>
     </>

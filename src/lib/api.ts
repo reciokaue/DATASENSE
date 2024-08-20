@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { ZodError } from 'zod'
 
 import { AppError } from '../utils/AppError'
 
@@ -10,6 +11,10 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.data) {
+      if (error instanceof ZodError) {
+        return Promise.reject(new AppError('Dados inválidos', ''))
+      }
+
       return Promise.reject(
         new AppError(
           error.response.data.message,
