@@ -1,7 +1,7 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import { ChevronLeftCircleIcon, Pen } from 'lucide-react'
+import { ChevronLeftCircleIcon, ExternalLink, Pen } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 import { getForms } from '@/src/api/get-form'
@@ -32,12 +32,14 @@ export default function Page({ params }: { params: { id: string } }) {
           {form?.name}
         </h2>
 
-        <Button link={`/forms/${params.id}`}>
-          <Pen className="size-4" />
-          Editar
+        <Button>
+          Compartilhar
+          <ExternalLink className="size-4" />
         </Button>
       </PageHeader>
-      <PageWrapper>Analytics</PageWrapper>
+      <PageWrapper>
+        <div className="rounded-md p-6"></div>
+      </PageWrapper>
     </>
   )
 }

@@ -4,7 +4,8 @@
 
 import { Book, LogOut, PieChart, Settings } from 'lucide-react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 const links = [
   { title: 'Dashboard', path: 'dashboard', icon: Book },
@@ -16,6 +17,7 @@ const links = [
 
 export function Sidebar() {
   const pathname = usePathname()
+  const path = pathname.split('/')[1]
 
   return (
     <aside className="flex w-80 flex-col  bg-white pl-3 pr-6">
@@ -26,7 +28,7 @@ export function Sidebar() {
       <section className="flex flex-col space-y-2">
         {links.map((link) => {
           const Icon = link.icon
-          const isActive = pathname.split('/')[1] === link.path
+          const isActive = path === link.path
 
           return (
             <Link href={link.path} key={link.path}>
