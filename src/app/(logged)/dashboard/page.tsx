@@ -59,7 +59,11 @@ export default function Dashboard() {
         </div>
         <div className="mt-8 grid grid-cols-1 gap-3 md:grid-cols-3">
           {(search ? queryForms : forms)?.map((form) => (
-            <Link key={form.id} href={`/form/${form.id}`} className="group">
+            <Link
+              key={form.id}
+              href={`/analytics/${form.id}`}
+              className="group"
+            >
               <Card form={form} />
             </Link>
           ))}
