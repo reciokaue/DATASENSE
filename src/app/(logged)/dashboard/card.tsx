@@ -24,7 +24,7 @@ export function Card({ form }: CardProps) {
         </div>
         <div className="flex items-center gap-2">
           <Mails className="h-3 w-3 text-sky-400" />
-          {form._count.responses}
+          {form._count.sessions}
         </div>
       </div>
     </div>
