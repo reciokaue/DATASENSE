@@ -4,15 +4,14 @@
 
 import { Book, LogOut, PieChart, Settings } from 'lucide-react'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 
 const links = [
-  { title: 'Dashboard', path: 'dashboard', icon: Book },
-  { title: 'Analytics', path: 'analytics', icon: PieChart },
-  { title: 'Configurações', path: 'settings', icon: Settings },
-  { title: 'Forms', path: 'forms', icon: Book },
-  { title: 'Logout', path: 'login', icon: LogOut },
+  { title: 'Dashboard', path: '/dashboard', icon: Book },
+  { title: 'Analytics', path: '/analytics', icon: PieChart },
+  { title: 'Configurações', path: '/settings', icon: Settings },
+  { title: 'Forms', path: '/forms', icon: Book },
+  { title: 'Logout', path: '/login', icon: LogOut },
 ]
 
 export function Sidebar() {
@@ -28,7 +27,7 @@ export function Sidebar() {
       <section className="flex flex-col space-y-2">
         {links.map((link) => {
           const Icon = link.icon
-          const isActive = path === link.path
+          const isActive = path === link.path.slice(1)
 
           return (
             <Link href={link.path} key={link.path}>

@@ -179,7 +179,7 @@ export function Dropdown({
 }: DropdownProps) {
   return (
     <Select onValueChange={(option) => setSelected(option)}>
-      <SelectTrigger className="h-10 px-4 py-2">
+      <SelectTrigger className="h-10 min-w-28 px-4 py-2">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

@@ -58,7 +58,7 @@ export function SortableItem({
     <SortableItemContext.Provider value={context}>
       <li
         id={`sortable-${sortableId}`}
-        className="flex flex-grow items-center"
+        className="flex flex-grow items-center "
         ref={setNodeRef}
         style={style}
         {...rest}

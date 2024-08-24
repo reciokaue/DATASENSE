@@ -1,21 +1,49 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
-import { ChevronLeftCircleIcon, ExternalLink, Pen } from 'lucide-react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { ChevronLeftCircleIcon, ExternalLink } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 import { getForms } from '@/src/api/get-form'
+import { SortableItem } from '@/src/components/sortable/sortable-item'
+import { SortableList } from '@/src/components/sortable/sortable-list'
 import { Button } from '@/src/components/ui/button'
+import { QuestionDTO } from '@/src/DTOs/question'
 
 import { PageHeader, PageWrapper } from '../../layout'
+import { Card } from './card'
 
 export default function Page({ params }: { params: { id: string } }) {
+  const [questions, setQuestions] = useState<QuestionDTO[]>([])
+
+  const queryClient = useQueryClient()
+  const navigation = useRouter()
+
   const { data: form } = useQuery({
     queryKey: ['form', params.id],
-    queryFn: () => getForms(params.id),
+    queryFn: async () => {
+      const data = await getForms(params.id)
+      setQuestions(data.questions)
+      return data
+    },
   })
 
-  const navigation = useRouter()
+  function onChangeOrder(data: any) {
+    const indexSorted = data.map((question: any, index: number) => ({
+      ...question,
+      index,
+    }))
+    queryClient.setQueryData(['form', params.id], {
+      ...form,
+      questions: indexSorted,
+    })
+
+    setQuestions(indexSorted)
+  }
+
+  // implementar rotina que a cada mudança espera por
+  // uma proxima, se não ocorrer ele vai e salva
 
   return (
     <>
@@ -38,7 +66,19 @@ export default function Page({ params }: { params: { id: string } }) {
         </Button>
       </PageHeader>
       <PageWrapper>
-        <div className="rounded-md p-6"></div>
+        <SortableList
+          items={questions}
+          onChange={onChangeOrder}
+          renderItem={(item) => (
+            <SortableItem
+              sortableId={item.id}
+              className="flex items-center gap-2"
+              // isEditing={editingQuestionId === 0}
+            >
+              <Card key={`question-${item.id}`} question={item} />
+            </SortableItem>
+          )}
+        />
       </PageWrapper>
     </>
   )

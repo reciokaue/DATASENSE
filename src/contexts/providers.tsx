@@ -6,9 +6,6 @@ import { ReactNode } from 'react'
 import { Toaster } from '@/src/components/ui/toaster'
 
 import { AuthProvider } from './Auth'
-import { QuestionTypeProvider } from './questionType'
-import { SelectedFormProvider } from './selected-form'
-import { TopicsProvider } from './topics'
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,13 +19,7 @@ export const queryClient = new QueryClient({
 export function Providers({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <TopicsProvider>
-          <QuestionTypeProvider>
-            <SelectedFormProvider>{children}</SelectedFormProvider>
-          </QuestionTypeProvider>
-        </TopicsProvider>
-      </AuthProvider>
+      <AuthProvider>{children}</AuthProvider>
       <Toaster />
     </QueryClientProvider>
   )
