@@ -34,9 +34,11 @@ export default function Page({ params }: { params: { id: string } }) {
       ...question,
       index,
     }))
-    queryClient.setQueryData(['form', params.id], {
-      ...form,
-      questions: indexSorted,
+    queryClient.setQueryData(['form', params.id], (old: FormData) => {
+      return {
+        ...old,
+        questions: indexSorted,
+      }
     })
 
     setQuestions(indexSorted)
@@ -66,19 +68,27 @@ export default function Page({ params }: { params: { id: string } }) {
         </Button>
       </PageHeader>
       <PageWrapper>
-        <SortableList
-          items={questions}
-          onChange={onChangeOrder}
-          renderItem={(item) => (
-            <SortableItem
-              sortableId={item.id}
-              className="flex items-center gap-2"
-              // isEditing={editingQuestionId === 0}
-            >
-              <Card key={`question-${item.id}`} question={item} />
-            </SortableItem>
-          )}
-        />
+        {form?.questions && (
+          <SortableList
+            items={questions}
+            onChange={onChangeOrder}
+            renderItem={(item) => (
+              <SortableItem
+                sortableId={item.id}
+                className="flex items-center gap-2"
+                // isEditing={editingQuestionId === 0}
+              >
+                <Card
+                  key={`question-${item.id}`}
+                  question={item}
+                  formId={+params.id}
+                />
+              </SortableItem>
+            )}
+          />
+        )}
+
+        {JSON.stringify(form)}
       </PageWrapper>
     </>
   )

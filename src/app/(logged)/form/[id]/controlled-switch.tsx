@@ -12,12 +12,18 @@ export function ControlledSwitch({ control }: SelectProps) {
       <Controller
         control={control}
         name="required"
-        render={(required) => (
-          <Switch
-            checked={required.field.value}
-            onCheckedChange={(value: boolean) => required.field.onChange(value)}
-          />
-        )}
+        render={(required) => {
+          if (required === undefined) required.field.onChange(false)
+
+          return (
+            <Switch
+              checked={required.field.value}
+              onCheckedChange={(value: boolean) =>
+                required.field.onChange(value)
+              }
+            />
+          )
+        }}
       />
     </div>
   )

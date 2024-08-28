@@ -3,8 +3,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { Controller } from 'react-hook-form'
 
-import { Dropdown } from '@/src/components/ui/select'
 import { getQuestionTypes } from '@/src/api/get-question-types'
+import { Dropdown } from '@/src/components/ui/select'
 
 interface SelectProps {
   control: any

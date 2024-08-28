@@ -32,7 +32,7 @@ export default function Page({ params }: { params: { id: string } }) {
           {form?.name}
         </h2>
 
-        <Button link={`/forms/${params.id}`}>
+        <Button link={`/form/${params.id}`}>
           <Pen className="size-4" />
           Editar
         </Button>

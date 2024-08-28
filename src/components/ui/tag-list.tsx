@@ -27,7 +27,7 @@ export function TagList({
   return (
     <div
       className={cn(
-        'flex max-w-[450px] gap-2 py-2',
+        'flex gap-2 py-2',
         rest.className,
         direction === 'horizontal' ? 'flex-wrap' : 'flex-col',
       )}
