@@ -17,11 +17,11 @@ export default function Dashboard() {
 
   const { data: forms } = useQuery({
     queryKey: ['user-forms'],
-    queryFn: () => getForms(),
+    queryFn: () => getForms({}),
   })
   const { data: queryForms, refetch } = useQuery({
     queryKey: ['query-user-forms'],
-    queryFn: () => getForms(search),
+    queryFn: () => getForms({ query: search }),
     enabled: false,
   })
 
@@ -61,7 +61,7 @@ export default function Dashboard() {
           {(search ? queryForms : forms)?.map((form) => (
             <Link
               key={form.id}
-              href={`/analytics/${form.id}`}
+              href={`/form/${form.id}/editing`}
               className="group"
             >
               <Card form={form} />

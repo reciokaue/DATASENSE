@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { ChevronLeftCircleIcon, Pen } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
-import { getForms } from '@/src/api/get-form'
+import { getForm } from '@/src/api/get-form'
 import { Button } from '@/src/components/ui/button'
 
 import { PageHeader, PageWrapper } from '../../layout'
@@ -12,7 +12,7 @@ import { PageHeader, PageWrapper } from '../../layout'
 export default function Page({ params }: { params: { id: string } }) {
   const { data: form } = useQuery({
     queryKey: ['form', params.id],
-    queryFn: () => getForms(params.id),
+    queryFn: () => getForm({ query: params.id }),
   })
 
   const navigation = useRouter()

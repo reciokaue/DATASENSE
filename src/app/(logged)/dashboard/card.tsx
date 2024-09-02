@@ -1,14 +1,21 @@
 import { ClipboardType, Mails } from 'lucide-react'
+import { HTMLAttributes } from 'react'
 
 import { FormDTO } from '@/src/DTOs/form'
 
-interface CardProps {
+interface CardProps extends HTMLAttributes<HTMLDivElement> {
   form: FormDTO
 }
 
-export function Card({ form }: CardProps) {
+export function Card({ form, ...rest }: CardProps) {
   return (
-    <div className="flex h-full max-h-52 flex-col justify-between rounded-xl border bg-card text-card-foreground group-hover:border-primary">
+    <div
+      {...rest}
+      className={
+        'flex h-full max-h-52 cursor-pointer flex-col justify-between rounded-xl border bg-card text-card-foreground transition-[brightness] hover:brightness-95 group-hover:border-primary ' +
+        rest.className
+      }
+    >
       <div className="flex flex-1 flex-col space-y-1.5 p-6">
         <h1 className="mb-2 flex items-center gap-2 font-semibold leading-none tracking-tight">
           {form.name}

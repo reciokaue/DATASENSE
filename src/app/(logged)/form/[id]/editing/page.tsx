@@ -3,28 +3,25 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { ChevronLeftCircleIcon, ExternalLink } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 
-import { getForms } from '@/src/api/get-form'
+import { getForm } from '@/src/api/get-form'
 import { SortableItem } from '@/src/components/sortable/sortable-item'
 import { SortableList } from '@/src/components/sortable/sortable-list'
 import { Button } from '@/src/components/ui/button'
-import { QuestionDTO } from '@/src/DTOs/question'
+import { FormDTO } from '@/src/DTOs/form'
 
-import { PageHeader, PageWrapper } from '../../layout'
+import { PageHeader, PageWrapper } from '../../../layout'
 import { Card } from './card'
 
 export default function Page({ params }: { params: { id: string } }) {
-  const [questions, setQuestions] = useState<QuestionDTO[]>([])
-
   const queryClient = useQueryClient()
   const navigation = useRouter()
+  const formId = +params.id
 
   const { data: form } = useQuery({
-    queryKey: ['form', params.id],
+    queryKey: ['form', formId],
     queryFn: async () => {
-      const data = await getForms(params.id)
-      setQuestions(data.questions)
+      const data = await getForm(formId)
       return data
     },
   })
@@ -34,18 +31,13 @@ export default function Page({ params }: { params: { id: string } }) {
       ...question,
       index,
     }))
-    queryClient.setQueryData(['form', params.id], (old: FormData) => {
+    queryClient.setQueryData(['form', formId], (old: FormDTO) => {
       return {
         ...old,
         questions: indexSorted,
       }
     })
-
-    setQuestions(indexSorted)
   }
-
-  // implementar rotina que a cada mudança espera por
-  // uma proxima, se não ocorrer ele vai e salva
 
   return (
     <>
@@ -70,7 +62,7 @@ export default function Page({ params }: { params: { id: string } }) {
       <PageWrapper>
         {form?.questions && (
           <SortableList
-            items={questions}
+            items={form?.questions}
             onChange={onChangeOrder}
             renderItem={(item) => (
               <SortableItem
@@ -87,8 +79,6 @@ export default function Page({ params }: { params: { id: string } }) {
             )}
           />
         )}
-
-        {JSON.stringify(form)}
       </PageWrapper>
     </>
   )

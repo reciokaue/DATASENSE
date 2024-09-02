@@ -33,31 +33,22 @@ export function Card({ question, formId }: CardProps) {
 
   const queryClient = useQueryClient()
 
-  const {
-    register,
-    control,
-    reset,
-    formState,
-    handleSubmit,
-    watch,
-    getValues,
-  } = questionForm
-  const index = watch('index')
+  const { register, control, reset, formState, watch, getValues } = questionForm
 
   const { mutateAsync: onUpdateQuestion, isPending: isQuestionUpdating } =
     useMutation({
       mutationFn: updateQuestion,
-      onMutate: async (newQuestion: any) => {
-        console.log(newQuestion)
+      onSuccess(data) {
         queryClient.setQueryData(['form', formId], (oldData: FormDTO) => {
-          console.log(oldData)
           return {
             ...oldData,
-            questions: oldData.questions,
+            questions: oldData.questions.map((question) => {
+              if (question.id === data.data.id) return data.data
+              else return question
+            }),
           }
         })
-
-        reset(newQuestion)
+        reset(data.data)
       },
       onError: (err, newQuestion) => {
         console.log(newQuestion, err)
@@ -65,33 +56,38 @@ export function Card({ question, formId }: CardProps) {
       },
     })
 
+  function handleCloneQuestion(e: any) {
+    e.preventDefault()
+    const data = questionSchema.parse(getValues())
+
+    queryClient.setQueryData(['form', formId], (old: FormDTO) => {
+      return {
+        ...old,
+        questions: [
+          ...old.questions,
+          { ...data, id: Math.round(Math.random() * 100) },
+        ],
+      }
+    })
+  }
+
   const debouncedSaveData = useCallback(
     debounce((data) => onUpdateQuestion(data), 1000),
     [],
   )
-
-  const formData: FormDTO = queryClient.getQueryData(['form', formId])
-
-  function onSave(data: questionSchemaType) {
+  useEffect(() => {
     if (!formState.isDirty) return
 
-    // reset(data)
-    debouncedSaveData(data)
-    console.log('SAVING')
-  }
-
-  useEffect(() => {
     const data = questionSchema.parse(getValues())
-    onSave(data)
-  }, [index])
+    debouncedSaveData(data)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [question.index, formState.isDirty])
 
   return (
-    <form
-      onBlur={handleSubmit(onSave)}
-      onChange={handleSubmit(onSave)}
-      className="relative flex w-full flex-col rounded-md bg-white p-6"
-    >
-      <h2 className="mb-2 text-base font-medium">Questão {question.index}</h2>
+    <form className="relative flex w-full flex-col rounded-md bg-white p-6">
+      <h2 className="mb-2 text-base font-medium">
+        Questão {question.index + 1}
+      </h2>
       {isQuestionUpdating && (
         <Loader2 className="absolute right-6 top-6 size-4 animate-spin" />
       )}
@@ -118,7 +114,7 @@ export function Card({ question, formId }: CardProps) {
           {/* <Button variant="ghost" size="icon">
             <CorneUpLeft className="size-5" />
           </Button> */}
-          <Button variant="ghost" size="icon">
+          <Button onClick={handleCloneQuestion} variant="ghost" size="icon">
             <Copy className="size-5" />
           </Button>
           <Button variant="ghost" size="icon">
@@ -126,7 +122,6 @@ export function Card({ question, formId }: CardProps) {
           </Button>
         </div>
       </footer>
-      {JSON.stringify(formData || 'A')}
     </form>
   )
 }

@@ -12,6 +12,7 @@ export const queryClient = new QueryClient({
     queries: {
       staleTime: 1000 * 60 * 60, // 1hr,
       refetchInterval: 1000 * 60 * 3, // 3min
+      gcTime: 1000 * 60 * 60,
     },
   },
 })

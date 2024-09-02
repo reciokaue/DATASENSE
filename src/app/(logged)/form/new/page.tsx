@@ -112,7 +112,7 @@ export default function NewForm() {
               <button
                 value={type}
                 key={index}
-                className="flex aspect-square w-full flex-col items-center justify-center gap-2 rounded-md border border-input bg-transparent p-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring aria-selected:bg-accent"
+                className="flex aspect-square w-full flex-col items-center justify-center gap-2 rounded-md border border-input bg-transparent p-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring aria-selected:bg-primary/5"
                 onClick={(e) => onSelectType(e, type)}
                 aria-selected={startType === type}
               >
