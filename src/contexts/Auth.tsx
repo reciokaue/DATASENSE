@@ -100,7 +100,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setUser({
           ...decoded,
           id: decoded.sub,
-          accessLevel: decoded.access,
         } as UserDTO)
 
         // if (decoded.access > 0) router.push('/admin/forms')
