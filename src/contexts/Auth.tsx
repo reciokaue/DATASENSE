@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { useQueryClient } from '@tanstack/react-query'
 import { deleteCookie, getCookie, setCookie } from 'cookies-next'
 import { jwtDecode } from 'jwt-decode'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import {
   createContext,
   ReactNode,
@@ -34,7 +35,11 @@ const AuthContext = createContext({} as AuthContextData)
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<UserDTO>({} as UserDTO)
+
   const router = useRouter()
+  const pathname = usePathname()
+  const queryClient = useQueryClient()
+
   const { toast } = useToast()
 
   async function login(email: string, password: string, remember?: boolean) {
@@ -88,7 +93,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
   async function logout() {
     deleteCookie('datasense-token')
     setUser({} as UserDTO)
-    router.push('/login')
+    queryClient.invalidateQueries()
+    queryClient.cancelQueries()
+    queryClient.clear()
+    router.replace('/login')
   }
 
   useEffect(() => {
@@ -102,10 +110,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
           id: decoded.sub,
         } as UserDTO)
 
-        // if (decoded.access > 0) router.push('/admin/forms')
-        // else router.push('/dashboard')
-
         api.defaults.headers.common.Authorization = `Bearer ${token}`
+
+        if (pathname === '/login' || pathname === '/') router.push('/dashboard')
       } catch (e) {
         router.push('/login')
       }
