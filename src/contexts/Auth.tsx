@@ -93,9 +93,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
   async function logout() {
     deleteCookie('datasense-token')
     setUser({} as UserDTO)
-    queryClient.invalidateQueries()
-    queryClient.cancelQueries()
+
+    await queryClient.cancelQueries()
     queryClient.clear()
+
     router.replace('/login')
   }
 

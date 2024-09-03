@@ -42,6 +42,7 @@ export default function NewForm() {
   })
 
   async function handleCreateForm(data: formSchemaType) {
+    if (topics.length === 0) return
     const newForm = await newFormMutation.mutateAsync(data)
 
     if (startType === 'from-zero') router.push(`/form/${newForm.id}`)

@@ -7,11 +7,20 @@ interface GetFormsProps {
   pageSize?: number
 }
 
+interface GetFormsData {
+  meta: {
+    page: number
+    pageSize: number
+    totalCount: number
+  }
+  forms: FormDTO[]
+}
+
 export async function getForms({ query, page, pageSize }: GetFormsProps) {
   const response = await api.get(`/forms`, {
     ...((query || page || pageSize) && {
       params: { query, page, pageSize },
     }),
   })
-  return response.data as FormDTO[]
+  return response.data as GetFormsData
 }

@@ -2,11 +2,13 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { Frown } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useState } from 'react'
+import { z } from 'zod'
 
 import { copyForm } from '@/src/api/copy-form'
 import { getForms } from '@/src/api/get-forms'
+import { Pagination } from '@/src/components/pagination'
 import { Button } from '@/src/components/ui/button'
 import { Input } from '@/src/components/ui/input'
 import { debounce } from '@/src/utils/debounce'
@@ -17,11 +19,18 @@ import { PageWrapper } from '../../../layout'
 export default function Page({ params }: { params: { id: string } }) {
   const [search, setSearch] = useState('')
   const [selectedFormId, setSelectedFormId] = useState<number>()
-  const router = useRouter()
 
-  const { data: forms, refetch } = useQuery({
-    queryKey: ['user-forms', search],
-    queryFn: () => getForms({ query: search }),
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const pageIndex = z.coerce
+    .number()
+    .transform((page) => page - 1)
+    .parse(searchParams.get('page') ?? '1')
+
+  const { data: result, refetch } = useQuery({
+    queryKey: ['user-forms', search, pageIndex],
+    queryFn: () => getForms({ query: search, page: pageIndex }),
   })
 
   const searchNewForm = useCallback((value: string) => {
@@ -63,9 +72,9 @@ export default function Page({ params }: { params: { id: string } }) {
         onChange={(e) => searchNewForm(e.target.value)}
         value={search}
       />
-      {forms && forms?.length > 0 ? (
+      {result && result.forms?.length > 0 ? (
         <div className="mt-8 grid h-full flex-1 grid-cols-1 gap-3 md:grid-cols-3">
-          {forms?.map((form) => (
+          {result.forms?.map((form) => (
             <Card
               key={form.id}
               form={form}
@@ -79,11 +88,20 @@ export default function Page({ params }: { params: { id: string } }) {
         <div className="flex h-full flex-1  flex-col items-center justify-center gap-2 text-muted-foreground">
           <Frown className="size-8 " />
           <p className="max-w-80 text-center text-sm">
-            Nenhum formulário foi encontrado, busque por um modelo ou começe
+            Nenhum formulário foi encontrado, busque por um modelo ou comece
             agora seu novo formulário do zero
           </p>
         </div>
       )}
+      <div className="mt-auto flex w-full">
+        {result && (
+          <Pagination
+            pageIndex={result.meta.page}
+            totalCount={result.meta.totalCount}
+            perPage={result.meta.pageSize}
+          />
+        )}
+      </div>
       <footer className="flex items-center justify-end gap-3">
         <Button variant="secondary" onClick={handleStartFromZero}>
           Continuar do zero
