@@ -1,6 +1,7 @@
 import { ClipboardType, Mails } from 'lucide-react'
 import { HTMLAttributes } from 'react'
 
+import { FormQuestionsDialog } from '@/src/components/form-question-dialog'
 import { FormDTO } from '@/src/DTOs/form'
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
@@ -34,6 +35,8 @@ export function Card({ form, ...rest }: CardProps) {
           {form._count.sessions}
         </div>
       </div>
+
+      <FormQuestionsDialog formId={form.id} />
     </div>
   )
 }

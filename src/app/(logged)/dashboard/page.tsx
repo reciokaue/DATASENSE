@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { z } from 'zod'
 
 import { getForms } from '@/src/api/get-forms'
@@ -33,7 +33,7 @@ export default function Dashboard() {
 
   const { data: result, isLoading } = useQuery({
     queryKey: ['user-forms', search, pageIndex],
-    queryFn: () => getForms({ query: search, page: pageIndex, pageSize: 1 }),
+    queryFn: () => getForms({ query: search, page: pageIndex }),
   })
 
   const onChange = (event: any) => {

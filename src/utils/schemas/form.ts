@@ -17,9 +17,11 @@ export const formSchema = z.object({
 })
 
 export const createFormSchema = z.object({
-  name: z.string(),
-  about: z.string().nullable(),
-  topics: z.array(topicSchema),
+  name: z.string().min(1, { message: 'O nome é obrigatório' }),
+  about: z.string().nullable().optional(),
+  topics: z
+    .array(topicSchema)
+    .min(1, { message: 'Selecione pelo menos um tópico' }),
 })
 
 export const formSchemaCreate = formSchema.extend({

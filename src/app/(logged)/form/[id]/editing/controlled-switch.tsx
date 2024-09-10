@@ -1,6 +1,6 @@
 import { Controller } from 'react-hook-form'
 
-import { Switch } from '@/components/ui/switch'
+import { Switch } from '@/src/components/ui/switch'
 
 interface SelectProps {
   control: any

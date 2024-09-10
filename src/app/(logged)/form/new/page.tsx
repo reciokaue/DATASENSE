@@ -28,7 +28,13 @@ export type formSchemaType = input<typeof createFormSchema>
 
 export default function NewForm() {
   const [startType, setStartType] = useState('from-zero')
-  const { register, handleSubmit, control, watch } = useForm<formSchemaType>({
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm<formSchemaType>({
     resolver: zodResolver(createFormSchema),
   })
   const topics = watch('topics')
@@ -83,18 +89,32 @@ export default function NewForm() {
             <Plus /> Novo formulário
           </h1>
 
-          <Input
-            type="text"
-            id="name"
-            placeholder="Nome"
-            {...register('name')}
-          />
-          <Textarea
-            className="h-32 resize-none"
-            id="about"
-            placeholder="Fale sobre o foco do formulário"
-            {...register('about')}
-          />
+          <div>
+            <Input
+              type="text"
+              id="name"
+              placeholder="Nome"
+              {...register('name')}
+            />
+            {errors.name && (
+              <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
+            )}
+          </div>
+
+          <div>
+            <Textarea
+              className="h-32 resize-none"
+              id="about"
+              placeholder="Fale sobre o foco do formulário"
+              {...register('about')}
+            />
+            {errors.about && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.about.message}
+              </p>
+            )}
+          </div>
+
           <Controller
             name="topics"
             control={control}
@@ -107,6 +127,9 @@ export default function NewForm() {
               />
             )}
           />
+          {errors.topics && (
+            <p className="mt-1 text-sm text-red-500">{errors.topics.message}</p>
+          )}
 
           <div className="grid grid-cols-3 gap-3">
             {options.map(({ title, Icon, type }, index) => (

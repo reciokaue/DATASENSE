@@ -20,12 +20,14 @@ interface TopicPickerProps {
   placeholder?: string
   selectedTopics: TopicDTO[]
   setSelectedTopics: (data: TopicDTO[]) => void
+  onClose: (data: TopicDTO[]) => void
 }
 
 export function TopicPicker({
   placeholder,
   selectedTopics,
   setSelectedTopics,
+  onClose,
 }: TopicPickerProps) {
   const queryClient = useQueryClient()
 
@@ -55,7 +57,10 @@ export function TopicPicker({
       <DialogTrigger asChild>
         <Button>{placeholder || 'Selecionar tópicos'}</Button>
       </DialogTrigger>
-      <DialogContent className="max-w-4xl">
+      <DialogContent
+        onInteractOutside={() => onClose(selectedTopics)}
+        className="max-w-4xl"
+      >
         <DialogHeader>
           <DialogTitle>Tópicos</DialogTitle>
           <DialogDescription>
@@ -81,8 +86,8 @@ export function TopicPicker({
             tags={topics || []}
             icon="add"
           />
-          <DialogClose className="w-full">
-            <Button className="w-full">
+          <DialogClose asChild>
+            <Button onClick={() => onClose(selectedTopics)} className="w-full">
               Salvar
               <Check className="size-5" />
             </Button>
