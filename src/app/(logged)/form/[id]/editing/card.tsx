@@ -72,16 +72,16 @@ export function Card({ question, formId }: CardProps) {
   }
 
   const debouncedSaveData = useCallback(
-    debounce((data) => onUpdateQuestion(data), 1000),
+    debounce(() => {
+      const data = questionSchema.parse(getValues())
+      onUpdateQuestion(data)
+    }, 1000),
     [],
   )
   useEffect(() => {
-    if (!formState.isDirty) return
-
-    const data = questionSchema.parse(getValues())
-    debouncedSaveData(data)
+    debouncedSaveData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [question.index, formState.isDirty])
+  }, [formState.isDirty])
 
   return (
     <form className="relative flex w-full flex-col rounded-md bg-white p-6">

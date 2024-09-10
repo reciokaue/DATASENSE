@@ -13,8 +13,8 @@ import { Button } from '@/src/components/ui/button'
 import { Input } from '@/src/components/ui/input'
 import { debounce } from '@/src/utils/debounce'
 
-import { Card } from '../../../dashboard/card'
 import { PageWrapper } from '../../../layout'
+import { Card } from '../models/card'
 
 export default function Page({ params }: { params: { id: string } }) {
   const [search, setSearch] = useState('')
