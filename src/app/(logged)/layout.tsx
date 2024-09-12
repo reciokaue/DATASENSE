@@ -1,12 +1,14 @@
 import { HTMLAttributes, ReactNode } from 'react'
 
-import { Sidebar } from '@/src/components/sidebar'
+import { Navbar } from '@/src/components/navbar'
+// import { Sidebar } from '@/src/components/sidebar'
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <main className="mx-auto flex h-screen w-full flex-col ">
       <div className="flex h-full w-full bg-primary-foreground">
         {/* <Sidebar /> */}
+        <Navbar />
         <div className="flex h-full w-full flex-col"> {children}</div>
       </div>
     </main>
