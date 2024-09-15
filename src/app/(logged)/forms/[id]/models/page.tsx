@@ -48,7 +48,7 @@ export default function Page({ params }: { params: { id: string } }) {
       modelId: selectedFormId,
     })
 
-    router.push(`/form/${params.id}/editing`)
+    router.push(`/forms/${params.id}/editing`)
   }
 
   return (

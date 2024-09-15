@@ -48,10 +48,10 @@ export default function Page({ params }: { params: { id: string } }) {
   }
 
   function handleStartWithModel() {
-    router.push(`/form/${params.id}/models`)
+    router.push(`/forms/${params.id}/models`)
   }
   function handleStartFromZero() {
-    router.push(`/form/${params.id}/editing`)
+    router.push(`/forms/${params.id}/editing`)
   }
 
   return (

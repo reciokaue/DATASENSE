@@ -27,9 +27,9 @@ export default function Dashboard() {
   const pageIndex = z.coerce
     .number()
     .transform((page) => page - 1)
-    .parse(searchParams.get('page') ?? '1')
+    .parse(searchParams?.get('page') ?? '1')
 
-  const search = z.string().parse(searchParams.get('search') ?? '')
+  const search = z.string().parse(searchParams?.get('search') ?? '')
 
   const { data: result, isLoading } = useQuery({
     queryKey: ['user-forms', search, pageIndex],
@@ -42,7 +42,7 @@ export default function Dashboard() {
 
   const debouncedSearchData = useCallback(
     debounce((data) => {
-      if (search === '') router.push(pathname)
+      if (search === '') router.push(pathname || '/')
       else router.push(pathname + '?search=' + data)
     }, 500),
     [],
@@ -67,7 +67,7 @@ export default function Dashboard() {
               // value={search}
             />
           </div>
-          <Button link="/form/new" type="submit" className="gap-2">
+          <Button link="/forms/new" type="submit" className="gap-2">
             New
             <Plus className="h-4 w-4" />
           </Button>
@@ -81,7 +81,7 @@ export default function Dashboard() {
               ? result.forms.map((form) => (
                   <Link
                     key={form.id}
-                    href={`/form/${form.id}/editing`}
+                    href={`/forms/${form.id}`}
                     className="group"
                   >
                     <Card form={form} />

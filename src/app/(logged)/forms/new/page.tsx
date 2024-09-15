@@ -51,10 +51,10 @@ export default function NewForm() {
     if (topics.length === 0) return
     const newForm = await newFormMutation.mutateAsync(data)
 
-    if (startType === 'from-zero') router.push(`/form/${newForm.id}`)
+    if (startType === 'from-zero') router.push(`/forms/${newForm.id}`)
     if (startType === 'import-questions')
-      router.push(`/form/${newForm.id}/import-questions`)
-    if (startType === 'models') router.push(`/form/${newForm.id}/models`)
+      router.push(`/forms/${newForm.id}/import-questions`)
+    if (startType === 'models') router.push(`/forms/${newForm.id}/models`)
   }
 
   const onSelectType = (event: any, type: string) => {
@@ -65,7 +65,7 @@ export default function NewForm() {
   return (
     <div className="flex flex-col">
       <nav>
-        <Link href="/dashboard">
+        <Link href="/forms">
           <Button variant="ghost" size="icon">
             <ChevronLeft />
           </Button>
@@ -147,7 +147,7 @@ export default function NewForm() {
           </div>
 
           <footer className="flex items-center justify-end gap-3">
-            <Link href="/dashboard">
+            <Link href="/forms">
               <Button variant="secondary">Cancelar</Button>
             </Link>
             <Button type="submit">Continuar</Button>

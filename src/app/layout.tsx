@@ -8,7 +8,7 @@ import { Providers } from '@/src/contexts/providers'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Feedback-view',
+  title: 'DATASENSE',
 }
 
 export default function RootLayout({

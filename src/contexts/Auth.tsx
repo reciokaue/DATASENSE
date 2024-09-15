@@ -54,7 +54,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         localStorage.setItem('datasense_email', email)
       }
       if (decoded.access > 0) router.push('/admin/forms')
-      else router.push('/dashboard')
+      else router.push('/forms')
     } catch (e: any) {
       const isAppError = e instanceof AppError
       console.log(e)
@@ -77,7 +77,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setCookie('datasense-token', response.data)
       api.defaults.headers.common.Authorization = `Bearer ${response.data}`
 
-      router.push('/dashboard')
+      router.push('/forms')
     } catch (e: any) {
       const isAppError = e instanceof AppError
       console.log(e)
@@ -113,7 +113,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         api.defaults.headers.common.Authorization = `Bearer ${token}`
 
-        if (pathname === '/login' || pathname === '/') router.push('/dashboard')
+        if (pathname === '/login' || pathname === '/') router.push('/forms')
       } catch (e) {
         router.push('/login')
       }

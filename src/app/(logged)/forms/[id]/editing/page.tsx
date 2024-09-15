@@ -76,6 +76,7 @@ export default function Page({ params }: { params: { id: string } }) {
         </Button>
       </PageHeader>
       <PageWrapper>
+        {JSON.stringify(form)}
         {questions && (
           <SortableList
             items={questions}

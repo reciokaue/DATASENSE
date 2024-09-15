@@ -6,11 +6,11 @@ import { Navbar } from '@/src/components/navbar'
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <main className="mx-auto flex h-screen w-full flex-col ">
-      <div className="flex h-full w-full bg-primary-foreground">
-        {/* <Sidebar /> */}
-        <Navbar />
-        <div className="flex h-full w-full flex-col"> {children}</div>
-      </div>
+      <Navbar />
+      <div className="flex h-full w-full flex-col"> {children}</div>
+      {/* <div className="flex h-full w-full bg-primary-foreground">
+        <Sidebar />
+      </div> */}
     </main>
   )
 }
