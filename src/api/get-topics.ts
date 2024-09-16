@@ -8,5 +8,7 @@ export async function getTopics(page?: number, pageSize?: number) {
       pageSize: pageSize || 10,
     },
   })
-  return response.data as TopicDTO[]
+  const data = response.data || []
+
+  return data as TopicDTO[]
 }

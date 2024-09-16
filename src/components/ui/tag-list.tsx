@@ -7,6 +7,7 @@ import { TopicDTO } from '@/src/DTOs/topic'
 import { cn } from '@/src/lib/utils'
 
 import { Badge } from './badge'
+import { Skeleton } from './skeleton'
 
 interface TagListProps extends HTMLProps<HTMLDivElement> {
   tags: TopicDTO[]
@@ -14,6 +15,7 @@ interface TagListProps extends HTMLProps<HTMLDivElement> {
   icon?: 'remove' | 'add' | 'no-icon'
   variant?: 'default' | 'secondary' | 'destructive' | 'outline' | 'ghost'
   onTagClick: (tag: TopicDTO) => void
+  loading?: boolean
 }
 
 export function TagList({
@@ -22,6 +24,7 @@ export function TagList({
   icon = 'remove',
   variant = 'secondary',
   onTagClick,
+  loading = false,
   ...rest
 }: TagListProps) {
   return (
@@ -32,22 +35,30 @@ export function TagList({
         direction === 'horizontal' ? 'flex-wrap' : 'flex-col',
       )}
     >
-      {tags.map((tag: TopicDTO) => (
-        <Badge
-          onClick={() => onTagClick(tag)}
-          key={`tag-${tag.id}`}
-          variant={variant}
-        >
-          {tag.name}
-          {
-            {
-              add: <Plus size={14} />,
-              remove: <X size={14} />,
-              'no-icon': null,
-            }[icon]
-          }
-        </Badge>
-      ))}
+      {loading
+        ? Array.from({ length: 25 }).map((_, index) => (
+            <Skeleton
+              key={index}
+              className="h-5"
+              style={{ width: `${Math.floor(Math.random() * 64) + 48}px` }}
+            />
+          ))
+        : tags.map((tag: TopicDTO) => (
+            <Badge
+              onClick={() => onTagClick(tag)}
+              key={`tag-${tag.id}`}
+              variant={variant}
+            >
+              {tag.name}
+              {
+                {
+                  add: <Plus size={14} />,
+                  remove: <X size={14} />,
+                  'no-icon': null,
+                }[icon]
+              }
+            </Badge>
+          ))}
     </div>
   )
 }

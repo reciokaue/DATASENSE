@@ -20,11 +20,11 @@ const NavLink: React.FC<NavLinkProps> = ({ href, icon, text }) => {
     <li>
       <Link
         href={href}
-        className={`flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors duration-150 ease-in-out
+        className={`flex items-center rounded-md px-3 py-2 text-sm transition-colors duration-150 ease-in-out 
           ${
             isActive
-              ? 'bg-primary-100 text-primary'
-              : 'text-re-700 hover:bg-gray-100 hover:text-gray-900'
+              ? 'bg-primary-100 font-bold text-primary'
+              : 'font-medium text-gray-700 hover:bg-gray-100  hover:text-gray-900'
           }`}
       >
         {icon}
