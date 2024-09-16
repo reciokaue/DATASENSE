@@ -41,14 +41,14 @@ export default function CommunityLayout({
   }
 
   return (
-    <div className="flex flex-col gap-2">
-      <nav className="flex gap-4 px-6 pt-6">
+    <div className="mx-auto flex h-full w-full max-w-screen-xl flex-col px-2">
+      <nav className="mb-2 flex items-center gap-4 px-6 pt-6">
         <Link
           className="text-2xl font-medium text-primary/60 aria-selected:text-primary"
           href="/community/forms"
           aria-selected={path === 'forms'}
         >
-          Forms
+          Formulários
         </Link>
         <span className="text-gray-300">|</span>
         <Link
@@ -56,7 +56,7 @@ export default function CommunityLayout({
           href="/community/questions"
           aria-selected={path === 'questions'}
         >
-          Questions
+          Questões
         </Link>
       </nav>
       <div className="flex flex-col gap-4 px-6">

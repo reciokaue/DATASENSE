@@ -1,114 +1,108 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Cell,
-  Legend,
-  Pie,
-  PieChart,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts'
+import { EyeIcon } from 'lucide-react'
+import Link from 'next/link'
 
 import { getForm } from '@/src/api/get-form'
-import { FormDTO } from '@/src/DTOs/form'
+import { Card } from '@/src/components/ui/card'
 
-import { PageHeader, PageWrapper } from '../../layout'
-
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8']
+import { PageWrapper } from '../../layout'
 
 export default function FormAnalyticsPage({
   params,
 }: {
   params: { id: string }
 }) {
-  const {
-    data: form,
-    isLoading,
-    isError,
-  } = useQuery<FormDTO>({
+  const { data: form } = useQuery({
     queryKey: ['form', params.id],
     queryFn: () => getForm(params.id),
   })
 
-  if (isLoading) return <div>Carregando...</div>
-  if (isError) return <div>Erro ao carregar os dados do formulário</div>
-  if (!form) return <div>Formulário não encontrado</div>
-
-  const questionTypeData = form.questions.reduce(
-    (acc, question) => {
-      const type = question.questionType.name
-      acc[type] = (acc[type] || 0) + 1
-      return acc
-    },
-    {} as Record<string, number>,
-  )
-
-  const questionTypeChartData = Object.entries(questionTypeData).map(
-    ([name, value]) => ({ name, value }),
-  )
-
-  const responseData = form?.questions.map((question) => ({
-    name: question.text.slice(0, 20) + '...',
-    respostas: question._count.responses,
-  }))
-
   return (
     <>
-      <PageHeader>Analytics do Formulário: {form?.name}</PageHeader>
-      <PageWrapper>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div className="rounded-lg bg-white p-4 shadow">
-            <h2 className="mb-4 text-xl font-semibold">Informações Gerais</h2>
-            <p>Total de Questões: {form?._count.questions}</p>
-            <p>Total de Sessões: {form?._count.sessions}</p>
-            <p>Status: {form?.active ? 'Ativo' : 'Inativo'}</p>
-            <p>Público: {form?.isPublic ? 'Sim' : 'Não'}</p>
+      <Card className="mb-6 rounded-lg bg-white p-6">
+        <div className="mb-4 flex items-center justify-between">
+          <div className="flex items-center">
+            <h2 className="text-xl font-semibold">Informações do Formulário</h2>
           </div>
-
-          <div className="rounded-lg bg-white p-4 shadow">
-            <h2 className="mb-4 text-xl font-semibold">Tipos de Questões</h2>
-            <PieChart width={300} height={300}>
-              <Pie
-                data={questionTypeChartData}
-                cx={150}
-                cy={150}
-                labelLine={false}
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                {questionTypeChartData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </div>
-
-          <div className="col-span-1 rounded-lg bg-white p-4 shadow md:col-span-2">
-            <h2 className="mb-4 text-xl font-semibold">
-              Respostas por Questão
-            </h2>
-            <BarChart width={600} height={300} data={responseData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="respostas" fill="#8884d8" />
-            </BarChart>
+          <div className="flex items-center gap-2">
+            <span className="text-gray-500">
+              {new Date(form?.createdAt ?? '').getFullYear()}
+            </span>
           </div>
         </div>
-      </PageWrapper>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4 text-center">
+            <p className="text-sm text-gray-400">Total de Questões</p>
+            <p className="text-2xl font-medium text-gray-800">
+              {form?._count.questions ?? 0}
+            </p>
+          </div>
+          <div className="h-8 border-r border-gray-300"></div>
+          <div className="flex items-center gap-4 text-center">
+            <p className="text-sm text-gray-400">Total de Sessões</p>
+            <p className="text-2xl font-medium text-gray-800">
+              {form?._count.sessions ?? 0}
+            </p>
+          </div>
+          <div className="h-8 border-r border-gray-300"></div>
+          <div className="text-center">
+            <p className="text-sm text-gray-400">Status</p>
+            <p className="text-2xl font-medium text-gray-800">
+              {form?.active ? 'Ativo' : 'Inativo'}
+            </p>
+          </div>
+        </div>
+      </Card>
+
+      <h2 className="mb-4 text-xl font-semibold">Lista de Perguntas</h2>
+      <div className="overflow-x-auto">
+        <table className="w-full text-left text-sm text-gray-500">
+          <thead className="bg-gray-50 text-xs uppercase text-gray-700">
+            <tr>
+              <th scope="col" className="px-6 py-3">
+                Pergunta
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Tipo
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Respostas
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Obrigatória
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Ações
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {form?.questions.map((question) => (
+              <tr key={question.id} className="border-b bg-white">
+                <td className="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
+                  {question.text}
+                </td>
+                <td className="px-6 py-4">{question.questionType.label}</td>
+                <td className="px-6 py-4">{question._count.responses}</td>
+                <td className="px-6 py-4">
+                  {question?.required ? 'Sim' : 'Não'}
+                </td>
+                <td className="px-6 py-4">
+                  <Link
+                    href={`/forms/${params.id}/questions/${question.id}`}
+                    className="flex items-center gap-2 hover:text-primary/80"
+                  >
+                    <EyeIcon className="h-4 w-4" />
+                    Detalhes
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </>
   )
 }

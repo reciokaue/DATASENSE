@@ -12,14 +12,12 @@ import { Pagination } from '@/src/components/pagination'
 import { Button } from '@/src/components/ui/button'
 import { Input } from '@/src/components/ui/input'
 import { Skeleton } from '@/src/components/ui/skeleton'
-import { useAuth } from '@/src/contexts/Auth'
 import { debounce } from '@/src/utils/debounce'
 
-import { PageHeader, PageWrapper } from '../layout'
+import { PageWrapper } from '../layout'
 import { Card } from './card'
 
 export default function Dashboard() {
-  const { logout } = useAuth()
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
@@ -50,12 +48,6 @@ export default function Dashboard() {
 
   return (
     <>
-      <PageHeader>
-        Aqui é o header{' '}
-        <Button onClick={logout} className="ml-auto">
-          Logout
-        </Button>
-      </PageHeader>
       <PageWrapper>
         <div className="flex w-full items-center space-x-3">
           <div className="w-full">

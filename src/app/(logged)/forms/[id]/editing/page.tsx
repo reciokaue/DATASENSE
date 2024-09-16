@@ -58,14 +58,14 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     <>
       <PageHeader>
-        <Button
+        {/* <Button
           onClick={navigation.back}
           variant="ghost"
           size="icon"
           className="mr-2 rounded-full text-primary/60"
         >
           <ChevronLeftCircleIcon />
-        </Button>
+        </Button> */}
         <h2 className="w-full text-xl font-semibold text-primary">
           {form?.name}
         </h2>
@@ -75,8 +75,7 @@ export default function Page({ params }: { params: { id: string } }) {
           <ExternalLink className="size-4" />
         </Button>
       </PageHeader>
-      <PageWrapper>
-        {JSON.stringify(form)}
+      <div>
         {questions && (
           <SortableList
             items={questions}
@@ -95,7 +94,7 @@ export default function Page({ params }: { params: { id: string } }) {
             )}
           />
         )}
-      </PageWrapper>
+      </div>
     </>
   )
 }
