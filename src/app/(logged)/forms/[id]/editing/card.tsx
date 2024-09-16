@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Copy, Loader2, Trash2 } from 'lucide-react'
+import { Check, Copy, Loader2, Trash2 } from 'lucide-react'
 import { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -35,26 +35,29 @@ export function Card({ question, formId }: CardProps) {
 
   const { register, control, reset, formState, watch, getValues } = questionForm
 
-  const { mutateAsync: onUpdateQuestion, isPending: isQuestionUpdating } =
-    useMutation({
-      mutationFn: updateQuestion,
-      onSuccess(data) {
-        queryClient.setQueryData(['form', formId], (oldData: FormDTO) => {
-          return {
-            ...oldData,
-            questions: oldData.questions.map((question) => {
-              if (question.id === data.data.id) return data.data
-              else return question
-            }),
-          }
-        })
-        reset(data.data)
-      },
-      onError: (err, newQuestion) => {
-        console.log(newQuestion, err)
-        reset(newQuestion)
-      },
-    })
+  const {
+    mutateAsync: onUpdateQuestion,
+    isPending: isQuestionUpdating,
+    isSuccess,
+  } = useMutation({
+    mutationFn: updateQuestion,
+    onSuccess(data) {
+      // queryClient.setQueryData(['form', formId], (oldData: FormDTO) => {
+      //   return {
+      //     ...oldData,
+      //     questions: oldData.questions.map((question) => {
+      //       if (question.id === data.data.id) return data.data
+      //       else return question
+      //     }),
+      //   }
+      // })
+      reset(data.data)
+    },
+    onError: (err, newQuestion) => {
+      console.log(newQuestion, err)
+      reset(newQuestion)
+    },
+  })
 
   function handleCloneQuestion(e: any) {
     e.preventDefault()
@@ -72,10 +75,10 @@ export function Card({ question, formId }: CardProps) {
   }
 
   const debouncedSaveData = useCallback(
-    debounce(() => {
+    debounce(async () => {
       const data = questionSchema.parse(getValues())
-      onUpdateQuestion(data)
-    }, 1000),
+      await onUpdateQuestion(data)
+    }, 1500),
     [],
   )
   useEffect(() => {
@@ -91,6 +94,7 @@ export function Card({ question, formId }: CardProps) {
       {isQuestionUpdating && (
         <Loader2 className="absolute right-6 top-6 size-4 animate-spin" />
       )}
+      {isSuccess && <Check className="absolute right-6 top-6 size-4" />}
       <div
         className={`absolute bottom-4 right-4 size-4 h-4 w-4 rounded-full ${formState.isDirty ? 'bg-red-500' : 'bg-green-500'}`}
       />
@@ -107,7 +111,6 @@ export function Card({ question, formId }: CardProps) {
       <footer className="mt-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           Obrigatória <ControlledSwitch control={control} />
-          {watch('required') ? 'TRUE' : 'FALSE'}
         </div>
 
         <div>

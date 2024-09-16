@@ -1,36 +1,53 @@
 'use client'
 
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { ChevronLeftCircleIcon, ExternalLink } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Check, Loader2 } from 'lucide-react'
 import { useCallback, useState } from 'react'
 
 import { getForm } from '@/src/api/get-form'
 import { reorderQuestions } from '@/src/api/reorder-questions'
 import { SortableItem } from '@/src/components/sortable/sortable-item'
 import { SortableList } from '@/src/components/sortable/sortable-list'
-import { Button } from '@/src/components/ui/button'
+import { Skeleton } from '@/src/components/ui/skeleton'
 import { FormDTO } from '@/src/DTOs/form'
 import { QuestionDTO } from '@/src/DTOs/question'
 import { debounce } from '@/src/utils/debounce'
 
-import { PageHeader, PageWrapper } from '../../../layout'
 import { Card } from './card'
 
 export default function Page({ params }: { params: { id: string } }) {
   const [questions, setQuestions] = useState<QuestionDTO[]>([])
+  // const [previousQuestions, setPreviousQuestions] = useState<QuestionDTO[]>([])
 
   const queryClient = useQueryClient()
-  const navigation = useRouter()
   const formId = +params.id
 
   const { data: form } = useQuery({
     queryKey: ['form', formId],
     queryFn: async () => {
       const data = await getForm(formId)
-      setQuestions(data.questions)
+      setQuestions(data?.questions || [])
       return data
     },
+  })
+
+  const { mutateAsync, isPending, isSuccess } = useMutation({
+    mutationFn: async (newOrder: number[]) => {
+      await reorderQuestions({
+        formId,
+        newOrder,
+      })
+    },
+    // onMutate: (newOrder) => {
+    //   setPreviousQuestions(questions)
+    // },
+    // onError: () => {
+    //   setQuestions(previousQuestions)
+    //   queryClient.setQueryData(['form', formId], (old: FormDTO) => ({
+    //     ...old,
+    //     questions: previousQuestions,
+    //   }))
+    // },
   })
 
   function onChangeOrder(data: any) {
@@ -43,58 +60,47 @@ export default function Page({ params }: { params: { id: string } }) {
   }
 
   const saveReorderChanges = useCallback(
-    debounce((data) => {
-      queryClient.setQueryData(['form', formId], (old: FormDTO) => {
-        return {
-          ...old,
-          questions: data,
-        }
-      })
-      reorderQuestions(data)
-    }, 2000),
+    debounce(async (data) => {
+      queryClient.setQueryData(['form', formId], (old: FormDTO) => ({
+        ...old,
+        questions: data,
+      }))
+      const newQuestionsOrderIds = data.map(
+        (question: QuestionDTO) => question.id,
+      )
+      await mutateAsync(newQuestionsOrderIds)
+    }, 3500),
     [],
   )
 
   return (
-    <>
-      <PageHeader>
-        {/* <Button
-          onClick={navigation.back}
-          variant="ghost"
-          size="icon"
-          className="mr-2 rounded-full text-primary/60"
-        >
-          <ChevronLeftCircleIcon />
-        </Button> */}
-        <h2 className="w-full text-xl font-semibold text-primary">
-          {form?.name}
-        </h2>
-
-        <Button>
-          Compartilhar
-          <ExternalLink className="size-4" />
-        </Button>
-      </PageHeader>
-      <div>
-        {questions && (
-          <SortableList
-            items={questions}
-            onChange={onChangeOrder}
-            renderItem={(item) => (
-              <SortableItem
-                sortableId={item.id}
-                className="flex items-center gap-2"
-              >
-                <Card
-                  key={`question-${item.id}`}
-                  question={item}
-                  formId={+params.id}
-                />
-              </SortableItem>
-            )}
-          />
-        )}
-      </div>
-    </>
+    <div className="relative flex flex-col">
+      {isPending && (
+      <Loader2 className="absolute -top-2 right-14 z-10 size-4 animate-spin" />
+      )}
+      {isSuccess && <Check className="absolute -top-2 right-14 z-10 size-4" />}
+      {questions ? (
+        <SortableList
+          items={questions}
+          onChange={onChangeOrder}
+          renderItem={(item) => (
+            <SortableItem
+              sortableId={item.id}
+              className="flex items-center gap-2"
+            >
+              <Card
+                key={`question-${item.id}`}
+                question={item}
+                formId={+params.id}
+              />
+            </SortableItem>
+          )}
+        />
+      ) : (
+        [0, 1, 2].map((i) => (
+          <Skeleton className="mx-4 my-2 h-40 w-full" key={i} />
+        ))
+      )}
+    </div>
   )
 }

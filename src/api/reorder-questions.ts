@@ -1,7 +1,7 @@
 import { api } from '../lib/api'
 
 interface ReorderQuestionsProps {
-  formId: string
+  formId: number
   newOrder: number[]
 }
 
