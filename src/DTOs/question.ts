@@ -8,7 +8,7 @@ export interface QuestionDTO {
   required: boolean
   questionType: QuestionTypeDTO
   options: OptionDTO[]
-  _count: {
+  _count?: {
     responses: number
   }
 }

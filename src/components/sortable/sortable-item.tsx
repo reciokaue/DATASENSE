@@ -10,7 +10,6 @@ import React, { createContext, useContext, useMemo } from 'react'
 
 interface Props extends HTMLProps<HTMLLIElement> {
   sortableId: UniqueIdentifier
-  isEditing?: boolean
 }
 
 interface Context {
@@ -28,7 +27,6 @@ const SortableItemContext = createContext<Context>({
 export function SortableItem({
   children,
   sortableId,
-  isEditing = true,
   ...rest
 }: PropsWithChildren<Props>) {
   const {
@@ -49,22 +47,23 @@ export function SortableItem({
     [attributes, listeners, setActivatorNodeRef],
   )
   const style: CSSProperties = {
-    opacity: isDragging ? 0.4 : undefined,
+    // opacity: isDragging ? 0.8 : undefined,
+    zIndex: isDragging ? 1000 : undefined,
     transform: CSS.Translate.toString(transform),
     transition,
   }
 
   return (
-    <SortableItemContext.Provider value={context}>
+    <SortableItemContext.Provider key={sortableId} value={context}>
       <li
         id={`sortable-${sortableId}`}
-        className="flex flex-grow items-center "
+        className="flex flex-grow items-center"
         ref={setNodeRef}
         style={style}
         {...rest}
       >
         {children}
-        {isEditing ? <DragHandle /> : null}
+        <DragHandle />
       </li>
     </SortableItemContext.Provider>
   )
@@ -74,14 +73,13 @@ export function DragHandle() {
   const { attributes, listeners, ref } = useContext(SortableItemContext)
 
   return (
-    <button
+    <div
       className="x-1 ml-1 rounded-sm py-2 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
       {...attributes}
       {...listeners}
       ref={ref}
-      onClick={(e) => e.preventDefault()}
     >
       <GripVertical className="h-5 w-5" />
-    </button>
+    </div>
   )
 }

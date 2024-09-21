@@ -17,7 +17,7 @@ export function Sidebar({ formId }: { formId: string }) {
   const type = pathname.split('/').pop()
 
   return (
-    <aside className="flex min-w-48 flex-col  bg-white pr-3">
+    <aside className="flex min-w-48 flex-col bg-white pl-5 pr-3 pt-6">
       <section className="flex flex-col space-y-2">
         {links.map((link) => {
           const Icon = link.icon

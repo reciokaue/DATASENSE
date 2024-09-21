@@ -8,9 +8,11 @@ export default function FormLayout({
   params: { id: string }
 }) {
   return (
-    <div className="mx-auto flex h-full w-full max-w-screen-xl  p-6 ">
+    <div className="mx-auto flex h-full w-full max-w-screen-xl ">
       <Sidebar formId={params.id} />
-      <div className="flex w-full flex-col gap-3">{children}</div>
+      <div className="flex w-full flex-col gap-3 bg-gray-50 p-6">
+        {children}
+      </div>
     </div>
   )
 }

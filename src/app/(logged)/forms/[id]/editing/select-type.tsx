@@ -8,9 +8,10 @@ import { Dropdown } from '@/src/components/ui/select'
 
 interface SelectProps {
   control: any
+  name: string
 }
 
-export function SelectQuestionType({ control }: SelectProps) {
+export function SelectQuestionType({ control, name }: SelectProps) {
   const { data: questionTypes } = useQuery({
     queryKey: ['questionTypes'],
     queryFn: getQuestionTypes,
@@ -20,13 +21,13 @@ export function SelectQuestionType({ control }: SelectProps) {
     <div className="flex flex-col  items-start gap-2">
       <Controller
         control={control}
-        name="questionType"
+        name={name}
         render={(questionType) => (
           <Dropdown
             setSelected={(type: string) =>
               questionType.field.onChange(JSON.parse(type))
             }
-            placeholder={control._fields.questionType._f.value.label}
+            placeholder={questionType.field.value.label}
             options={questionTypes}
           />
         )}
