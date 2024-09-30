@@ -27,7 +27,7 @@ export function SelectQuestionType({ control, name }: SelectProps) {
             setSelected={(type: string) =>
               questionType.field.onChange(JSON.parse(type))
             }
-            placeholder={questionType.field.value.label}
+            placeholder={questionType?.field?.value?.label}
             options={questionTypes}
           />
         )}

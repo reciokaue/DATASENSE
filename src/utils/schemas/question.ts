@@ -7,10 +7,10 @@ export const questionSchema = z.object({
   id: z.coerce.number().positive().int().optional(),
   text: z.string(),
   index: z.number().optional().default(0),
-  formId: z.coerce.number().positive().int().optional(),
   questionType: questionTypeSchema.optional(),
-  options: z.array(optionSchema).optional(),
   required: z.boolean().default(false),
+  formId: z.coerce.number().positive().int().optional(),
+  options: z.array(optionSchema).optional(),
 })
 
 export const questionSchemaArray = z.object({

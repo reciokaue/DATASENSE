@@ -18,7 +18,7 @@ api.interceptors.response.use(
       return Promise.reject(
         new AppError(
           error.response.data.message,
-          error.response.data?.description || '',
+          error.response.data?.description || error,
         ),
       )
     } else {

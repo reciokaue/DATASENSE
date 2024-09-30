@@ -3,11 +3,10 @@
 import { useQuery } from '@tanstack/react-query'
 import { EyeIcon } from 'lucide-react'
 import Link from 'next/link'
+import React from 'react'
 
 import { getForm } from '@/src/api/get-form'
 import { Card } from '@/src/components/ui/card'
-
-import { PageWrapper } from '../../layout'
 
 export default function FormAnalyticsPage({
   params,
@@ -85,7 +84,7 @@ export default function FormAnalyticsPage({
                   {question.text}
                 </td>
                 <td className="px-6 py-4">{question.questionType.label}</td>
-                <td className="px-6 py-4">{question._count.responses}</td>
+                <td className="px-6 py-4">{question._count?.responses ?? 0}</td>
                 <td className="px-6 py-4">
                   {question?.required ? 'Sim' : 'Não'}
                 </td>
