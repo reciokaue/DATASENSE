@@ -45,7 +45,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   async function login(email: string, password: string, remember?: boolean) {
     try {
       const response = await api.post('/login', { email, password })
-      const decoded: any = await jwtDecode(response.data)
 
       setCookie('datasense-token', response.data)
       api.defaults.headers.common.Authorization = `Bearer ${response.data}`
@@ -53,8 +52,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (remember) {
         localStorage.setItem('datasense_email', email)
       }
-      if (decoded.access > 0) router.push('/admin/forms')
-      else router.push('/forms')
+      router.push('/forms')
     } catch (e: any) {
       const isAppError = e instanceof AppError
       console.log(e)

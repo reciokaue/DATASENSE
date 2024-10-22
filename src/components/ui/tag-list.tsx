@@ -16,6 +16,7 @@ interface TagListProps extends HTMLProps<HTMLDivElement> {
   variant?: 'default' | 'secondary' | 'destructive' | 'outline' | 'ghost'
   onTagClick: (tag: TopicDTO) => void
   loading?: boolean
+  loadingSize?: number
 }
 
 export function TagList({
@@ -25,6 +26,7 @@ export function TagList({
   variant = 'secondary',
   onTagClick,
   loading = false,
+  loadingSize,
   ...rest
 }: TagListProps) {
   return (
@@ -36,7 +38,7 @@ export function TagList({
       )}
     >
       {loading
-        ? Array.from({ length: 25 }).map((_, index) => (
+        ? Array.from({ length: loadingSize || 25 }).map((_, index) => (
             <Skeleton
               key={index}
               className="h-5"

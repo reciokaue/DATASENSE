@@ -20,7 +20,8 @@ interface TopicPickerProps {
   placeholder?: string
   selectedTopics: TopicDTO[]
   setSelectedTopics: (data: TopicDTO[]) => void
-  onClose: (data: TopicDTO[]) => void
+  onClose?: (data: TopicDTO[]) => void
+  triggerProps?: object
 }
 
 export function TopicPicker({
@@ -28,6 +29,7 @@ export function TopicPicker({
   selectedTopics,
   setSelectedTopics,
   onClose,
+  triggerProps,
 }: TopicPickerProps) {
   const queryClient = useQueryClient()
 
@@ -55,7 +57,7 @@ export function TopicPicker({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>{placeholder || 'Selecionar tópicos'}</Button>
+        <Button {...triggerProps}>{placeholder || 'Selecionar tópicos'}</Button>
       </DialogTrigger>
       <DialogContent
         onInteractOutside={() => onClose(selectedTopics)}
