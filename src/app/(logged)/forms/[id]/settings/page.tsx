@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQuery } from '@tanstack/react-query'
+import { Eye } from 'lucide-react'
 import { Controller, useForm } from 'react-hook-form'
 
 import { getForm } from '@/src/api/get-form'
@@ -97,6 +98,9 @@ export default function SettingsPage({ params }: { params: { id: string } }) {
       <section className="flex flex-col space-y-4 p-3">
         <h2 className="text-xl font-normal">Banner</h2>
         <ImagePicker />
+        <Button className="ml-auto w-fit" variant="outline">
+          Visualizar <Eye />
+        </Button>
       </section>
       <Separator />
       <section className="flex flex-col space-y-4 p-3">
