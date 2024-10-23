@@ -39,15 +39,15 @@ export default function Login() {
     await login(data.email, data.password, data.rememberMe || false)
   }
 
-  // useEffect(() => {
-  //   async function getLoginInfo() {
-  //     const email = localStorage.getItem('datasense_email')
-  //     if (email !== '') setValue('rememberMe', true)
-  //     setValue('email', email || '')
-  //   }
+  useEffect(() => {
+    async function getLoginInfo() {
+      const email = localStorage.getItem('datasense_email')
+      if (email !== '') setValue('rememberMe', true)
+      setValue('email', email || '')
+    }
 
-  //   getLoginInfo()
-  // }, [setValue])
+    getLoginInfo()
+  }, [setValue])
 
   return (
     <section

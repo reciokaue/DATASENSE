@@ -1,76 +1,32 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useQuery } from '@tanstack/react-query'
 import { Eye } from 'lucide-react'
-import { Controller, useForm } from 'react-hook-form'
 
 import { getForm } from '@/src/api/get-form'
 import { TopicPicker } from '@/src/components/topic-picker'
 import { Button } from '@/src/components/ui/button'
-import { Input } from '@/src/components/ui/input'
 import { Separator } from '@/src/components/ui/separator'
 import { Switch } from '@/src/components/ui/switch'
 import { TagList } from '@/src/components/ui/tag-list'
-import { Textarea } from '@/src/components/ui/textarea'
-import { TopicDTO } from '@/src/DTOs/topic'
-import { formSchema, formSchemaType } from '@/src/utils/schemas/form'
 
+import { Description } from './description'
 import ImagePicker from './image-picker'
 
 export default function SettingsPage({ params }: { params: { id: string } }) {
-  const formId = +params.id
-
-  const { data: form, isLoading } = useQuery({
+  const { data: form } = useQuery({
     queryKey: ['form', params.id],
-    queryFn: async () => {
-      const data = await getForm(formId)
-      reset(form)
-      return data
-    },
-  })
-
-  const {
-    register,
-    handleSubmit,
-    control,
-    reset,
-    formState: { errors },
-  } = useForm<formSchemaType>({
-    resolver: zodResolver(formSchema),
+    queryFn: () => getForm(params.id),
   })
 
   return (
     <div className="flex h-full flex-col pb-10">
-      <h1 className="text-2xl font-medium">Configurações</h1>
+      <h1 className="text-2xl font-medium">Configurações {form?.name}</h1>
       <Separator />
-      <form className="flex flex-col space-y-4 p-3">
+      <section className="flex flex-col space-y-4 p-3">
         <h2 className="text-xl font-normal">Descrição</h2>
-        <div>
-          <Input
-            type="text"
-            id="name"
-            placeholder="Nome"
-            className="max-w-lg"
-            {...register('name')}
-          />
-          {errors.name && (
-            <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
-          )}
-        </div>
-
-        <div>
-          <Textarea
-            className="h-32 max-w-2xl resize-none"
-            id="about"
-            placeholder="Fale sobre o foco do formulário"
-            {...register('about')}
-          />
-          {errors.about && (
-            <p className="mt-1 text-sm text-red-500">{errors.about.message}</p>
-          )}
-        </div>
-      </form>
+        <Description form={form} />
+      </section>
       <Separator />
       <section className="flex flex-col space-y-4 p-3">
         <h2 className="text-xl font-normal">Tópicos</h2>
