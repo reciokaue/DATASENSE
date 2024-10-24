@@ -1,12 +1,13 @@
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { Check, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import * as React from 'react'
 
 import { cn } from '@/src/lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center gap-2 justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex relative items-center gap-2 justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
@@ -40,17 +41,40 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
   link?: string
+  isLoading?: boolean
+  isSuccess?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, link, ...props }, ref) => {
+  (
+    {
+      className,
+      variant,
+      size,
+      isLoading,
+      isSuccess,
+      asChild = false,
+      link,
+      ...props
+    },
+    ref,
+  ) => {
     const Comp = asChild ? Slot : 'button'
     const buttonElement = (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
-      />
+      >
+        {props.children}
+        {isLoading ? (
+          <div className="absolute flex w-full justify-center bg-inherit">
+            <Loader2 className=" size-4 animate-spin" />
+          </div>
+        ) : (
+          isSuccess && <Check className="size-4" />
+        )}
+      </Comp>
     )
 
     return !link ? buttonElement : <Link href={link}>{buttonElement}</Link>

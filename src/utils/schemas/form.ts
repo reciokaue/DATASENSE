@@ -6,7 +6,7 @@ import { topicSchema } from './topic'
 export const formSchema = z.object({
   id: z.coerce.number().positive().int().optional(),
   name: z.string(),
-  about: z.string().nullable().optional(),
+  about: z.string().nullable().optional().default(''),
   active: z.boolean().nullable().optional().default(false),
   isPublic: z.boolean().optional().default(false),
   createdAt: z.string().nullable().optional(),

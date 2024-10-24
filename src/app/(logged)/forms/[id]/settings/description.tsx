@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Loader2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 import { updateForm } from '@/src/api/update-form'
@@ -39,12 +38,7 @@ export function Description({ form }: DescriptionProps) {
   })
 
   const updateFormMutation = useMutation({
-    mutationFn: (form: any) =>
-      updateForm({
-        id: form?.id,
-        name: form.name,
-        about: form.about || '',
-      }),
+    mutationFn: (form: any) => updateForm(form),
     onError: (err, updatingForm) => {
       console.log(updatingForm, err)
     },
@@ -54,16 +48,12 @@ export function Description({ form }: DescriptionProps) {
     reset(form)
   }
 
-  async function onSaveData(data: formSchemaType) {
-    const { name, about } = data
-    if (name === form?.name && about === form.about && form.id) return
-
-    await updateFormMutation.mutateAsync(data)
-
+  async function onSaveData({ name, about }: formSchemaType) {
+    const newForm = { id: form?.id, name, about }
+    await updateFormMutation.mutateAsync(newForm)
     queryClient.setQueryData(['form', String(form?.id)], {
+      ...newForm,
       ...form,
-      name,
-      about,
     })
   }
 
@@ -93,12 +83,13 @@ export function Description({ form }: DescriptionProps) {
         )}
       </div>
       <footer className="flex flex-row-reverse items-center justify-start gap-4">
-        <Button type="submit" className="min-w-20">
-          {updateFormMutation.isPending ? (
-            <Loader2 className="size-4 animate-spin" />
-          ) : (
-            'Salvar'
-          )}
+        <Button
+          type="submit"
+          className="min-w-20"
+          isLoading={updateFormMutation.isPending}
+          isSuccess={updateFormMutation.isSuccess}
+        >
+          Salvar
         </Button>
         <Button onClick={handleCancel} type="button" variant="outline">
           Cancelar
