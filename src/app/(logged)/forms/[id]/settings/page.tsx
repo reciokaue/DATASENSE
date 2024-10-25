@@ -4,14 +4,13 @@ import { useQuery } from '@tanstack/react-query'
 import { Eye } from 'lucide-react'
 
 import { getForm } from '@/src/api/get-form'
-import { TopicPicker } from '@/src/components/topic-picker'
 import { Button } from '@/src/components/ui/button'
 import { Separator } from '@/src/components/ui/separator'
 import { Switch } from '@/src/components/ui/switch'
-import { TagList } from '@/src/components/ui/tag-list'
 
 import { Description } from './description'
 import ImagePicker from './image-picker'
+import { Topics } from './topics'
 
 export default function SettingsPage({ params }: { params: { id: string } }) {
   const { data: form } = useQuery({
@@ -21,7 +20,7 @@ export default function SettingsPage({ params }: { params: { id: string } }) {
 
   return (
     <div className="flex h-full flex-col pb-10">
-      <h1 className="text-2xl font-medium">Configurações {form?.name}</h1>
+      <h1 className="text-2xl font-medium">Configurações</h1>
       <Separator />
       <section className="flex flex-col space-y-4 p-3">
         <h2 className="text-xl font-normal">Descrição</h2>
@@ -30,25 +29,7 @@ export default function SettingsPage({ params }: { params: { id: string } }) {
       <Separator />
       <section className="flex flex-col space-y-4 p-3">
         <h2 className="text-xl font-normal">Tópicos</h2>
-        <TagList
-          className="max-w-full"
-          tags={form?.topics || []}
-          loading={!form?.topics}
-          loadingSize={10}
-          variant="default"
-          icon="no-icon"
-          onTagClick={() => {}}
-        />
-
-        <TopicPicker
-          setSelectedTopics={() => {}}
-          selectedTopics={[]}
-          onClose={() => {}}
-          triggerProps={{
-            variant: 'outline',
-            className: 'w-fit',
-          }}
-        />
+        <Topics form={form} />
       </section>
       <Separator />
       <section className="flex flex-col space-y-4 p-3">

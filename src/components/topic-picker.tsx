@@ -20,7 +20,7 @@ interface TopicPickerProps {
   placeholder?: string
   selectedTopics: TopicDTO[]
   setSelectedTopics: (data: TopicDTO[]) => void
-  onClose?: (data: TopicDTO[]) => void
+  onClose: (data: TopicDTO[]) => void
   triggerProps?: object
 }
 
