@@ -48,8 +48,8 @@ export function Description({ form }: DescriptionProps) {
     reset(form)
   }
 
-  async function onSaveData({ name, about }: formSchemaType) {
-    const newForm = { id: form?.id, name, about }
+  async function onSaveData({ name, description }: formSchemaType) {
+    const newForm = { id: form?.id, name, description }
     await updateFormMutation.mutateAsync(newForm)
     queryClient.setQueryData(['form', String(form?.id)], {
       ...newForm,
@@ -74,12 +74,12 @@ export function Description({ form }: DescriptionProps) {
       <div>
         <Textarea
           className="h-32 max-w-2xl resize-none"
-          id="about"
+          id="description"
           placeholder="Fale sobre o foco do formulário"
-          {...register('about')}
+          {...register('description')}
         />
-        {errors.about && (
-          <p className="mt-1 text-sm text-red-500">{errors.about.message}</p>
+        {errors.description && (
+          <p className="mt-1 text-sm text-red-500">{errors.description.message}</p>
         )}
       </div>
       <footer className="flex flex-row-reverse items-center justify-start gap-4">

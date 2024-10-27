@@ -4,7 +4,7 @@ import { TopicDTO } from './topic'
 export interface FormDTO {
   id: number
   name: string
-  about: string
+  description: string
   active: boolean
   logoUrl: string
   isPublic: boolean

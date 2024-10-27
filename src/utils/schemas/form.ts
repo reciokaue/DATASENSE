@@ -6,7 +6,7 @@ import { topicSchema } from './topic'
 export const formSchema = z.object({
   id: z.coerce.number().positive().int().optional(),
   name: z.string(),
-  about: z.string().nullable().optional().default(''),
+  description: z.string().nullable().optional().default(''),
   active: z.boolean().nullable().optional().default(false),
   isPublic: z.boolean().optional().default(false),
   createdAt: z.string().nullable().optional(),
@@ -18,7 +18,7 @@ export const formSchema = z.object({
 
 export const createFormSchema = z.object({
   name: z.string().min(1, { message: 'O nome é obrigatório' }),
-  about: z.string().nullable().optional(),
+  description: z.string().nullable().optional(),
   topics: z
     .array(topicSchema)
     .min(1, { message: 'Selecione pelo menos um tópico' }),

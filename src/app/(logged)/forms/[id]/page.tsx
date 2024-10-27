@@ -1,12 +1,15 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import { EyeIcon } from 'lucide-react'
-import Link from 'next/link'
+import { Loader2 } from 'lucide-react'
 import React from 'react'
 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getForm } from '@/src/api/get-form'
-import { Card } from '@/src/components/ui/card'
+
+import { Config } from './pages/config'
+import { Questions } from './pages/questions'
+import { Responses } from './pages/responses'
 
 export default function FormAnalyticsPage({
   params,
@@ -19,89 +22,31 @@ export default function FormAnalyticsPage({
   })
 
   return (
-    <>
-      <Card className="mb-6 rounded-lg bg-white p-6">
-        <div className="mb-4 flex items-center justify-between">
-          <div className="flex items-center">
-            <h2 className="text-xl font-semibold">Informações do Formulário</h2>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-gray-500">
-              {new Date(form?.createdAt ?? '').getFullYear()}
-            </span>
-          </div>
-        </div>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4 text-center">
-            <p className="text-sm text-gray-400">Total de Questões</p>
-            <p className="text-2xl font-medium text-gray-800">
-              {form?._count.questions ?? 0}
-            </p>
-          </div>
-          <div className="h-8 border-r border-gray-300"></div>
-          <div className="flex items-center gap-4 text-center">
-            <p className="text-sm text-gray-400">Total de Sessões</p>
-            <p className="text-2xl font-medium text-gray-800">
-              {form?._count.sessions ?? 0}
-            </p>
-          </div>
-          <div className="h-8 border-r border-gray-300"></div>
-          <div className="text-center">
-            <p className="text-sm text-gray-400">Status</p>
-            <p className="text-2xl font-medium text-gray-800">
-              {form?.active ? 'Ativo' : 'Inativo'}
-            </p>
-          </div>
-        </div>
-      </Card>
+    <div className="flex h-full w-full flex-col gap-3 p-6">
+      <Tabs defaultValue="account" className="">
+        <TabsList className="mx-auto">
+          <TabsTrigger value="questions">Perguntas</TabsTrigger>
+          <TabsTrigger value="responses">Respostas</TabsTrigger>
+          <TabsTrigger value="config">Configurações</TabsTrigger>
+        </TabsList>
+        {JSON.stringify(form?.name)}
 
-      <h2 className="mb-4 text-xl font-semibold">Lista de Perguntas</h2>
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm text-gray-500">
-          <thead className="bg-gray-50 text-xs uppercase text-gray-700">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                Pergunta
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Tipo
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Respostas
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Obrigatória
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Ações
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {form?.questions.map((question) => (
-              <tr key={question.id} className="border-b bg-white">
-                <td className="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
-                  {question.text}
-                </td>
-                <td className="px-6 py-4">{question.questionType.label}</td>
-                <td className="px-6 py-4">{question._count?.responses ?? 0}</td>
-                <td className="px-6 py-4">
-                  {question?.required ? 'Sim' : 'Não'}
-                </td>
-                <td className="px-6 py-4">
-                  <Link
-                    href={`/forms/${params.id}/questions/${question.id}`}
-                    className="flex items-center gap-2 hover:text-primary/80"
-                  >
-                    <EyeIcon className="h-4 w-4" />
-                    Detalhes
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </>
+        {!form ? (
+          <Loader2 className="size-5 animate-spin" />
+        ) : (
+          <>
+            <TabsContent value="config">
+              <Config form={form} />
+            </TabsContent>
+            <TabsContent value="questions">
+              <Questions form={form} />
+            </TabsContent>
+            <TabsContent value="responses">
+              <Responses form={form} />
+            </TabsContent>
+          </>
+        )}
+      </Tabs>
+    </div>
   )
 }

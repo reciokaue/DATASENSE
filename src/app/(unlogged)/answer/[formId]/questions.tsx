@@ -30,28 +30,28 @@ export function Questions({ type, options }: QuestionsProps) {
 }
 
 // const questionType = [
-//   {
-//     id: 4,
-//     name: 'emoji',
-//     label: 'Emojis',
-//     icon: 'Smile',
-//   },
-//   {
-//     id: 1,
-//     name: 'options',
-//     label: 'Opções',
-//     icon: 'CircleDot',
-//   },
-//   {
-//     id: 2,
-//     name: 'multiple_choice',
-//     label: 'Multiplas opções',
-//     icon: 'CircleDot',
-//   },
-//   {
-//     id: 3,
-//     name: 'text',
-//     label: 'Texto',
-//     icon: 'Ampersand',
-//   },
+  // {
+  //   id: 4,
+  //   name: 'emoji',
+  //   label: 'Emojis',
+  //   icon: 'Smile',
+  // },
+  // {
+  //   id: 1,
+  //   name: 'options',
+  //   label: 'Opções',
+  //   icon: 'CircleDot',
+  // },
+  // {
+  //   id: 2,
+  //   name: 'multiple_choice',
+  //   label: 'Multiplas opções',
+  //   icon: 'CircleDot',
+  // },
+  // {
+  //   id: 3,
+  //   name: 'text',
+  //   label: 'Texto',
+  //   icon: 'Ampersand',
+  // },
 // ]

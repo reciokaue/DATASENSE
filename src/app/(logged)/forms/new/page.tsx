@@ -82,7 +82,7 @@ export default function NewForm() {
               tags={topics}
               variant="default"
               icon="no-icon"
-              onTagClick={() => {}}
+              onTagClick={() => { }}
             />
           )}
           <h1 className="flex items-center gap-2 text-xl font-bold leading-relaxed">
@@ -104,13 +104,13 @@ export default function NewForm() {
           <div>
             <Textarea
               className="h-32 resize-none"
-              id="about"
+              id="description"
               placeholder="Fale sobre o foco do formulário"
-              {...register('about')}
+              {...register('description')}
             />
-            {errors.about && (
+            {errors.description && (
               <p className="mt-1 text-sm text-red-500">
-                {errors.about.message}
+                {errors.description.message}
               </p>
             )}
           </div>

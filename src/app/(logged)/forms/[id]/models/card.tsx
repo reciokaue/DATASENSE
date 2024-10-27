@@ -22,7 +22,7 @@ export function Card({ form, ...rest }: CardProps) {
           {form.name}
         </h1>
         <p className="line-clamp-4 text-sm text-muted-foreground">
-          {form.about}
+          {form.description}
         </p>
       </div>
       <div className="flex items-center gap-3 p-6 pt-0 text-xs font-semibold text-muted-foreground">
