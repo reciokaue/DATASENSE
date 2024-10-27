@@ -110,10 +110,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         } as User)
 
         api.defaults.headers.common.Authorization = `Bearer ${token}`
-
-        if (pathname === '/login' || pathname === '/') router.push('/forms')
       } catch (e) {
-        router.push('/login')
+        router.push('/')
       }
     }
     loadData()

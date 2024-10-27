@@ -1,3 +1,3 @@
 export default function LandingPage() {
-  return <div className="flex"></div>
+  return <>Landing Page</>
 }
