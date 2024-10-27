@@ -5,6 +5,7 @@ interface GetCategoriesProps {
   page?: number
   pageSize?: number
   query?: string
+  parentId?: number
 }
 
 interface GetCategoriesData {
@@ -15,9 +16,10 @@ export async function getCategories({
   page = 0,
   pageSize = 10,
   query,
+  parentId,
 }: GetCategoriesProps): Promise<GetCategoriesData> {
   const response = await api.get('/category', {
-    params: { page, pageSize, query },
+    params: { page, pageSize, query, categoryId: parentId },
   })
   return { categories: response.data as Category[] }
 }

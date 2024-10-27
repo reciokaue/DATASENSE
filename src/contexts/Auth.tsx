@@ -12,8 +12,8 @@ import {
 } from 'react'
 
 import { useToast } from '../components/ui/use-toast'
-import { UserDTO } from '../DTOs/user'
 import { api } from '../lib/api'
+import { User } from '../models'
 import { AppError } from '../utils/AppError'
 
 interface AuthProviderProps {
@@ -21,7 +21,7 @@ interface AuthProviderProps {
 }
 
 interface AuthContextData {
-  user: UserDTO
+  user: User
   login: (email: string, password: string, remember?: boolean) => Promise<void>
   createAccount: (
     email: string,
@@ -34,7 +34,7 @@ interface AuthContextData {
 const AuthContext = createContext({} as AuthContextData)
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<UserDTO>({} as UserDTO)
+  const [user, setUser] = useState<User>({} as User)
 
   const router = useRouter()
   const pathname = usePathname()
@@ -90,7 +90,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function logout() {
     deleteCookie('datasense-token')
-    setUser({} as UserDTO)
+    setUser({} as User)
 
     await queryClient.cancelQueries()
     queryClient.clear()
@@ -107,7 +107,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setUser({
           ...decoded,
           id: decoded.sub,
-        } as UserDTO)
+        } as User)
 
         api.defaults.headers.common.Authorization = `Bearer ${token}`
 
