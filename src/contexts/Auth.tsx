@@ -22,7 +22,7 @@ interface AuthProviderProps {
 
 interface AuthContextData {
   user: User
-  login: (email: string, password: string, remember?: boolean) => Promise<void>
+  login: (email: string, password: string, remember: boolean) => Promise<void>
   createAccount: (
     email: string,
     password: string,
@@ -42,7 +42,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const { toast } = useToast()
 
-  async function login(email: string, password: string, remember?: boolean) {
+  async function login(email: string, password: string, remember: boolean) {
     try {
       const response = await api.post('/login', { email, password })
 
@@ -52,7 +52,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (remember) {
         localStorage.setItem('datasense_email', email)
       }
-      router.push('/forms')
+      router.push('/home')
     } catch (e: any) {
       const isAppError = e instanceof AppError
       console.log(e)
