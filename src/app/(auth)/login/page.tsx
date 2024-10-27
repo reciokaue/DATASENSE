@@ -1,3 +1,3 @@
 export default function LoginPage() {
-  return <div className="flex">Login</div>
+  return <div>Login</div>
 }
