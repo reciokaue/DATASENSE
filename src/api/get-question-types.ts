@@ -1,7 +1,7 @@
-import { QuestionTypeDTO } from '../DTOs/questionType'
 import { api } from '../lib/api'
+import { QuestionType } from '../models'
 
 export async function getQuestionTypes() {
   const response = await api.get(`/question-types`)
-  return response.data as QuestionTypeDTO[]
+  return response.data as QuestionType[]
 }

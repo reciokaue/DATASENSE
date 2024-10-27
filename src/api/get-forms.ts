@@ -1,5 +1,5 @@
-import { FormDTO } from '../DTOs/form'
 import { api } from '../lib/api'
+import { Form } from '../models'
 
 interface GetFormsProps {
   query?: string
@@ -15,7 +15,7 @@ interface GetFormsData {
     pageSize: number
     totalCount: number
   }
-  forms: FormDTO[]
+  forms: Form[]
 }
 
 export async function getForms({

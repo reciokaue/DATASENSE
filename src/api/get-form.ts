@@ -1,11 +1,7 @@
-import { FormDTO } from '../DTOs/form'
 import { api } from '../lib/api'
+import { Form } from '../models'
 
 export async function getForm(id: number | string) {
-  try {
-    const response = await api.get(`/form/${String(id)}`)
-    return response.data as FormDTO
-  } catch (error) {
-    console.log(error)
-  }
+  const response = await api.get(`/form/${String(id)}`)
+  return response.data as Form
 }
