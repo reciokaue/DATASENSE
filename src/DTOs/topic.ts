@@ -1,4 +1,5 @@
-export interface TopicDTO {
+export interface CategoryDTO {
   id: number
-  name: string
+  label: string
+  icon: string
 }

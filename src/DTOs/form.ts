@@ -10,7 +10,7 @@ export interface FormDTO {
   isPublic: boolean
   createdAt: string
   questions: QuestionDTO[]
-  topics: TopicDTO[]
+  category: TopicDTO[]
   _count: {
     questions: number
     sessions: number
