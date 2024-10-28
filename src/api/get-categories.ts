@@ -5,7 +5,7 @@ interface GetCategoriesProps {
   page?: number
   pageSize?: number
   query?: string
-  parentId?: number
+  parentId?: number | null
 }
 
 interface GetCategoriesData {
@@ -14,6 +14,7 @@ interface GetCategoriesData {
     page: number
     pageSize: number
     totalCount: number
+    parentId: number
   }
 }
 
@@ -23,8 +24,8 @@ export async function getCategories({
   query,
   parentId,
 }: GetCategoriesProps): Promise<GetCategoriesData> {
-  const response = await api.get('/category', {
-    params: { page, pageSize, query, categoryId: parentId },
+  const response = await api.get(`/categories`, {
+    params: { page, pageSize, query, parentId },
   })
   return response.data as GetCategoriesData
 }

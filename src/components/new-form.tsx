@@ -1,13 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
-import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { z } from 'zod'
 
-import { Form, FormSchema } from '../models'
+import { createNewForm } from '../api/create-new-form'
+import { FormSchema } from '../models'
 import { CategorySelector } from './category-selector'
-import { CopyFormSelector } from './copy-form-selector'
+import { TemplateSelector } from './template-selector'
 import { Button } from './ui/button'
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -19,15 +24,37 @@ import { Input } from './ui/input'
 import { Label } from './ui/label'
 import { Textarea } from './ui/textarea'
 
+const CreateFormSchema = FormSchema.pick({
+  name: true,
+  description: true,
+  categoryId: true,
+}).extend({
+  categoryId: z.number({ message: 'Campo obrigatório' }),
+  templateId: z.number().nullable().optional().default(null),
+})
+type CreateForm = z.infer<typeof CreateFormSchema>
+
 export function NewFormButton() {
+  const { push } = useRouter()
+
   const {
     register,
     handleSubmit,
     control,
-    watch,
     formState: { errors },
-  } = useForm<Form>({
-    resolver: zodResolver(FormSchema),
+  } = useForm<CreateForm>({
+    resolver: zodResolver(CreateFormSchema),
+  })
+  const onSubmit: SubmitHandler<CreateForm> = async (data) => {
+    const newForm = await newFormMutation.mutateAsync(data)
+    console.log(newForm)
+    push(`/form/${newForm.id}`)
+  }
+
+  const newFormMutation = useMutation({
+    mutationFn: async (data: CreateForm) => {
+      return await createNewForm(data, data.templateId)
+    },
   })
 
   return (
@@ -45,10 +72,10 @@ export function NewFormButton() {
             clique em &quot;Criar Formulário&quot; quando terminar.
           </DialogDescription>
         </DialogHeader>
-        <form className="mt-4 grid gap-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="mt-4 grid gap-4">
           <div className="flex flex-col items-start gap-2">
             <Label htmlFor="name" className="text-right">
-              Nome
+              Nome *
             </Label>
             <Input
               type="text"
@@ -57,7 +84,7 @@ export function NewFormButton() {
               {...register('name')}
             />
             {errors.name && (
-              <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
+              <p className="text-sm text-red-500">{errors.name.message}</p>
             )}
           </div>
           <div className="flex flex-col items-start gap-2">
@@ -71,18 +98,29 @@ export function NewFormButton() {
               {...register('description')}
             />
             {errors.description && (
-              <p className="mt-1 text-sm text-red-500">
+              <p className="text-sm text-red-500">
                 {errors.description.message}
               </p>
             )}
           </div>
           <div className="grid grid-cols-4 gap-4">
-            <CategorySelector setCategory={() => {}} />
-            <CopyFormSelector setCopyForm={() => {}} />
+            <CategorySelector
+              control={control}
+              name="categoryId"
+              parentId={null}
+              error={errors?.categoryId?.message}
+            />
+            <TemplateSelector name="templateId" control={control} />
           </div>
           <DialogFooter>
-            <Button variant="outline">Cancelar</Button>
-            <Button type="submit">Criar Formulário</Button>
+            <DialogClose asChild>
+              <Button variant="outline" disabled={newFormMutation.isPending}>
+                Cancelar
+              </Button>
+            </DialogClose>
+            <Button isLoading={newFormMutation.isPending} type="submit">
+              Criar Formulário
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

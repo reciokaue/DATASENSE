@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
+import { Controller } from 'react-hook-form'
 
 import { getCategories } from '../api/get-categories'
 import { Category } from '../models'
@@ -13,68 +14,78 @@ import {
 } from './ui/select'
 
 interface CategorySelectorProps {
-  setCategory: (category: Category | null) => void
+  control: any
+  name: string
+  parentId: number | null
+  error?: string
 }
 
-export function CategorySelector({ setCategory }: CategorySelectorProps) {
-  const [categoryIndex, setCategoryIndex] = useState<number>(null)
+export function CategorySelector({
+  control,
+  name,
+  parentId,
+  error,
+}: CategorySelectorProps) {
+  const [parentCategory, setParentCategory] = useState<Category | null>()
 
   const { data: result } = useQuery({
-    queryKey: ['categories'],
-    queryFn: () => getCategories({ pageSize: 100 }),
+    queryKey: ['categories', parentId],
+    queryFn: () => getCategories({ pageSize: 100, parentId }),
   })
-  function selectCategory(categoryIndex: string) {
-    setCategoryIndex(Number(categoryIndex))
-    setCategory(null)
-  }
-  function selectSubCategory(category: string) {
-    setCategory(JSON.parse(category))
-  }
 
   return (
     <div className="col-span-2 flex flex-col space-y-2">
-      <Label htmlFor="category">Categoria</Label>
-      <Label className="text-xs text-secondary-foreground">
-        Te ajuda a filtrar seus formulários e nos ajuda com as métricas
-      </Label>
-      <Select onValueChange={selectCategory}>
-        <SelectTrigger id="category" className="w-[280px]">
-          <SelectValue placeholder="Selecionar" />
-        </SelectTrigger>
-        <SelectContent>
-          {result &&
-            result.categories.map((category, index) => (
-              <SelectItem key={category.id} value={String(index)}>
-                {category.label}
-              </SelectItem>
-            ))}
-        </SelectContent>
-      </Select>
-      {categoryIndex !== null && (
-        <>
-          <Label htmlFor="sub-category" className="pt-2">
-            Subcategoria
-          </Label>
-          <Select onValueChange={selectSubCategory}>
-            <SelectTrigger id="sub-category" className="w-[280px]">
-              <SelectValue placeholder="Selecionar" />
-            </SelectTrigger>
-            <SelectContent>
-              {result &&
-                result.categories[categoryIndex].subcategories.map(
-                  (category) => (
-                    <SelectItem
-                      key={category.id}
-                      value={JSON.stringify(category)}
-                    >
-                      {category.label}
-                    </SelectItem>
-                  ),
-                )}
-            </SelectContent>
-          </Select>
-        </>
-      )}
+      <Controller
+        control={control}
+        name={name}
+        render={(category) => (
+          <>
+            <Label htmlFor="category">Categoria *</Label>
+
+            <SelectCategory
+              set={(data) => {
+                setParentCategory(data)
+                // category?.field.onChange(data)
+              }}
+              categories={result?.categories}
+            />
+            {parentCategory?.subcategories && (
+              <>
+                <Label htmlFor="category" className="pt-2">
+                  Subcategoria
+                </Label>
+                <SelectCategory
+                  set={(data) => category.field.onChange(data.id)}
+                  categories={parentCategory?.subcategories}
+                />
+              </>
+            )}
+          </>
+        )}
+      />
+      {error && <p className="text-sm text-red-500">{error}</p>}
     </div>
+  )
+}
+interface SelectCategoryProps {
+  set: (category: Category) => void
+  categories: Category[] | undefined
+}
+
+function SelectCategory({ set, categories }: SelectCategoryProps) {
+  return (
+    <Select onValueChange={(subcategory) => set(JSON.parse(subcategory))}>
+      <SelectTrigger id="category" className="w-[280px]">
+        <SelectValue placeholder="Selecionar" />
+      </SelectTrigger>
+      <SelectContent>
+        {categories &&
+          categories.map((category) => (
+            <SelectItem key={category.id} value={JSON.stringify(category)}>
+              {category.label}
+            </SelectItem>
+          ))}
+      </SelectContent>
+    </Select>
   )
 }

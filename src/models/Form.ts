@@ -9,12 +9,12 @@ import { QuestionSchema, questionSelect } from './Question'
 
 export const FormSchema = z.object({
   id: z.number().int(),
-  name: z.string(),
-  description: z.string().nullable(),
-  active: z.boolean(),
+  name: z.string().min(5, { message: 'No mínimo 5 caracteres' }),
+  description: z.string({ message: 'Campo obrigatório' }),
+  active: z.boolean().default(true),
   logoUrl: z.string().nullable(),
   isPublic: z.boolean().nullable().default(true),
-  createdAt: z.coerce.date().nullable(),
+  createdAt: z.coerce.date().nullable().default(null),
   userId: z.number().int().nullable(),
   category: CategorySchema.optional(),
   categoryId: z.number().optional(),
