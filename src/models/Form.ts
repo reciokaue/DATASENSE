@@ -1,12 +1,7 @@
-import { number, z } from 'zod'
+import { z } from 'zod'
 
 import { CategorySchema } from './Category'
-import {
-  questionCompareSelect,
-  QuestionSchema,
-  questionSchemaCreate,
-  questionSelect,
-} from './Question'
+import { QuestionSchema, questionSelect } from './Question'
 
 /// //////////////////////////////////////
 // FORM SCHEMA

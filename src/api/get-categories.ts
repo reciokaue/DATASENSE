@@ -10,6 +10,11 @@ interface GetCategoriesProps {
 
 interface GetCategoriesData {
   categories: Category[]
+  meta: {
+    page: number
+    pageSize: number
+    totalCount: number
+  }
 }
 
 export async function getCategories({
@@ -21,5 +26,5 @@ export async function getCategories({
   const response = await api.get('/category', {
     params: { page, pageSize, query, categoryId: parentId },
   })
-  return { categories: response.data as Category[] }
+  return response.data as GetCategoriesData
 }
