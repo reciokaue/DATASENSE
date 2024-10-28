@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 
 import { Form, FormSchema } from '../models'
 import { CategorySelector } from './category-selector'
+import { CopyFormSelector } from './copy-form-selector'
 import { Button } from './ui/button'
 import {
   Dialog,
@@ -38,12 +39,13 @@ export function NewFormButton() {
       </DialogTrigger>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Novo formulário</DialogTitle>
+          <DialogTitle className="text-2xl">Novo formulário</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+            Aqui você pode criar um novo formulário. Preencha os campos abaixo e
+            clique em &quot;Criar Formulário&quot; quando terminar.
           </DialogDescription>
         </DialogHeader>
-        <form className="grid gap-4 py-4">
+        <form className="mt-4 grid gap-4">
           <div className="flex flex-col items-start gap-2">
             <Label htmlFor="name" className="text-right">
               Nome
@@ -74,12 +76,15 @@ export function NewFormButton() {
               </p>
             )}
           </div>
-          <CategorySelector setCategory={() => {}} />
+          <div className="grid grid-cols-4 gap-4">
+            <CategorySelector setCategory={() => {}} />
+            <CopyFormSelector setCopyForm={() => {}} />
+          </div>
+          <DialogFooter>
+            <Button variant="outline">Cancelar</Button>
+            <Button type="submit">Criar Formulário</Button>
+          </DialogFooter>
         </form>
-        <DialogFooter>
-          <Button variant="outline">Cancelar</Button>
-          <Button type="submit">Criar Formulário</Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   )
