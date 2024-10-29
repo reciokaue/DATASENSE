@@ -5,20 +5,20 @@ import { UseFormReturn } from 'react-hook-form'
 
 import { Button } from '@/src/components/ui/button'
 import { Input } from '@/src/components/ui/input'
+import { Switch } from '@/src/components/ui/switch'
 import { Question } from '@/src/models'
 
-import { ControlledSwitch } from './controlled-switch'
 import { Options } from './options'
 import { SelectQuestionType } from './select-type'
 
 interface CardProps {
   question: Question | any
-  questionsForm: UseFormReturn<any>
+  formObject: UseFormReturn<any>
   index: number
 }
 
-export function EditCard({ question, questionsForm, index }: CardProps) {
-  const { register, control, setValue } = questionsForm
+export function EditCard({ question, formObject, index }: CardProps) {
+  const { register, control, setValue } = formObject
 
   setValue(`questions.${index}.index`, index)
 
@@ -38,12 +38,12 @@ export function EditCard({ question, questionsForm, index }: CardProps) {
         />
       </div>
 
-      <Options questionsForm={questionsForm} index={index} />
+      <Options formObject={formObject} index={index} />
 
       <footer className="mt-6 flex items-center justify-between">
         <div>
           {/* <Button variant="ghost" size="icon">
-            <CorneUpLeft className="size-5" />
+            <CornerUpLeft className="size-5" />
           </Button> */}
           <Button onClick={() => {}} variant="ghost" size="icon">
             <Copy className="size-5" />
@@ -54,10 +54,7 @@ export function EditCard({ question, questionsForm, index }: CardProps) {
         </div>
         <div className="flex items-center gap-2">
           Obrigatória
-          <ControlledSwitch
-            control={control}
-            name={`questions.${index}.required`}
-          />
+          <Switch control={control} name={`questions.${index}.required`} />
         </div>
       </footer>
     </form>

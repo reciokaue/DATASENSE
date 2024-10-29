@@ -7,12 +7,12 @@ import { Button } from '@/src/components/ui/button'
 import { Input } from '@/src/components/ui/input'
 
 interface OptionsProps {
-  questionsForm: UseFormReturn<any>
+  formObject: UseFormReturn<any>
   index: number
 }
 
-export function Options({ questionsForm, index }: OptionsProps) {
-  const { register, control, setValue } = questionsForm
+export function Options({ formObject, index }: OptionsProps) {
+  const { register, control, setValue } = formObject
 
   const { fields, append, remove, swap } = useFieldArray({
     control,

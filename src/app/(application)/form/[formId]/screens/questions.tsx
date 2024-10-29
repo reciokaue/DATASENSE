@@ -1,45 +1,39 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { UseMutationResult, UseQueryResult } from '@tanstack/react-query'
+import { AxiosResponse } from 'axios'
 import { Plus } from 'lucide-react'
-import { useFieldArray, useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { useFieldArray } from 'react-hook-form'
 
-import { getForm } from '@/src/api/get-form'
-import { updateForm } from '@/src/api/update-form'
 import { SortableItem } from '@/src/components/sortable/sortable-item'
 import { SortableList } from '@/src/components/sortable/sortable-list'
 import { Button } from '@/src/components/ui/button'
-import { Form, QuestionSchema } from '@/src/models'
+import { Skeleton } from '@/src/components/ui/skeleton'
+import { Form } from '@/src/models'
 
 import { EditCard } from '../components/edit-card'
 
 interface QuestionsProps {
-  formId: number
-  form: Form | undefined
-  questionsForm: any
+  form: UseQueryResult<Form | undefined, Error>
+  formObject: any
+  updateForm: UseMutationResult<AxiosResponse<any, any>, Error, any, unknown>
 }
 
-export function Questions({ formId, form, questionsForm }: QuestionsProps) {
-  const { reset, control } = questionsForm
-
+export function Questions({ form, formObject, updateForm }: QuestionsProps) {
+  const { reset, control } = formObject
   const { fields, append, swap } = useFieldArray({
     control,
     name: 'questions',
   })
 
-  const updateQuestionsMutation = useMutation({
-    mutationFn: (form: any) => updateForm(form),
-  })
-
   async function handleSaveQuestions() {
-    const data = questionsForm.getValues().questions
+    const data = formObject.getValues().questions
     const newForm = {
-      ...form,
+      ...form.data,
       questions: data,
     }
-    await updateQuestionsMutation.mutateAsync(newForm)
+    console.log(newForm)
+    await updateForm.mutateAsync(newForm)
     reset({ questions: data })
   }
 
@@ -55,7 +49,7 @@ export function Questions({ formId, form, questionsForm }: QuestionsProps) {
       required: false,
       options: [],
       index: fields.length,
-      formId,
+      formId: form.data?.id,
       id: -Math.round(Math.random() * 100),
     })
   }
@@ -68,7 +62,7 @@ export function Questions({ formId, form, questionsForm }: QuestionsProps) {
             onClick={handleSaveQuestions}
             variant="outline"
             className="bg-white text-black"
-            isLoading={updateQuestionsMutation.isPending}
+            isLoading={updateForm.isPending}
           >
             {' '}
             Salvar
@@ -92,20 +86,16 @@ export function Questions({ formId, form, questionsForm }: QuestionsProps) {
               sortableId={item.id}
               className="flex items-center gap-2"
             >
-              <EditCard
-                question={item}
-                questionsForm={questionsForm}
-                index={index}
-              />
+              <EditCard question={item} formObject={formObject} index={index} />
             </SortableItem>
           )}
         />
       )}
-      {/* 
-      {isLoading &&
+
+      {form.isPending &&
         [0, 1, 2].map((i) => (
           <Skeleton className="mx-4 my-2 mr-10 h-40 w-full" key={i} />
-        ))} */}
+        ))}
     </div>
   )
 }

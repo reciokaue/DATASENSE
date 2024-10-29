@@ -1,46 +1,46 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 import { getForm } from '@/src/api/get-form'
+import { updateForm } from '@/src/api/update-form'
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from '@/src/components/ui/tabs'
-import { QuestionSchema } from '@/src/models'
+import { Form, FormSchema } from '@/src/models'
 
 import { Config } from './screens/config'
 import { Questions } from './screens/questions'
 import { Responses } from './screens/responses'
-
-const QuestionsSchema = z.object({
-  questions: z.array(QuestionSchema),
-})
-export type QuestionsArray = z.input<typeof QuestionsSchema>
 
 export default function FormDetailPage({
   params,
 }: {
   params: { formId: string }
 }) {
-  const { data: form } = useQuery({
+  const formObject = useForm<Form>({
+    resolver: zodResolver(FormSchema),
+  })
+  const { reset } = formObject
+
+  const form = useQuery({
     queryKey: ['form', params.formId],
     queryFn: async () => {
       const data = await getForm(params.formId)
-      reset({ questions: data?.questions || [] })
+      console.log(data)
+      reset(data)
       return data
     },
   })
-  const questionsForm = useForm<QuestionsArray>({
-    resolver: zodResolver(QuestionsSchema),
-    defaultValues: { questions: form?.questions || [] },
+
+  const updateFormMutation = useMutation({
+    mutationFn: (form: Form) => updateForm(form),
   })
-  const { reset } = questionsForm
 
   return (
     <>
@@ -52,16 +52,20 @@ export default function FormDetailPage({
         </TabsList>
         <TabsContent value="questions">
           <Questions
-            formId={+params.formId}
             form={form}
-            questionsForm={questionsForm}
+            formObject={formObject}
+            updateForm={updateFormMutation}
           />
         </TabsContent>
         <TabsContent value="responses">
           <Responses />
         </TabsContent>
         <TabsContent value="config">
-          <Config />
+          <Config
+            form={form}
+            formObject={formObject}
+            updateForm={updateFormMutation}
+          />
         </TabsContent>
       </Tabs>
     </>
