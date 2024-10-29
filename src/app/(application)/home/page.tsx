@@ -24,7 +24,7 @@ export default function HomePage() {
       <div className="mt-8 grid grid-cols-1 gap-3 md:grid-cols-3">
         {!isLoading && result
           ? result?.forms.map((form) => (
-              <Link key={form.id} href={`/forms/${form.id}`} className="group">
+              <Link key={form.id} href={`/form/${form.id}`} className="group">
                 <HomeCard form={form} />
               </Link>
             ))
