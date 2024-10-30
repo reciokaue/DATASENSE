@@ -37,6 +37,7 @@ export default function FormDetailPage({
       reset(data)
       return data
     },
+    refetchInterval: 1000 * 60 * 60 * 24, // 1 day
   })
   // TODO Dar um jeito do persist form funcionar junto do userQyert tbm
   // ele não funciona com oq ja tem pq toda vez q salva ele da um reload e fica num ciclo infinito

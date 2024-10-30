@@ -55,7 +55,9 @@ export function SortableList<T extends BaseItem>({
         <ul
           className={cn(
             'flex w-full list-none gap-3 p-0',
-            direction === 'vertical' ? 'flex-col' : 'flex-row',
+            direction === 'vertical'
+              ? 'flex-col'
+              : 'flex-row items-center justify-center',
           )}
           role="application"
         >

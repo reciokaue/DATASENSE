@@ -23,7 +23,7 @@ export function EditCard({ question, formObject, index }: CardProps) {
   setValue(`questions.${index}.index`, index)
 
   return (
-    <form className="relative flex w-full flex-col space-y-4 rounded-md bg-white p-6">
+    <form className="relative flex w-full flex-col space-y-4 bg-white p-6">
       <h2 className="text-base font-medium">Questão {question.index + 1}</h2>
 
       <div className="flex items-center gap-2">

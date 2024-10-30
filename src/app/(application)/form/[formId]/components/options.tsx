@@ -1,11 +1,12 @@
 import { Plus, Trash2 } from 'lucide-react'
 import { useFieldArray, UseFormReturn } from 'react-hook-form'
 
+import { EmojiPicker } from '@/src/components/emoji-picker'
 import { SortableItem } from '@/src/components/sortable/sortable-item'
 import { SortableList } from '@/src/components/sortable/sortable-list'
 import { Button } from '@/src/components/ui/button'
 import { Input } from '@/src/components/ui/input'
-
+import { cn } from '@/src/lib/utils'
 interface OptionsProps {
   formObject: UseFormReturn<any>
   index: number
@@ -43,7 +44,6 @@ export function Options({ formObject, index }: OptionsProps) {
   return (
     <section className="space-y-3">
       <header className="flex items-center justify-between">
-        {JSON.stringify(questionType)}
         <h2 className="text-sm font-medium">Opções </h2>
         <div className="flex items-center gap-2">
           <Button onClick={newOption} size="sm" variant="ghost">
@@ -55,7 +55,10 @@ export function Options({ formObject, index }: OptionsProps) {
       <SortableList
         items={fields}
         swap={swap}
+        direction={questionType.name === 'emoji' ? 'horizontal' : 'vertical'}
         renderItem={(item, optionIndex) => {
+          const textInputName = `questions.${index}.options.${optionIndex}.text`
+
           setValue(
             `questions.${index}.options.${optionIndex}.index`,
             optionIndex,
@@ -63,7 +66,10 @@ export function Options({ formObject, index }: OptionsProps) {
           return (
             <SortableItem
               sortableId={item.id}
-              className="flex flex-row-reverse items-center gap-2"
+              className={cn(
+                'flex flex-row-reverse items-center gap-2',
+                questionType.name === 'emoji' && 'flex-col-reverse',
+              )}
             >
               <Button
                 onClick={(e) => removeOption(e, item)}
@@ -73,11 +79,15 @@ export function Options({ formObject, index }: OptionsProps) {
               >
                 <Trash2 />
               </Button>
-              <Input
-                {...register(`questions.${index}.options.${optionIndex}.text`)}
-                placeholder="Texto da opção"
-                styles="flex-1"
-              />
+              {questionType.name === 'emoji' ? (
+                <EmojiPicker name={textInputName} control={control} />
+              ) : (
+                <Input
+                  {...register(textInputName)}
+                  placeholder="Texto da opção"
+                  styles="flex-1"
+                />
+              )}
             </SortableItem>
           )
         }}
