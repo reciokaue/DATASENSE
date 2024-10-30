@@ -2,7 +2,7 @@
 
 import { UseMutationResult, UseQueryResult } from '@tanstack/react-query'
 import { AxiosResponse } from 'axios'
-import { Plus } from 'lucide-react'
+import { Loader2, Plus } from 'lucide-react'
 import { useFieldArray } from 'react-hook-form'
 
 import { SortableItem } from '@/src/components/sortable/sortable-item'
@@ -91,11 +91,13 @@ export function Questions({ form, formObject, updateForm }: QuestionsProps) {
           )}
         />
       )}
-
-      {form.isPending &&
+      {form.isPending && (
+        <Loader2 className="mx-auto mt-20 size-5 animate-spin" />
+      )}
+      {/* {form.isPending &&
         [0, 1, 2].map((i) => (
           <Skeleton className="mx-4 my-2 mr-10 h-40 w-full" key={i} />
-        ))}
+        ))} */}
     </div>
   )
 }

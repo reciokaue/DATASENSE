@@ -24,12 +24,20 @@ export function Config({ form, formObject, updateForm }: ConfigProps) {
     register,
     handleSubmit,
     control,
+    watch,
+    reset,
     formState: { errors },
   } = formObject
 
   const onSubmit: SubmitHandler<Form> = async (data) => {
     const newForm = await updateForm.mutateAsync(data)
     console.log(newForm)
+  }
+
+  const category = watch('category')
+
+  function resetForm() {
+    reset(form.data)
   }
 
   return (
@@ -72,7 +80,7 @@ export function Config({ form, formObject, updateForm }: ConfigProps) {
           <CategorySelector
             control={control}
             name="categoryId"
-            parentId={null}
+            category={category}
             error={errors?.categoryId?.message}
           />
         </div>
@@ -104,11 +112,15 @@ export function Config({ form, formObject, updateForm }: ConfigProps) {
           />
         </div>
         <footer className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-          <Button variant="outline" disabled={updateForm.isPending}>
+          <Button
+            onClick={resetForm}
+            variant="outline"
+            disabled={updateForm.isPending}
+          >
             Cancelar
           </Button>
           <Button isLoading={updateForm.isPending} type="submit">
-            Criar Formulário
+            Salvar Formulário
           </Button>
         </footer>
       </form>
