@@ -12,7 +12,7 @@ interface OptionsProps {
 }
 
 export function Options({ formObject, index }: OptionsProps) {
-  const { register, control, setValue } = formObject
+  const { register, control, setValue, watch } = formObject
 
   const { fields, append, remove, swap } = useFieldArray({
     control,
@@ -36,9 +36,14 @@ export function Options({ formObject, index }: OptionsProps) {
     remove(option.index)
   }
 
+  const questionType = watch(`questions.${index}.questionType`)
+
+  if (questionType.name === 'text') return
+
   return (
     <section className="space-y-3">
       <header className="flex items-center justify-between">
+        {JSON.stringify(questionType)}
         <h2 className="text-sm font-medium">Opções </h2>
         <div className="flex items-center gap-2">
           <Button onClick={newOption} size="sm" variant="ghost">

@@ -1,4 +1,4 @@
-import type { Active, UniqueIdentifier } from '@dnd-kit/core'
+import type { UniqueIdentifier } from '@dnd-kit/core'
 import {
   DndContext,
   KeyboardSensor,
@@ -8,9 +8,9 @@ import {
 } from '@dnd-kit/core'
 import { SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import type { ReactNode } from 'react'
-import React, { useMemo, useState } from 'react'
+import React from 'react'
 
-import { SortableOverlay } from './sortable-overlay'
+import { cn } from '@/src/lib/utils'
 
 interface BaseItem {
   id: UniqueIdentifier
@@ -19,22 +19,17 @@ interface BaseItem {
 
 interface Props<T extends BaseItem> {
   items: T[] | any
-  // onChange: (items: T[]) => void
   swap: (from: number, to: number) => void
   renderItem: (item: T, index: number) => ReactNode
+  direction?: 'vertical' | 'horizontal'
 }
 
 export function SortableList<T extends BaseItem>({
   items,
-  // onChange,
   renderItem,
   swap,
+  direction = 'vertical',
 }: Props<T>) {
-  const [active, setActive] = useState<Active | null>(null)
-  const activeItem = useMemo(
-    () => items.find((item: T) => item.id === active?.id),
-    [active, items],
-  )
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -45,9 +40,6 @@ export function SortableList<T extends BaseItem>({
   return (
     <DndContext
       sensors={sensors}
-      onDragStart={({ active }) => {
-        setActive(active)
-      }}
       onDragEnd={({ active, over }) => {
         if (over && active.id !== over?.id) {
           const activeIndex = items.findIndex(
@@ -56,17 +48,15 @@ export function SortableList<T extends BaseItem>({
           const overIndex = items.findIndex((item: T) => item.id === over.id)
 
           swap(activeIndex, overIndex)
-          // onChange(arrayMove(items, activeIndex, overIndex))
         }
-        setActive(null)
-      }}
-      onDragCancel={() => {
-        setActive(null)
       }}
     >
       <SortableContext items={items}>
         <ul
-          className="flex w-full list-none flex-col gap-3 p-0"
+          className={cn(
+            'flex w-full list-none gap-3 p-0',
+            direction === 'vertical' ? 'flex-col' : 'flex-row',
+          )}
           role="application"
         >
           {items.map((item: T, index: number) => (
@@ -76,9 +66,6 @@ export function SortableList<T extends BaseItem>({
           ))}
         </ul>
       </SortableContext>
-      {/* <SortableOverlay>
-        {activeItem ? renderItem(activeItem, activeItem?.index) : null}
-      </SortableOverlay> */}
     </DndContext>
   )
 }
