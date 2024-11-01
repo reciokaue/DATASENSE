@@ -53,11 +53,7 @@ export function CategorySelector({
               defaultValue={category?.parent?.label}
               onValueChange={(label) => setParentCategory(findCategory(label))}
             >
-              <SelectTrigger
-                defaultValue={'show'}
-                id="category"
-                className="w-[280px]"
-              >
+              <SelectTrigger id="category" className="w-[280px]">
                 <SelectValue placeholder="Selecionar" />
               </SelectTrigger>
               <SelectContent>

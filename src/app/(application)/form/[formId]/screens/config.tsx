@@ -115,6 +115,13 @@ export function Config({ form, formObject, updateForm }: ConfigProps) {
           <Button
             onClick={resetForm}
             variant="outline"
+            link={`/answer/${form?.data?.id}`}
+          >
+            Link
+          </Button>
+          <Button
+            onClick={resetForm}
+            variant="outline"
             disabled={updateForm.isPending}
           >
             Cancelar

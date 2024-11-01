@@ -66,5 +66,6 @@ export function useQueryParams() {
     setQueryParam,
     removeQueryParam,
     setMultipleQueryParams,
+    searchParams,
   }
 }
