@@ -4,8 +4,9 @@ import { ZodError } from 'zod'
 import { AppError } from '../utils/AppError'
 
 const api = axios.create({
-  baseURL: 'http://localhost:3333',
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
 })
+console.log(process.env.NEXT_PUBLIC_API_URL)
 
 api.interceptors.response.use(
   (response) => response,
