@@ -1,23 +1,23 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useQuery } from '@tanstack/react-query'
+// import { zodResolver } from '@hookform/resolvers/zod'
+// import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
-import { useForm } from 'react-hook-form'
 
-import { getForm } from '@/src/api/get-form'
+// import { useForm } from 'react-hook-form'
+// import { getForm } from '@/src/api/get-form'
 import { Badge } from '@/src/components/ui/badge'
 import { Button } from '@/src/components/ui/button'
-import { Form, FormSchema } from '@/src/models'
 
+// import { Form, FormSchema } from '@/src/models'
 import { QuestionOptions } from './options'
 
-const AnswerSchema = FormSchema.pick({
-  questions: true,
-})
-type Answers = Pick<Form, 'questions'>
-
-export default function AnswerPage({ params }: { params: { formId: string } }) {
+// const AnswerSchema = FormSchema.pick({
+//   questions: true,
+// })
+// type Answers = Pick<Form, 'questions'>
+// { params }: { params: { formId: string } }
+export default function AnswerPage() {
   // const {
   //   register,
   //   handleSubmit,

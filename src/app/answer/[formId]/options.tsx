@@ -9,7 +9,7 @@ import { cn } from '@/src/lib/utils'
 import { Question } from '@/src/models'
 
 interface OptionsProps {
-  question?: Partial<Question>
+  question?: any
   index: number
 }
 
@@ -32,15 +32,15 @@ export function QuestionOptions({ question, index }: OptionsProps) {
 
 const optionType = (question: any) => {
   const components: any = {
-    text: <Text question={question} />,
-    longText: <LongText question={question} />,
+    text: <Text />,
+    longText: <LongText />,
     options: <Options question={question} />,
-    starRating: <StarRating question={question} />,
+    starRating: <StarRating />,
     list: <List question={question} />,
-    phone: <Phone question={question} />,
-    email: <Email question={question} />,
-    time: <Time question={question} />,
-    date: <DateOption question={question} />,
+    phone: <Phone />,
+    email: <Email />,
+    time: <Time />,
+    date: <DateOption />,
   }
 
   return components[question?.questionType?.name]
@@ -48,18 +48,18 @@ const optionType = (question: any) => {
 
 // Tipos de perguntas individuais
 
-function Text({ question }: { question: Question }) {
+function Text() {
   return (
     <Input
-      className="border-3 h-auto px-4 py-4 text-xl"
+      className="h-auto border-2 px-4 py-4 text-xl"
       placeholder="Digite sua resposta aqui..."
     />
   )
 }
-function LongText({ question }: { question: Question }) {
+function LongText() {
   return (
     <Textarea
-      className="border-3 h-48 w-full resize-none px-4 py-4 text-xl"
+      className="h-48 w-full resize-none border-2 px-4 py-4 text-xl"
       maxLength={500}
       placeholder="Digite sua resposta aqui..."
     />
@@ -72,7 +72,7 @@ function Options({ question }: { question: Question }) {
         <Button
           key={option.id}
           variant="outline"
-          className="border-3 h-auto px-4 py-4 text-xl"
+          className="h-auto border-2 px-4 py-4 text-xl"
         >
           {option.text}
         </Button>
@@ -81,7 +81,7 @@ function Options({ question }: { question: Question }) {
   )
 }
 
-function StarRating({ question }: { question: Question }) {
+function StarRating() {
   const [rating, setRating] = useState<number>(0)
 
   return (
@@ -109,7 +109,7 @@ function List({ question }: { question: Question }) {
         <Button
           key={option.id}
           variant="outline"
-          className="border-3 h-auto px-4 py-3 text-xl"
+          className="h-auto border-2 px-4 py-3 text-xl"
         >
           {option.text}
         </Button>
@@ -118,28 +118,28 @@ function List({ question }: { question: Question }) {
   )
 }
 
-function Phone({ question }: { question: Question }) {
+function Phone() {
   return (
     <Input
       type="tel"
       placeholder="(XX) XXXXX-XXXX"
-      className="border-3 h-auto px-4 py-4 text-xl"
+      className="h-auto border-2 px-4 py-4 text-xl"
     />
   )
 }
 
-function Email({ question }: { question: Question }) {
+function Email() {
   return (
     <Input
       type="email"
       placeholder="seuemail@exemplo.com"
-      className="border-3 h-auto px-4 py-4 text-xl"
+      className="h-auto border-2 px-4 py-4 text-xl"
     />
   )
 }
-function Time({ question }: { question: Question }) {
+function Time() {
   return <TimePicker date={new Date()} setDate={() => {}} />
 }
-function DateOption({ question }: { question: Question }) {
+function DateOption() {
   return <DatePicker />
 }

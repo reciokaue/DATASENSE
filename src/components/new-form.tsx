@@ -107,7 +107,6 @@ export function NewFormButton() {
             <CategorySelector
               control={control}
               name="categoryId"
-              parentId={null}
               error={errors?.categoryId?.message}
             />
             <TemplateSelector name="templateId" control={control} />

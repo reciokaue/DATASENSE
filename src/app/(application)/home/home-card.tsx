@@ -21,17 +21,17 @@ export function HomeCard({ form, ...rest }: HomeCardProps) {
           {form.name}
         </h1>
         <p className="line-clamp-4 text-sm text-muted-foreground">
-          {form.about}
+          {form.description}
         </p>
       </div>
       <div className="flex items-center gap-3 p-6 pt-0 text-xs font-semibold text-muted-foreground">
         <div className="flex items-center gap-2">
           <ClipboardType className="h-3 w-3 text-violet-400" />
-          {form._count.questions}
+          {form?._count?.questions}
         </div>
         <div className="flex items-center gap-2">
           <Mails className="h-3 w-3 text-sky-400" />
-          {form._count.sessions}
+          {form?._count?.sessions}
         </div>
       </div>
     </div>

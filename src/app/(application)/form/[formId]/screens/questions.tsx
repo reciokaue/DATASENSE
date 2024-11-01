@@ -8,7 +8,6 @@ import { useFieldArray } from 'react-hook-form'
 import { SortableItem } from '@/src/components/sortable/sortable-item'
 import { SortableList } from '@/src/components/sortable/sortable-list'
 import { Button } from '@/src/components/ui/button'
-import { Skeleton } from '@/src/components/ui/skeleton'
 import { Form } from '@/src/models'
 
 import { EditCard } from '../components/edit-card'

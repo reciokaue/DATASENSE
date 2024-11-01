@@ -1,8 +1,7 @@
 'use client'
-import data, { Emoji } from '@emoji-mart/data'
+import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import { Smile } from 'lucide-react'
-import { useState } from 'react'
 import { Controller } from 'react-hook-form'
 
 import { Button } from './ui/button'

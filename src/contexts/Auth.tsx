@@ -2,7 +2,7 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { deleteCookie, getCookie, setCookie } from 'cookies-next'
 import { jwtDecode } from 'jwt-decode'
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import {
   createContext,
   ReactNode,
@@ -37,7 +37,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>({} as User)
 
   const router = useRouter()
-  const pathname = usePathname()
   const queryClient = useQueryClient()
 
   const { toast } = useToast()
