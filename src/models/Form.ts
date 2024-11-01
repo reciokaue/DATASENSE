@@ -10,7 +10,7 @@ import { QuestionSchema, questionSelect } from './Question'
 export const FormSchema = z.object({
   id: z.number().int(),
   name: z.string().min(5, { message: 'No mínimo 5 caracteres' }),
-  description: z.string({ message: 'Campo obrigatório' }),
+  description: z.string({ required_error: 'Campo obrigatório' }),
   active: z.boolean().default(true),
   logoUrl: z.string().nullable(),
   isPublic: z.boolean().nullable().default(true),
