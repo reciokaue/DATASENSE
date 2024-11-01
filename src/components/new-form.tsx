@@ -29,7 +29,7 @@ const CreateFormSchema = FormSchema.pick({
   description: true,
   categoryId: true,
 }).extend({
-  categoryId: z.number({ message: 'Campo obrigatório' }),
+  categoryId: z.number({ required_error: 'Campo obrigatório' }),
   templateId: z.number().nullable().optional().default(null),
 })
 type CreateForm = z.infer<typeof CreateFormSchema>
