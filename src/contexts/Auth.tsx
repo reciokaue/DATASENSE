@@ -2,7 +2,8 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { deleteCookie, getCookie, setCookie } from 'cookies-next'
 import { jwtDecode } from 'jwt-decode'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import path from 'path'
 import {
   createContext,
   ReactNode,
@@ -33,10 +34,13 @@ interface AuthContextData {
 
 const AuthContext = createContext({} as AuthContextData)
 
+const protectedRoutes = ['form', 'home']
+
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>({} as User)
 
   const router = useRouter()
+  const pathname = usePathname().split('/')[1]
   const queryClient = useQueryClient()
 
   const { toast } = useToast()
@@ -110,7 +114,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         api.defaults.headers.common.Authorization = `Bearer ${token}`
       } catch (e) {
-        router.push('/')
+        console.log(pathname)
+        if (!protectedRoutes.includes(pathname)) router.push('/')
+        else router.push('/login')
       }
     }
     loadData()
