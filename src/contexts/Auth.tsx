@@ -3,7 +3,6 @@ import { useQueryClient } from '@tanstack/react-query'
 import { deleteCookie, getCookie, setCookie } from 'cookies-next'
 import { jwtDecode } from 'jwt-decode'
 import { usePathname, useRouter } from 'next/navigation'
-import path from 'path'
 import {
   createContext,
   ReactNode,

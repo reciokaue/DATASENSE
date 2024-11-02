@@ -1,12 +1,13 @@
 'use client'
 
-import { Book, Home, User2, Users } from 'lucide-react'
+import { Book, Home, Users } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { ReactNode } from 'react'
 
 import { useAuth } from '../contexts/Auth'
 import { cn } from '../lib/utils'
+import { ProfilePopover } from './profile-popover'
 
 interface NavLinkProps {
   href: string
@@ -62,17 +63,12 @@ export function Navbar() {
               DATASENSE
             </Link>
             <ul className="flex space-x-4">
-              {user
+              {user?.id
                 ? authLinks.map((link) => <NavLink key={link.href} {...link} />)
                 : links.map((link) => <NavLink key={link.href} {...link} />)}
             </ul>
           </div>
-          <div className="flex items-center">
-            {/* TODO dropdown with username logout|profile or login if unlogged */}
-            <button className="flex size-10 items-center justify-center rounded-full bg-gray-200">
-              <User2 className="size-5" />
-            </button>
-          </div>
+          <ProfilePopover />
         </div>
       </div>
     </nav>
