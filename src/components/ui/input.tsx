@@ -46,7 +46,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           </Button>
         )}
         {search && (
-          <Search className="absolute right-3 top-1 h-full w-4 text-muted-foreground" />
+          <Search className="absolute right-3 top-0 h-full w-4 text-muted-foreground" />
         )}
       </div>
     )
