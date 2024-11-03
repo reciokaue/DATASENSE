@@ -57,7 +57,7 @@ export default function FormDetailPage({
 
   useEffect(() => {
     if (form) reset(form.data)
-  }, [])
+  }, [form, reset])
 
   return (
     <>
