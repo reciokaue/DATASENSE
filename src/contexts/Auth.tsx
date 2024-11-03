@@ -46,10 +46,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function login(email: string, password: string, remember: boolean) {
     try {
-      const response = await api.post('/login', { email, password })
+      const { data: token } = await api.post('/login', { email, password })
 
-      setCookie('datasense-token', response.data)
-      api.defaults.headers.common.Authorization = `Bearer ${response.data}`
+      setCookie('datasense-token', token)
+      api.defaults.headers.common.Authorization = `Bearer ${token}`
+      const decoded: any = await jwtDecode(token as string)
+
+      setUser({
+        ...decoded,
+        id: decoded.sub,
+      } as User)
 
       if (remember) {
         localStorage.setItem('datasense_email', email)
