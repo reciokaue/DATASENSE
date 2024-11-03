@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -57,7 +58,7 @@ export default function FormDetailPage({
 
   useEffect(() => {
     if (form) reset(form.data)
-  }, [form, reset])
+  }, [])
 
   return (
     <>

@@ -58,11 +58,9 @@ export function Options({ formObject, index }: OptionsProps) {
         direction={questionType.name === 'emoji' ? 'horizontal' : 'vertical'}
         renderItem={(item, optionIndex) => {
           const textInputName = `questions.${index}.options.${optionIndex}.text`
+          const formObject = `questions.${index}.options.${optionIndex}.index`
+          setValue(formObject, optionIndex)
 
-          setValue(
-            `questions.${index}.options.${optionIndex}.index`,
-            optionIndex,
-          )
           return (
             <SortableItem
               sortableId={item.id}
