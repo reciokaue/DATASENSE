@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { CategorySchema } from './Category'
+import { CategorySchema, CategorySelect } from './Category'
 import { QuestionSchema, questionSelect } from './Question'
 
 /// //////////////////////////////////////
@@ -10,7 +10,7 @@ import { QuestionSchema, questionSelect } from './Question'
 export const FormSchema = z.object({
   id: z.number().int(),
   name: z.string().min(5, { message: 'No mínimo 5 caracteres' }),
-  description: z.string({ required_error: 'Campo obrigatório' }),
+  description: z.string({ message: 'Campo obrigatório' }),
   active: z.boolean().default(true),
   logoUrl: z.string().nullable(),
   isPublic: z.boolean().nullable().default(true),
@@ -42,6 +42,7 @@ export const formSelect = {
       id: true,
       label: true,
       icon: true,
+      parent: true,
     },
   },
   _count: {
@@ -61,11 +62,7 @@ export const formDetailSelect = {
   isPublic: true,
   createdAt: true,
   category: {
-    select: {
-      id: true,
-      label: true,
-      icon: true,
-    },
+    select: CategorySelect,
   },
   questions: {
     select: questionSelect,

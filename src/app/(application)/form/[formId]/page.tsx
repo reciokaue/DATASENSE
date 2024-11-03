@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
 // import useFormPersist from 'react-hook-form-persist'
@@ -39,7 +40,7 @@ export default function FormDetailPage({
     },
     refetchInterval: 1000 * 60 * 60 * 24, // 1 day
   })
-  // TODO Dar um jeito do persist form funcionar junto do userQyert tbm
+  // TODO Dar um jeito do persist form funcionar junto do useQuery tbm
   // ele não funciona com oq ja tem pq toda vez q salva ele da um reload e fica num ciclo infinito
   // fazer o swap dar o setValue no Sortable
   // useFormPersist(`datasense@form${params.formId}`, {
@@ -48,9 +49,15 @@ export default function FormDetailPage({
   //   storage: window.localStorage,
   // })
 
+  // TODO update the data in the react query
+  // causes an inconsistency when saves and go home and return to form
   const updateFormMutation = useMutation({
     mutationFn: (form: Form) => updateForm(form),
   })
+
+  useEffect(() => {
+    if (form) reset(form.data)
+  }, [])
 
   return (
     <>
