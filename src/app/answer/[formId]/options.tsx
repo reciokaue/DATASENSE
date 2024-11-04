@@ -160,13 +160,13 @@ function RatingScale() {
   return (
     <>
       <Slider defaultValue={[50]} max={100} step={1} />
-      <footer className="flex items-start justify-between py-4 text-sm text-primary/60">
+      <footer className="grid grid-cols-3 py-4 text-sm text-primary/60">
         <span>
           Não concordo
           <br />
           (0)
         </span>
-        <div className="flex items-center gap-2 pt-4 text-sm text-primary/50">
+        <div className="flex items-center justify-center gap-2 pt-4 text-sm text-primary/50">
           <ArrowLeft className="size-4 text-primary/20" />
           Puxe
           <ArrowRight className="size-4 text-primary/20" />
