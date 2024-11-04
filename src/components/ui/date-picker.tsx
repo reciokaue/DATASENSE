@@ -11,9 +11,12 @@ import { Calendar } from './calendar'
 import { Drawer, DrawerContent, DrawerTrigger } from './drawer'
 import { Popover, PopoverContent, PopoverTrigger } from './popover'
 
-export function DatePicker() {
-  const [date, setDate] = React.useState<Date>()
+interface DatePickerProps {
+  setDate: (date: Date | undefined) => void
+  date: Date
+}
 
+export function DatePicker({ setDate, date }: DatePickerProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>

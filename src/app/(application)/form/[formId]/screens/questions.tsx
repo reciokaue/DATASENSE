@@ -63,7 +63,6 @@ export function Questions({ form, formObject, updateForm }: QuestionsProps) {
             className="bg-white text-black"
             isLoading={updateForm.isPending}
           >
-            {' '}
             Salvar
           </Button>
         </div>

@@ -1,36 +1,39 @@
 'use client'
 
-// import { zodResolver } from '@hookform/resolvers/zod'
-// import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
-// import { useForm } from 'react-hook-form'
-// import { getForm } from '@/src/api/get-form'
 import { Badge } from '@/src/components/ui/badge'
 import { Button } from '@/src/components/ui/button'
+import { Form, MultipleResponses } from '@/src/models'
 
-// import { Form, FormSchema } from '@/src/models'
-import { QuestionOptions } from './options'
+import { QuestionType } from './question'
 
-// const AnswerSchema = FormSchema.pick({
-//   questions: true,
-// })
-// type Answers = Pick<Form, 'questions'>
-// { params }: { params: { formId: string } }
 export default function AnswerPage() {
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   control,
-  //   reset,
-  //   formState: { isSubmitting, errors },
-  // } = useForm<Answers>({
-  //   resolver: zodResolver(AnswerSchema),
-  // })
+  const responseForm = useForm<MultipleResponses>({
+    defaultValues: {
+      responses: form.questions.map((q) => ({
+        questionId: q.id,
+      })),
+    },
+  })
+
+  const {
+    handleSubmit,
+    formState: { errors },
+  } = responseForm
   // const { data: form, isLoading } = useQuery({
   //   queryKey: ['form', params.formId],
   //   queryFn: () => getForm(params.formId),
   // })
+
+  const onSubmit: SubmitHandler<MultipleResponses> = async (data) => {
+    console.log(
+      data.responses.filter(
+        (response) => response.value !== '' && response.value,
+      ),
+    )
+  }
 
   return (
     <main className="mx-auto flex h-full min-h-screen w-full max-w-screen-sm flex-col ">
@@ -48,7 +51,10 @@ export default function AnswerPage() {
           className="image aspect-square w-full object-fill sm:max-w-lg"
         />
       </div>
-      <section className="flex w-full flex-col px-4 py-3 sm:px-6 md:px-10">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex w-full flex-col px-4 py-3 sm:px-6 md:px-10"
+      >
         <header className="flex flex-col space-y-2 py-5 text-start md:text-left">
           <h2 className="text-2xl font-semibold">{form?.name}</h2>
           <p className="text-lg font-medium">{form?.description}</p>
@@ -58,24 +64,41 @@ export default function AnswerPage() {
         </header>
         <div className="flex h-full flex-1 flex-col items-start gap-10 py-10">
           {form?.questions?.map((question, index) => (
-            <QuestionOptions
-              key={question.id}
-              question={question}
-              index={index}
-            />
+            <section key={question.id} className="flex w-full flex-col">
+              <header className="mb-3 flex items-center gap-2">
+                <span className="flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                  {index + 1}
+                </span>
+                <h2 className="text-sm text-primary/60">
+                  {question.questionType?.label}
+                </h2>
+              </header>
+              <h1 className="mb-6 text-2xl font-bold text-primary">
+                {question.text}
+              </h1>
+              <QuestionType form={responseForm} question={question} />
+              {errors.responses?.[question.index]?.value?.message && (
+                <p className="pt-4 text-sm text-red-500">
+                  {errors.responses?.[question.index]?.value?.message}
+                </p>
+              )}
+            </section>
           ))}
         </div>
         <footer className="flex w-full py-4">
-          <Button className="h-12 w-full text-lg sm:h-14 sm:text-xl">
+          <Button
+            type="submit"
+            className="h-12 w-full text-lg sm:h-14 sm:text-xl"
+          >
             Enviar
           </Button>
         </footer>
-      </section>
+      </form>
     </main>
   )
 }
 
-const form = {
+const form: Form = {
   id: 1,
   name: 'Feedback de Atendimento - Pizzaria',
   description:
@@ -85,9 +108,11 @@ const form = {
   questions: [
     {
       id: 1,
+      formId: 1,
       text: 'Como você avalia nosso atendimento geral?',
       index: 0,
       questionType: {
+        icon: 'circle',
         id: 4,
         name: 'starRating',
         label: 'Avaliação por Estrelas',
@@ -97,9 +122,10 @@ const form = {
     },
     {
       id: 2,
+      formId: 1,
       text: 'Qual o seu nível de satisfação com o sabor da pizza?',
       index: 1,
-      questionType: { id: 2, name: 'list', label: 'Lista' },
+      questionType: { icon: 'circle', id: 2, name: 'list', label: 'Lista' },
       options: [
         { id: 1, index: 0, text: 'Muito Insatisfeito' },
         { id: 2, index: 1, text: 'Insatisfeito' },
@@ -111,9 +137,15 @@ const form = {
     },
     {
       id: 3,
+      formId: 1,
       text: 'Quais ingredientes você gostaria de ver em novas pizzas?',
       index: 2,
-      questionType: { id: 1, name: 'options', label: 'Opções Múltiplas' },
+      questionType: {
+        icon: 'circle',
+        id: 1,
+        name: 'options',
+        label: 'Opções Múltiplas',
+      },
       options: [
         { id: 6, index: 0, text: 'Pepperoni' },
         { id: 7, index: 1, text: 'Frango' },
@@ -124,59 +156,80 @@ const form = {
     },
     {
       id: 4,
+      formId: 1,
       text: 'Deixe seu comentário sobre o que podemos melhorar:',
       index: 3,
-      questionType: { id: 3, name: 'text', label: 'Texto' },
+      questionType: { icon: 'circle', id: 3, name: 'text', label: 'Texto' },
       options: [],
       required: false,
     },
     {
       id: 5,
+      formId: 1,
       text: 'Informe seu telefone para contato (opcional):',
       index: 4,
-      questionType: { id: 5, name: 'phone', label: 'Telefone' },
+      questionType: { icon: 'circle', id: 5, name: 'phone', label: 'Telefone' },
       options: [],
       required: false,
     },
     {
       id: 6,
+      formId: 1,
       text: 'Informe seu e-mail para receber promoções:',
       index: 5,
-      questionType: { id: 6, name: 'email', label: 'E-mail' },
+      questionType: { icon: 'circle', id: 6, name: 'email', label: 'E-mail' },
       options: [],
       required: true,
     },
     {
       id: 7,
+      formId: 1,
       text: 'Qual o melhor horário para entrarmos em contato?',
       index: 6,
-      questionType: { id: 7, name: 'time', label: 'Horário' },
+      questionType: { icon: 'circle', id: 7, name: 'time', label: 'Horário' },
       options: [],
       required: true,
     },
     {
       id: 8,
+      formId: 1,
       text: 'Qual a melhor data para nos visitar?',
       index: 7,
-      questionType: { id: 8, name: 'date', label: 'Data' },
+      questionType: { icon: 'circle', id: 8, name: 'date', label: 'Data' },
       options: [],
       required: true,
     },
     {
       id: 9,
+      formId: 1,
       text: 'O quanto você concorda que nosso serviço é rápido?',
       index: 8,
-      questionType: { id: 9, name: 'slider', label: 'Escala de Concordância' },
+      questionType: {
+        icon: 'circle',
+        id: 9,
+        name: 'slider',
+        label: 'Escala de Concordância',
+      },
       options: [],
       required: true,
     },
     {
       id: 10,
+      formId: 1,
       text: 'Deixe seu comentário final:',
       index: 9,
-      questionType: { id: 10, name: 'longText', label: 'Texto Longo' },
+      questionType: {
+        icon: 'circle',
+        id: 10,
+        name: 'longText',
+        label: 'Texto Longo',
+      },
       options: [],
       required: false,
     },
   ],
+  active: false,
+  isPublic: null,
+  createdAt: null,
+  userId: null,
 }
