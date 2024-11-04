@@ -120,8 +120,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         api.defaults.headers.common.Authorization = `Bearer ${token}`
       } catch (e) {
         console.log(pathname)
-        if (!protectedRoutes.includes(pathname)) router.push('/')
-        else router.push('/login')
+        if (protectedRoutes.includes(pathname)) router.push('/login')
       }
     }
     loadData()

@@ -1,8 +1,10 @@
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useState } from 'react'
 
 import { Button } from '@/src/components/ui/button'
 import { DatePicker } from '@/src/components/ui/date-picker'
 import { Input } from '@/src/components/ui/input'
+import { Slider } from '@/src/components/ui/slider'
 import { Textarea } from '@/src/components/ui/textarea'
 import { TimePicker } from '@/src/components/ui/time-picker'
 import { cn } from '@/src/lib/utils'
@@ -18,12 +20,14 @@ export function QuestionOptions({ question, index }: OptionsProps) {
 
   return (
     <section className="flex w-full flex-col">
-      <div className="mb-3 flex items-center gap-2 space-x-2">
-        <span className="flex size-8 items-center justify-center rounded-full bg-primary p-2 text-primary-foreground">
+      <header className="mb-3 flex items-center gap-2">
+        <span className="flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
           {index + 1}
         </span>
-        {question.questionType?.label}
-      </div>
+        <h2 className="text-sm text-primary/60">
+          {question.questionType?.label}
+        </h2>
+      </header>
       <h1 className="mb-6 text-2xl font-bold text-primary">{question.text}</h1>
       {optionType(question)}
     </section>
@@ -41,6 +45,7 @@ const optionType = (question: any) => {
     email: <Email />,
     time: <Time />,
     date: <DateOption />,
+    slider: <RatingScale />,
   }
 
   return components[question?.questionType?.name]
@@ -51,7 +56,7 @@ const optionType = (question: any) => {
 function Text() {
   return (
     <Input
-      className="h-auto border-2 px-4 py-4 text-xl"
+      className="h-auto border-2 px-4 py-4"
       placeholder="Digite sua resposta aqui..."
     />
   )
@@ -59,20 +64,23 @@ function Text() {
 function LongText() {
   return (
     <Textarea
-      className="h-48 w-full resize-none border-2 px-4 py-4 text-xl"
+      className="h-48 w-full resize-none border-2 px-4 py-4"
       maxLength={500}
       placeholder="Digite sua resposta aqui..."
     />
   )
 }
 function Options({ question }: { question: Question }) {
+  const [selected, setSelected] = useState<any>()
+
   return (
-    <div className="flex h-fit flex-wrap justify-center gap-6">
+    <div className="flex h-fit flex-wrap justify-center gap-2">
       {question?.options?.map((option) => (
         <Button
           key={option.id}
-          variant="outline"
-          className="h-auto border-2 px-4 py-4 text-xl"
+          variant={option.id === selected?.id ? 'default' : 'outline'}
+          className="h-auto border-2 py-4"
+          onClick={() => setSelected(option)}
         >
           {option.text}
         </Button>
@@ -90,7 +98,7 @@ function StarRating() {
         <button
           key={star}
           className={cn([
-            'text-8xl',
+            'text-6xl',
             star <= rating ? 'text-yellow-400' : 'text-gray-400',
           ])}
           onClick={() => setRating(star)}
@@ -103,13 +111,16 @@ function StarRating() {
 }
 
 function List({ question }: { question: Question }) {
+  const [selected, setSelected] = useState<any>()
+
   return (
     <div className="flex flex-col justify-start gap-2">
       {question?.options?.map((option) => (
         <Button
           key={option.id}
-          variant="outline"
-          className="h-auto border-2 px-4 py-3 text-xl"
+          variant={option.id === selected?.id ? 'default' : 'outline'}
+          className="h-auto border-2 py-3"
+          onClick={() => setSelected(option)}
         >
           {option.text}
         </Button>
@@ -123,7 +134,7 @@ function Phone() {
     <Input
       type="tel"
       placeholder="(XX) XXXXX-XXXX"
-      className="h-auto border-2 px-4 py-4 text-xl"
+      className="h-auto border-2 px-4 py-4"
     />
   )
 }
@@ -133,13 +144,39 @@ function Email() {
     <Input
       type="email"
       placeholder="seuemail@exemplo.com"
-      className="h-auto border-2 px-4 py-4 text-xl"
+      className="h-auto border-2 px-4 py-4"
     />
   )
 }
 function Time() {
-  return <TimePicker date={new Date()} setDate={() => {}} />
+  const [date, setDate] = useState(new Date())
+
+  return <TimePicker date={date} setDate={setDate} />
 }
 function DateOption() {
   return <DatePicker />
+}
+function RatingScale() {
+  return (
+    <>
+      <Slider defaultValue={[50]} max={100} step={1} />
+      <footer className="flex items-start justify-between py-4 text-sm text-primary/60">
+        <span>
+          Não concordo
+          <br />
+          (0)
+        </span>
+        <div className="flex items-center gap-2 pt-4 text-sm text-primary/50">
+          <ArrowLeft className="size-4 text-primary/20" />
+          Puxe
+          <ArrowRight className="size-4 text-primary/20" />
+        </div>
+        <span className="text-end">
+          Totalmente!
+          <br />
+          (10)
+        </span>
+      </footer>
+    </>
+  )
 }

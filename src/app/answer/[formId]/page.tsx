@@ -38,9 +38,6 @@ export default function AnswerPage() {
         <h1 className="text-xl font-bold text-gray-900 dark:text-white sm:text-2xl">
           DATASENSE
         </h1>
-        <Badge variant="secondary" className="text-sm sm:text-base">
-          Enviamos suas respostas anonimamente
-        </Badge>
       </nav>
       <div className="flex w-full items-center justify-center">
         <Image
@@ -55,6 +52,9 @@ export default function AnswerPage() {
         <header className="flex flex-col space-y-2 py-5 text-start md:text-left">
           <h2 className="text-2xl font-semibold">{form?.name}</h2>
           <p className="text-lg font-medium">{form?.description}</p>
+          <Badge variant="secondary" className="text-sm sm:text-base">
+            Enviamos suas respostas anonimamente
+          </Badge>
         </header>
         <div className="flex h-full flex-1 flex-col items-start gap-10 py-10">
           {form?.questions?.map((question, index) => (
@@ -155,18 +155,26 @@ const form = {
       required: true,
     },
     {
-      id: 7,
-      text: 'Qual a melhor data para tal coisa?',
-      index: 6,
-      questionType: { id: 7, name: 'date', label: 'Horário' },
+      id: 8,
+      text: 'Qual a melhor data para nos visitar?',
+      index: 7,
+      questionType: { id: 8, name: 'date', label: 'Data' },
       options: [],
       required: true,
     },
     {
-      id: 4,
-      text: 'Comentário livre:',
-      index: 3,
-      questionType: { id: 3, name: 'longText', label: 'Texto' },
+      id: 9,
+      text: 'O quanto você concorda que nosso serviço é rápido?',
+      index: 8,
+      questionType: { id: 9, name: 'slider', label: 'Escala de Concordância' },
+      options: [],
+      required: true,
+    },
+    {
+      id: 10,
+      text: 'Deixe seu comentário final:',
+      index: 9,
+      questionType: { id: 10, name: 'longText', label: 'Texto Longo' },
       options: [],
       required: false,
     },

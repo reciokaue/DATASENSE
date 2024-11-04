@@ -8,6 +8,7 @@ import { cn } from '@/src/lib/utils'
 
 import { Button } from './button'
 import { Calendar } from './calendar'
+import { Drawer, DrawerContent, DrawerTrigger } from './drawer'
 import { Popover, PopoverContent, PopoverTrigger } from './popover'
 
 export function DatePicker() {
@@ -17,14 +18,13 @@ export function DatePicker() {
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant={'outline'}
-          size="xl"
+          variant="outline"
           className={cn(
-            'w-full justify-start text-left font-normal',
-            !date && 'text-muted-foreground',
+            'flex flex-1 items-center justify-start gap-2 rounded-lg border-2 border-border bg-background p-4 text-primary/70',
+            !date && 'text-primary/40',
           )}
         >
-          <CalendarIcon className="mr-2 size-8" />
+          <CalendarIcon className="ml-2 size-5" />
           {date ? format(date, 'PPP') : <span>Selecione uma data</span>}
         </Button>
       </PopoverTrigger>
@@ -37,5 +37,35 @@ export function DatePicker() {
         />
       </PopoverContent>
     </Popover>
+  )
+}
+
+export function DatePickerMobile() {
+  const [date, setDate] = React.useState<Date>()
+
+  return (
+    <Drawer>
+      <DrawerTrigger asChild>
+        <Button
+          variant="outline"
+          className={cn(
+            'flex flex-1 items-center justify-start gap-2 rounded-lg border-2 border-border bg-background p-4',
+            !date && 'text-muted',
+          )}
+        >
+          <CalendarIcon className="ml-2 size-5 text-muted" />
+          {date ? format(date, 'PPP') : <span>Selecione uma data</span>}
+        </Button>
+      </DrawerTrigger>
+      <DrawerContent className="w-auto p-0">
+        <Calendar
+          mode="single"
+          selected={date}
+          onSelect={setDate}
+          initialFocus
+          className="w-full"
+        />
+      </DrawerContent>
+    </Drawer>
   )
 }
