@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useState } from 'react'
 import { Controller, useFieldArray, UseFormReturn } from 'react-hook-form'
 
@@ -9,14 +8,12 @@ import { Input } from '@/src/components/ui/input'
 import { Slider } from '@/src/components/ui/slider'
 import { Textarea } from '@/src/components/ui/textarea'
 import { TimePicker } from '@/src/components/ui/time-picker'
-import { cn } from '@/src/lib/utils'
 import { Option, Question } from '@/src/models'
 
 interface QuestionTypeProps {
   question: Question
   form: UseFormReturn<any>
 }
-// import { Button, Input, Textarea, Slider, DatePicker, TimePicker } from './components'; // Import dos componentes usados
 
 export function QuestionType({ question, form }: QuestionTypeProps) {
   const { register, control } = form
@@ -37,7 +34,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
       append({
         value: option.text,
         optionId: option.id,
-        questionId: question.id,
+        questionId: question?.id,
       })
     }
   }
@@ -47,9 +44,9 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
       <Input
         className="h-auto border-2 px-4 py-4"
         placeholder="Digite sua resposta aqui..."
-        {...register(`responses.${question.index}.value`, {
+        {...register(`responses.${question?.index}.value`, {
           required: {
-            value: question.required,
+            value: question?.required || false,
             message: 'Questão obrigatória',
           },
         })}
@@ -62,9 +59,9 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
         className="h-48 w-full resize-none border-2 px-4 py-4"
         maxLength={500}
         placeholder="Digite sua resposta aqui..."
-        {...register(`responses.${question.index}.value`, {
+        {...register(`responses.${question?.index}.value`, {
           required: {
-            value: question.required,
+            value: question?.required || false,
             message: 'Questão obrigatória',
           },
         })}
@@ -74,7 +71,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
   if (type === 'options')
     return (
       <div className="flex h-fit flex-wrap justify-center gap-2">
-        {question.options?.map((option: any) => (
+        {question?.options?.map((option: any) => (
           <Button
             key={option.id}
             type="button"
@@ -93,7 +90,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
   if (type === 'starRating')
     return (
       <Controller
-        name={`responses.${question.index}.value`}
+        name={`responses.${question?.index}.value`}
         control={control}
         render={({ field }) => (
           <div className="flex w-full items-center justify-center gap-3">
@@ -111,7 +108,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
         )}
         rules={{
           required: {
-            value: question.required,
+            value: question?.required || false,
             message: 'Questão obrigatoria',
           },
         }}
@@ -121,11 +118,11 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
   if (type === 'list')
     return (
       <Controller
-        name={`responses.${question.index}`}
+        name={`responses.${question?.index}`}
         control={control}
         render={({ field }) => (
           <div className="flex flex-col justify-start gap-2">
-            {question.options?.map((option) => (
+            {question?.options?.map((option) => (
               <Button
                 type="button"
                 key={option.id}
@@ -135,7 +132,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
                 className="h-auto border-2 py-3"
                 onClick={() =>
                   field.onChange({
-                    questionId: question.id,
+                    questionId: question?.id,
                     optionId: option.id,
                     value: option.text,
                   })
@@ -148,7 +145,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
         )}
         rules={{
           required: {
-            value: question.required,
+            value: question?.required || false,
             message: 'Questão obrigatória',
           },
         }}
@@ -162,8 +159,8 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
         // pattern="^\(\d{2}\)\s?\d{5}-\d{4}$"
         placeholder="(XX) XXXXX-XXXX"
         className="h-auto border-2 px-4 py-4"
-        {...register(`responses.${question.index}.value`, {
-          required: question.required,
+        {...register(`responses.${question?.index}.value`, {
+          required: question?.required,
         })}
       />
     )
@@ -174,8 +171,8 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
         type="email"
         placeholder="seuemail@exemplo.com"
         className="h-auto border-2 px-4 py-4"
-        {...register(`responses.${question.index}.value`, {
-          required: question.required,
+        {...register(`responses.${question?.index}.value`, {
+          required: question?.required,
           pattern: {
             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
             message: 'Email inválido',
@@ -189,12 +186,12 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
       <Controller
         rules={{
           required: {
-            value: question.required,
+            value: question?.required || false,
             message: 'Questão obrigatória',
           },
         }}
         control={control}
-        name={`responses.${question.index}.value`}
+        name={`responses.${question?.index}.value`}
         render={({ field }) => (
           <TimePicker
             date={field.value || new Date()}
@@ -209,12 +206,12 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
       <Controller
         rules={{
           required: {
-            value: question.required,
+            value: question?.required || false,
             message: 'Questão obrigatoria',
           },
         }}
         control={control}
-        name={`responses.${question.index}.value`}
+        name={`responses.${question?.index}.value`}
         render={({ field }) => (
           <DatePicker
             date={field.value || new Date()}
@@ -229,11 +226,11 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
       <Controller
         rules={{
           required: {
-            value: question.required,
+            value: question?.required || false,
             message: 'Questão obrigatoria',
           },
         }}
-        name={`responses.${question.index}.value`}
+        name={`responses.${question?.index}.value`}
         control={control}
         defaultValue={5}
         render={({ field }) => (
