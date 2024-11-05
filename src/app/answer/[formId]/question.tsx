@@ -109,6 +109,12 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
             ))}
           </div>
         )}
+        rules={{
+          required: {
+            value: question.required,
+            message: 'Questão obrigatoria',
+          },
+        }}
       />
     )
 
@@ -140,6 +146,12 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
             ))}
           </div>
         )}
+        rules={{
+          required: {
+            value: question.required,
+            message: 'Questão obrigatória',
+          },
+        }}
       />
     )
 
@@ -147,7 +159,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
     return (
       <Input
         type="tel"
-        pattern="^\(\d{2}\)\s?\d{5}-\d{4}$"
+        // pattern="^\(\d{2}\)\s?\d{5}-\d{4}$"
         placeholder="(XX) XXXXX-XXXX"
         className="h-auto border-2 px-4 py-4"
         {...register(`responses.${question.index}.value`, {
@@ -164,6 +176,10 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
         className="h-auto border-2 px-4 py-4"
         {...register(`responses.${question.index}.value`, {
           required: question.required,
+          pattern: {
+            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            message: 'Email inválido',
+          },
         })}
       />
     )
@@ -171,6 +187,12 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
   if (type === 'time')
     return (
       <Controller
+        rules={{
+          required: {
+            value: question.required,
+            message: 'Questão obrigatória',
+          },
+        }}
         control={control}
         name={`responses.${question.index}.value`}
         render={({ field }) => (
@@ -185,6 +207,12 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
   if (type === 'date')
     return (
       <Controller
+        rules={{
+          required: {
+            value: question.required,
+            message: 'Questão obrigatoria',
+          },
+        }}
         control={control}
         name={`responses.${question.index}.value`}
         render={({ field }) => (
@@ -199,6 +227,12 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
   if (type === 'slider')
     return (
       <Controller
+        rules={{
+          required: {
+            value: question.required,
+            message: 'Questão obrigatoria',
+          },
+        }}
         name={`responses.${question.index}.value`}
         control={control}
         defaultValue={5}
