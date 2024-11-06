@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { getForm } from '@/src/api/get-form'
+import { submitResponses } from '@/src/api/submit-responses'
 import { Badge } from '@/src/components/ui/badge'
 import { Button } from '@/src/components/ui/button'
 import { MultipleResponses } from '@/src/models'
@@ -34,11 +35,11 @@ export default function AnswerPage({ params }: { params: { formId: string } }) {
   })
 
   const onSubmit: SubmitHandler<MultipleResponses> = async (data) => {
-    console.log(
-      data.responses.filter(
-        (response) => response.value !== '' && response.value,
-      ),
+    if (!form?.id) return
+    const filledResponses = data.responses.filter(
+      (response) => response.value !== '' && response.value,
     )
+    await submitResponses(form?.id, filledResponses)
   }
   const focusNextError = (data: any) => {
     console.log(data)
