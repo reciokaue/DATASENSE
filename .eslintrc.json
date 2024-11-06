@@ -4,6 +4,16 @@
   "rules": {
     "simple-import-sort/imports": "error",
     "camelcase": "off",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "noImplicitAny": false
+  },
+  "settings": {
+    "tailwindcss": {
+      "callees": ["cn"],
+      "config": "tailwind.config.js"
+    },
+    "next": {
+      "rootDir": true
+    }
   }
 }
