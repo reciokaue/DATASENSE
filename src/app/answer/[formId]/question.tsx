@@ -32,7 +32,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
     } else {
       setSelectedOptions([...selectedOptions, option.id])
       append({
-        value: option.text,
+        text: option.text,
         optionId: option.id,
         questionId: question?.id,
       })
@@ -44,7 +44,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
       <Input
         className="h-auto border-2 px-4 py-4"
         placeholder="Digite sua resposta aqui..."
-        {...register(`responses.${question?.index}.value`, {
+        {...register(`responses.${question?.index}.text`, {
           required: {
             value: question?.required || false,
             message: 'Questão obrigatória',
@@ -59,7 +59,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
         className="h-48 w-full resize-none border-2 px-4 py-4"
         maxLength={500}
         placeholder="Digite sua resposta aqui..."
-        {...register(`responses.${question?.index}.value`, {
+        {...register(`responses.${question?.index}.text`, {
           required: {
             value: question?.required || false,
             message: 'Questão obrigatória',
@@ -134,7 +134,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
                   field.onChange({
                     questionId: question?.id,
                     optionId: option.id,
-                    value: option.text,
+                    text: option.text,
                   })
                 }
               >
@@ -159,7 +159,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
         // pattern="^\(\d{2}\)\s?\d{5}-\d{4}$"
         placeholder="(XX) XXXXX-XXXX"
         className="h-auto border-2 px-4 py-4"
-        {...register(`responses.${question?.index}.value`, {
+        {...register(`responses.${question?.index}.text`, {
           required: question?.required,
         })}
       />
@@ -171,7 +171,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
         type="email"
         placeholder="seuemail@exemplo.com"
         className="h-auto border-2 px-4 py-4"
-        {...register(`responses.${question?.index}.value`, {
+        {...register(`responses.${question?.index}.text`, {
           required: question?.required,
           pattern: {
             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -191,7 +191,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
           },
         }}
         control={control}
-        name={`responses.${question?.index}.value`}
+        name={`responses.${question?.index}.text`}
         render={({ field }) => (
           <TimePicker
             date={field.value || new Date()}
@@ -211,7 +211,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
           },
         }}
         control={control}
-        name={`responses.${question?.index}.value`}
+        name={`responses.${question?.index}.text`}
         render={({ field }) => (
           <DatePicker
             date={field.value || new Date()}

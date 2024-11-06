@@ -11,10 +11,11 @@ import { Button } from '@/src/components/ui/button'
 import { MultipleResponses } from '@/src/models'
 
 import { QuestionType } from './question'
+import { useRouter } from 'next/navigation'
 
 export default function AnswerPage({ params }: { params: { formId: string } }) {
   const responseForm = useForm<MultipleResponses>({})
-
+const {push} = useRouter()
   const {
     reset,
     handleSubmit,
@@ -33,13 +34,17 @@ export default function AnswerPage({ params }: { params: { formId: string } }) {
       return data
     },
   })
+  
 
   const onSubmit: SubmitHandler<MultipleResponses> = async (data) => {
     if (!form?.id) return
     const filledResponses = data.responses.filter(
-      (response) => response.value !== '' && response.value,
-    )
+      (response) => (response?.value !== undefined && response?.value !== null) || (response?.text !== undefined && response?.text !== '')
+    );
+    console.log(filledResponses)
     await submitResponses(form?.id, filledResponses)
+
+    push(`/answer/success`)
   }
   const focusNextError = (data: any) => {
     console.log(data)

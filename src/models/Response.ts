@@ -6,7 +6,8 @@ import { z } from 'zod'
 
 export const ResponseSchema = z.object({
   id: z.number().int().optional(),
-  value: z.string().optional(),
+  value: z.number().optional(),
+  text: z.string().optional(),
   sessionId: z.number().int().nullable().optional(),
   optionId: z.number().int().nullable().optional(),
   questionId: z.number().int().optional(),
