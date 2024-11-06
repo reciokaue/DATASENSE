@@ -7,7 +7,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { getForm } from '@/src/api/get-form'
 import { Badge } from '@/src/components/ui/badge'
 import { Button } from '@/src/components/ui/button'
-import { Form, MultipleResponses } from '@/src/models'
+import { MultipleResponses } from '@/src/models'
 
 import { QuestionType } from './question'
 
