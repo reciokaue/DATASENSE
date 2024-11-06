@@ -22,14 +22,14 @@ export function SelectQuestionType({ control, name }: SelectProps) {
       <Controller
         control={control}
         name={name}
-        render={(questionType) => (
-          <Dropdown
-            setSelected={(type: string) =>
-              questionType.field.onChange(JSON.parse(type))
-            }
-            placeholder={questionType?.field?.value?.label}
-            options={questionTypes}
-          />
+        render={({ field }) => (
+          <>
+            <Dropdown
+              setSelected={(type: string) => field.onChange(JSON.parse(type))}
+              placeholder={field?.value?.label}
+              options={questionTypes}
+            />
+          </>
         )}
       />
     </div>

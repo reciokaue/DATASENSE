@@ -20,37 +20,41 @@ interface QuestionsProps {
 
 export function Questions({ form, formObject, updateForm }: QuestionsProps) {
   const { reset, control } = formObject
-  const { fields, append, swap } = useFieldArray({
+  const { fields, append, swap, remove, insert } = useFieldArray({
     control,
     name: 'questions',
   })
 
   async function handleSaveQuestions() {
-    const data = formObject.getValues().questions
-    const newForm = {
-      ...form.data,
-      questions: data,
-    }
-    console.log(newForm)
-    await updateForm.mutateAsync(newForm)
-    reset({ questions: data })
+    const form = formObject.getValues()
+    console.log(form)
+    await updateForm.mutateAsync(form)
+    reset(form)
   }
 
-  function handleAddQuestion() {
-    append({
-      text: '',
-      questionType: {
-        id: 1,
-        name: 'options',
-        label: 'Opções',
-        icon: 'CircleDot',
-      },
-      required: false,
-      options: [],
-      index: fields.length,
-      formId: form.data?.id,
-      id: -Math.round(Math.random() * 100),
-    })
+  const actions = {
+    removeQuestion: (index: number) => {
+      remove(index)
+    },
+    cloneQuestion: (index: number) => {
+      insert(index + 1, fields[index])
+    },
+    addQuestion: () => {
+      append({
+        text: '',
+        questionType: {
+          id: 1,
+          name: 'options',
+          label: 'Opções',
+          icon: 'CircleDot',
+        },
+        required: false,
+        options: [],
+        index: fields.length,
+        formId: form.data?.id,
+        id: -Math.round(Math.random() * 100),
+      })
+    },
   }
 
   return (
@@ -67,12 +71,13 @@ export function Questions({ form, formObject, updateForm }: QuestionsProps) {
           </Button>
         </div>
         <Button
-          onClick={handleAddQuestion}
+          onClick={actions.addQuestion}
           variant="ghost"
           className="items-center"
         >
           Nova questão <Plus />
         </Button>
+        {/* TODO Faça esse header ficar sticky */}
       </header>
 
       {form && (
@@ -84,7 +89,11 @@ export function Questions({ form, formObject, updateForm }: QuestionsProps) {
               sortableId={item.id}
               className="flex items-center gap-2"
             >
-              <EditCard question={item} formObject={formObject} index={index} />
+              <EditCard
+                formObject={formObject}
+                index={index}
+                actions={actions}
+              />
             </SortableItem>
           )}
         />

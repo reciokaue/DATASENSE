@@ -6,7 +6,6 @@ import { InputEmojiPicker } from '@/src/components/emoji-picker'
 import { SortableItem } from '@/src/components/sortable/sortable-item'
 import { SortableList } from '@/src/components/sortable/sortable-list'
 import { Button } from '@/src/components/ui/button'
-import { Input } from '@/src/components/ui/input'
 import { cn } from '@/src/lib/utils'
 interface OptionsProps {
   formObject: UseFormReturn<any>
@@ -27,7 +26,7 @@ const types = {
 }
 
 export function Options({ formObject, index }: OptionsProps) {
-  const { register, control, setValue, watch } = formObject
+  const { control, setValue, watch } = formObject
   const questionType = watch(`questions.${index}.questionType`)
 
   if (![types.OPTIONS, types.LIST].includes(questionType.name)) return
@@ -46,9 +45,7 @@ export function Options({ formObject, index }: OptionsProps) {
       })
     }
   }
-  function deleteOption(e: any, option: any) {
-    e.preventDefault()
-    console.log(fields.values)
+  function deleteOption(option: any) {
     remove(option.index)
   }
 
@@ -74,7 +71,7 @@ export function Options({ formObject, index }: OptionsProps) {
                 )}
               >
                 <Button
-                  onClick={(e) => deleteOption(e, item)}
+                  onClick={() => deleteOption(item)}
                   className="hover:text-red-500"
                   size="icon"
                   variant="ghost"
