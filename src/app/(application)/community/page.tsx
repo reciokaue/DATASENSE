@@ -24,7 +24,7 @@ export default function CommunityPage() {
   })
 
   const { data: result } = useQuery({
-    queryKey: ['forms'],
+    queryKey: ['community-forms'],
     queryFn: () =>
       getForms({
         page: 0,
