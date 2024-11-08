@@ -4,6 +4,7 @@ import * as SelectPrimitive from '@radix-ui/react-select'
 import { Check, ChevronDown, ChevronsUpDown, ChevronUp } from 'lucide-react'
 import * as React from 'react'
 
+import { QuestionType } from '@/models'
 import { cn } from '@/src/lib/utils'
 
 const Select = SelectPrimitive.Root
@@ -161,13 +162,7 @@ export {
 interface DropdownProps {
   placeholder: string
   listTitle?: string
-  options?: {
-    id?: number
-    label?: string
-    value?: string
-    name?: string
-    icon: string
-  }[]
+  options?: QuestionType[]
   setSelected: (value: string) => void
 }
 

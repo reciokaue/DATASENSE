@@ -99,11 +99,13 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
                 type="button"
                 key={star}
                 className={`text-6xl ${star <= field?.value?.value ? 'text-yellow-400' : 'text-gray-400'}`}
-                onClick={() => field.onChange({
-                  questionId: question?.id,
-                  text: question.text,
-                  value: star
-                })}
+                onClick={() =>
+                  field.onChange({
+                    questionId: question?.id,
+                    text: question.text,
+                    value: star,
+                  })
+                }
               >
                 ★
               </button>

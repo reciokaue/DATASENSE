@@ -4,8 +4,7 @@
   "rules": {
     "simple-import-sort/imports": "error",
     "camelcase": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "noImplicitAny": false
+    "@typescript-eslint/no-explicit-any": "off"
   },
   "settings": {
     "tailwindcss": {

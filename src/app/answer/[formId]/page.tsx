@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { getForm } from '@/src/api/get-form'
@@ -11,11 +12,10 @@ import { Button } from '@/src/components/ui/button'
 import { MultipleResponses } from '@/src/models'
 
 import { QuestionType } from './question'
-import { useRouter } from 'next/navigation'
 
 export default function AnswerPage({ params }: { params: { formId: string } }) {
   const responseForm = useForm<MultipleResponses>({})
-const {push} = useRouter()
+  const { push } = useRouter()
   const {
     reset,
     handleSubmit,
@@ -34,13 +34,14 @@ const {push} = useRouter()
       return data
     },
   })
-  
 
   const onSubmit: SubmitHandler<MultipleResponses> = async (data) => {
     if (!form?.id) return
     const filledResponses = data.responses.filter(
-      (response) => (response?.value !== undefined && response?.value !== null) || (response?.text !== undefined && response?.text !== '')
-    );
+      (response) =>
+        (response?.value !== undefined && response?.value !== null) ||
+        (response?.text !== undefined && response?.text !== ''),
+    )
     console.log(filledResponses)
     await submitResponses(form?.id, filledResponses)
 
@@ -92,8 +93,8 @@ const {push} = useRouter()
               </header>
               <h1 className="mb-6 text-2xl font-bold text-primary">
                 {question.text}
-                  {question.required && ' *'}
-                  {/* {question.id} */}
+                {question.required && ' *'}
+                {/* {question.id} */}
               </h1>
               <QuestionType form={responseForm} question={question} />
               {errors.responses?.[index]?.value?.message && (
