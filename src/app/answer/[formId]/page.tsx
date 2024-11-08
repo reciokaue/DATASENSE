@@ -92,6 +92,8 @@ const {push} = useRouter()
               </header>
               <h1 className="mb-6 text-2xl font-bold text-primary">
                 {question.text}
+                  {question.required && ' *'}
+                  {/* {question.id} */}
               </h1>
               <QuestionType form={responseForm} question={question} />
               {errors.responses?.[index]?.value?.message && (

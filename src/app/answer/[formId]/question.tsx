@@ -90,7 +90,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
   if (type === 'starRating')
     return (
       <Controller
-        name={`responses.${question?.index}.value`}
+        name={`responses.${question?.index}`}
         control={control}
         render={({ field }) => (
           <div className="flex w-full items-center justify-center gap-3">
@@ -98,8 +98,12 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
               <button
                 type="button"
                 key={star}
-                className={`text-6xl ${star <= field.value ? 'text-yellow-400' : 'text-gray-400'}`}
-                onClick={() => field.onChange(star)}
+                className={`text-6xl ${star <= field?.value?.value ? 'text-yellow-400' : 'text-gray-400'}`}
+                onClick={() => field.onChange({
+                  questionId: question?.id,
+                  text: question.text,
+                  value: star
+                })}
               >
                 ★
               </button>
