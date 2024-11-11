@@ -4,7 +4,7 @@ import { Check, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import * as React from 'react'
 
-import { cn } from '@/src/lib/utils'
+import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
   'inline-flex relative items-center gap-2 justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',

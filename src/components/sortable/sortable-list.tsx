@@ -10,7 +10,7 @@ import { SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import type { ReactNode } from 'react'
 import React from 'react'
 
-import { cn } from '@/src/lib/utils'
+import { cn } from '@/lib/utils'
 
 interface BaseItem {
   id: UniqueIdentifier

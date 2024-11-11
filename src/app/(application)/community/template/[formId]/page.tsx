@@ -2,10 +2,10 @@
 
 import { useQuery } from '@tanstack/react-query'
 
-import { getForm } from '@/src/api/get-form'
-import { Breadcrumb } from '@/src/components/ui/breadcrumb'
-import { Button } from '@/src/components/ui/button'
-import { Icon } from '@/src/components/ui/icon'
+import { getForm } from '@/api/get-form'
+import { Breadcrumb } from '@/components/ui/breadcrumb'
+import { Button } from '@/components/ui/button'
+import { Icon } from '@/components/ui/icon'
 
 export default function TemplatePage({
   params,

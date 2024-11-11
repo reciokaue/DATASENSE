@@ -5,7 +5,7 @@ import { Check, ChevronDown, ChevronsUpDown, ChevronUp } from 'lucide-react'
 import * as React from 'react'
 
 import { QuestionType } from '@/models'
-import { cn } from '@/src/lib/utils'
+import { cn } from '@/lib/utils'
 
 const Select = SelectPrimitive.Root
 

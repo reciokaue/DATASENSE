@@ -1,9 +1,9 @@
 import Link from 'next/link'
 
-import { Badge } from '@/src/components/ui/badge'
-import { Icon } from '@/src/components/ui/icon'
-import { Skeleton } from '@/src/components/ui/skeleton'
-import { Category } from '@/src/models'
+import { Badge } from '@/components/ui/badge'
+import { Icon } from '@/components/ui/icon'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Category } from '@/models'
 
 interface CategoryListProps {
   categories: Category[] | undefined

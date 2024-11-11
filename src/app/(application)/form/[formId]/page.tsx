@@ -7,15 +7,15 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
 // import useFormPersist from 'react-hook-form-persist'
-import { getForm } from '@/src/api/get-form'
-import { updateForm } from '@/src/api/update-form'
+import { getForm } from '@/api/get-form'
+import { updateForm } from '@/api/update-form'
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@/src/components/ui/tabs'
-import { Form, FormSchema } from '@/src/models'
+} from '@/components/ui/tabs'
+import { Form, FormSchema } from '@/models'
 
 import { Config } from './screens/config'
 import { Questions } from './screens/questions'

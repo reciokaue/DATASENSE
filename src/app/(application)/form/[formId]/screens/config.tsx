@@ -3,13 +3,13 @@ import { UseMutationResult, UseQueryResult } from '@tanstack/react-query'
 import { AxiosResponse } from 'axios'
 import { SubmitHandler } from 'react-hook-form'
 
-import { CategorySelector } from '@/src/components/category-selector'
-import { Button } from '@/src/components/ui/button'
-import { Input } from '@/src/components/ui/input'
-import { Label } from '@/src/components/ui/label'
-import { Switch } from '@/src/components/ui/switch'
-import { Textarea } from '@/src/components/ui/textarea'
-import { Form } from '@/src/models'
+import { CategorySelector } from '@/components/category-selector'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
+import { Textarea } from '@/components/ui/textarea'
+import { Form } from '@/models'
 
 interface ConfigProps {
   form: UseQueryResult<Form | undefined, Error>

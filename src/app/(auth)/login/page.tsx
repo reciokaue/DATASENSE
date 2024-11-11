@@ -7,10 +7,10 @@ import Link from 'next/link'
 import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-import { Button } from '@/src/components/ui/button'
-import { Checkbox } from '@/src/components/ui/checkbox'
-import { Input } from '@/src/components/ui/input'
-import { useAuth } from '@/src/contexts/Auth'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Input } from '@/components/ui/input'
+import { useAuth } from '@/contexts/Auth'
 
 import { loginSchema, loginSchemaProps } from './schema'
 

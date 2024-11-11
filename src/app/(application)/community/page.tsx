@@ -3,13 +3,13 @@
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 
-import { getCategories } from '@/src/api/get-categories'
-import { getForms } from '@/src/api/get-forms'
-import { Breadcrumb } from '@/src/components/ui/breadcrumb'
-import { Icon } from '@/src/components/ui/icon'
-import { Input } from '@/src/components/ui/input'
-import { Label } from '@/src/components/ui/label'
-import { Skeleton } from '@/src/components/ui/skeleton'
+import { getCategories } from '@/api/get-categories'
+import { getForms } from '@/api/get-forms'
+import { Breadcrumb } from '@/components/ui/breadcrumb'
+import { Icon } from '@/components/ui/icon'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Skeleton } from '@/components/ui/skeleton'
 
 import { CategoryList } from './category-list'
 

@@ -2,11 +2,11 @@
 import { Plus, Trash2 } from 'lucide-react'
 import { useFieldArray, UseFormReturn } from 'react-hook-form'
 
-import { InputEmojiPicker } from '@/src/components/emoji-picker'
-import { SortableItem } from '@/src/components/sortable/sortable-item'
-import { SortableList } from '@/src/components/sortable/sortable-list'
-import { Button } from '@/src/components/ui/button'
-import { cn } from '@/src/lib/utils'
+import { InputEmojiPicker } from '@/components/emoji-picker'
+import { SortableItem } from '@/components/sortable/sortable-item'
+import { SortableList } from '@/components/sortable/sortable-list'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 interface OptionsProps {
   formObject: UseFormReturn<any>
   index: number

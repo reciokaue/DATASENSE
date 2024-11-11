@@ -5,9 +5,9 @@ import { useMutation } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 
-import { Button } from '@/src/components/ui/button'
-import { Input } from '@/src/components/ui/input'
-import { useAuth } from '@/src/contexts/Auth'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { useAuth } from '@/contexts/Auth'
 
 import { Props, schema } from './schema'
 

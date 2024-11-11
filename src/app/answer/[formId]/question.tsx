@@ -2,13 +2,13 @@
 import { useState } from 'react'
 import { Controller, useFieldArray, UseFormReturn } from 'react-hook-form'
 
-import { Button } from '@/src/components/ui/button'
-import { DatePicker } from '@/src/components/ui/date-picker'
-import { Input } from '@/src/components/ui/input'
-import { Slider } from '@/src/components/ui/slider'
-import { Textarea } from '@/src/components/ui/textarea'
-import { TimePicker } from '@/src/components/ui/time-picker'
-import { Option, Question } from '@/src/models'
+import { Button } from '@/components/ui/button'
+import { DatePicker } from '@/components/ui/date-picker'
+import { Input } from '@/components/ui/input'
+import { Slider } from '@/components/ui/slider'
+import { Textarea } from '@/components/ui/textarea'
+import { TimePicker } from '@/components/ui/time-picker'
+import { Option, Question } from '@/models'
 
 interface QuestionTypeProps {
   question: Question

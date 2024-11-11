@@ -3,9 +3,9 @@
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 
-import { getForms } from '@/src/api/get-forms'
-import { NewFormButton } from '@/src/components/new-form'
-import { Skeleton } from '@/src/components/ui/skeleton'
+import { getForms } from '@/api/get-forms'
+import { NewFormButton } from '@/components/new-form'
+import { Skeleton } from '@/components/ui/skeleton'
 
 import { HomeCard } from './home-card'
 

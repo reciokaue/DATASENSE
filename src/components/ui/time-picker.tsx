@@ -10,14 +10,14 @@ import {
 } from 'date-fns'
 import { ChevronDown, ChevronUp, Clock } from 'lucide-react'
 
-import { Button } from '@/src/components/ui/button'
+import { Button } from '@/components/ui/button'
 import {
   Drawer,
   DrawerClose,
   DrawerContent,
   DrawerTrigger,
-} from '@/src/components/ui/drawer'
-import { cn } from '@/src/lib/utils'
+} from '@/components/ui/drawer'
+import { cn } from '@/lib/utils'
 
 interface TimePickerProps {
   setDate: (date: Date) => void

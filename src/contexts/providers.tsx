@@ -3,7 +3,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactNode } from 'react'
 
-import { Toaster } from '@/src/components/ui/toaster'
+import { Toaster } from '@/components/ui/toaster'
 
 import { AuthProvider } from './Auth'
 

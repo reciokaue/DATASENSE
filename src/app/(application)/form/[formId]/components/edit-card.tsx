@@ -3,9 +3,9 @@
 import { Copy, Trash2 } from 'lucide-react'
 import { UseFormReturn } from 'react-hook-form'
 
-import { Button } from '@/src/components/ui/button'
-import { Input } from '@/src/components/ui/input'
-import { Switch } from '@/src/components/ui/switch'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Switch } from '@/components/ui/switch'
 
 import { Options } from './options'
 import { SelectQuestionType } from './select-type'

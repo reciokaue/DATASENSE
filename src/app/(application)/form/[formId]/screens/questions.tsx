@@ -5,10 +5,10 @@ import { AxiosResponse } from 'axios'
 import { Loader2, Plus } from 'lucide-react'
 import { useFieldArray } from 'react-hook-form'
 
-import { SortableItem } from '@/src/components/sortable/sortable-item'
-import { SortableList } from '@/src/components/sortable/sortable-list'
-import { Button } from '@/src/components/ui/button'
-import { Form } from '@/src/models'
+import { SortableItem } from '@/components/sortable/sortable-item'
+import { SortableList } from '@/components/sortable/sortable-list'
+import { Button } from '@/components/ui/button'
+import { Form } from '@/models'
 
 import { EditCard } from '../components/edit-card'
 

@@ -5,11 +5,11 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-import { getForm } from '@/src/api/get-form'
-import { submitResponses } from '@/src/api/submit-responses'
-import { Badge } from '@/src/components/ui/badge'
-import { Button } from '@/src/components/ui/button'
-import { MultipleResponses } from '@/src/models'
+import { getForm } from '@/api/get-form'
+import { submitResponses } from '@/api/submit-responses'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { MultipleResponses } from '@/models'
 
 import { QuestionType } from './question'
 

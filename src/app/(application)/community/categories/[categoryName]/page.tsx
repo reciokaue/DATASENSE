@@ -2,9 +2,9 @@
 
 import { useQuery } from '@tanstack/react-query'
 
-import { getCategoryByName } from '@/src/api/get-category'
-import { Breadcrumb } from '@/src/components/ui/breadcrumb'
-import { Icon } from '@/src/components/ui/icon'
+import { getCategoryByName } from '@/api/get-category'
+import { Breadcrumb } from '@/components/ui/breadcrumb'
+import { Icon } from '@/components/ui/icon'
 
 import { CategoryList } from '../../category-list'
 

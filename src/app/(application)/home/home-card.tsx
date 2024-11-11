@@ -1,7 +1,7 @@
 import { ClipboardType, Mails } from 'lucide-react'
 import { HTMLAttributes } from 'react'
 
-import { Form } from '@/src/models'
+import { Form } from '@/models'
 
 interface HomeCardProps extends HTMLAttributes<HTMLDivElement> {
   form: Form
