@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import {
   Bar,
   BarChart,
@@ -11,9 +11,9 @@ import {
   YAxis,
 } from 'recharts'
 
-// import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-// import { ScrollArea } from '@/components/ui/scroll-area'
+import { getFormSummary } from '@/api/get-form-sumary'
+import { getQuestionsResults, QuestionResult } from '@/api/get-question-results'
+import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
@@ -23,39 +23,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-
-interface FormSummary {
-  totalSessions: number
-  totalResponses: number
-  totalQuestions: number
-  averageResponsesPerSession: number
-  completionRate: number
-}
-
-interface QuestionResult {
-  id: number
-  text: string
-  type: string
-  index: number
-  required: boolean
-  isMultipleChoice: boolean
-  hasNumericValues: boolean
-  totalResponses: number
-  chartData?: Array<{ label: string; value: number; percentage: number }>
-  statistics?: {
-    average: number
-    min: number
-    max: number
-    median: number
-  }
-  responses?: Array<{ text: string; count: number }>
-}
-
-interface QuestionsResults {
-  formId: number
-  totalQuestions: number
-  questions: QuestionResult[]
-}
+import { formatResponse } from '@/utils/formatRespnse'
 
 const COLORS = [
   '#0088FE',
@@ -66,34 +34,19 @@ const COLORS = [
   '#82ca9d',
 ]
 
-export function Responses() {
-  const [summary, setSummary] = useState<FormSummary | null>(null)
-  const [results, setResults] = useState<QuestionsResults | null>(null)
-  const [loading, setLoading] = useState(true)
+interface ResponsesProps {
+  formId: number | string
+}
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const formId = '1' // Substitua pelo ID do formulário atual
-        const [summaryData, resultsData] = await Promise.all([
-          fetch(`/api/analytics/forms/${formId}/summary`).then((res) =>
-            res.json(),
-          ),
-          fetch(`/api/analytics/forms/${formId}/questions-results`).then(
-            (res) => res.json(),
-          ),
-        ])
-        setSummary(summaryData)
-        setResults(resultsData)
-      } catch (error) {
-        console.error('Erro ao carregar dados:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchData()
-  }, [])
+export function Responses({ formId }: ResponsesProps) {
+  const { data: summary, isLoading: summaryLoading } = useQuery({
+    queryKey: ['formSummary', formId],
+    queryFn: () => getFormSummary(formId),
+  })
+  const { data: questionResults, isLoading: questionLoading } = useQuery({
+    queryKey: ['questionsResults', formId],
+    queryFn: () => getQuestionsResults(formId),
+  })
 
   const renderChart = (question: QuestionResult) => {
     if (!question.chartData) return null
@@ -141,7 +94,7 @@ export function Responses() {
     }
   }
 
-  if (loading) {
+  if (summaryLoading || questionLoading) {
     return (
       <div className="p-8">
         <Skeleton className="h-[400px]" />
@@ -150,15 +103,21 @@ export function Responses() {
   }
 
   return (
-    <div className="flex flex-col pb-10">
-      <header className="flex items-center justify-center gap-3 pt-6">
-        <Card className="flex w-fit flex-col p-6">
+    <div className="mx-auto flex max-w-screen-lg flex-col  items-center space-y-6 pb-10">
+      <header className="grid grid-cols-2 gap-3 md:grid-cols-5">
+        <Card className="flex h-full w-full flex-col p-6">
+          <span className="text-4xl font-semibold text-primary">
+            {summary?.totalQuestions}
+          </span>
+          <p className="text-sm text-secondary-foreground">Total de questões</p>
+        </Card>
+        <Card className="flex h-full w-full flex-col p-6">
           <span className="text-4xl font-semibold text-primary">
             {summary?.totalSessions}
           </span>
           <p className="text-sm text-secondary-foreground">Total de sessões</p>
         </Card>
-        <Card className="flex w-fit flex-col p-6">
+        <Card className="flex h-full w-full flex-col p-6">
           <span className="text-4xl font-semibold text-primary">
             {summary?.totalResponses}
           </span>
@@ -166,22 +125,28 @@ export function Responses() {
             Total de respostas
           </p>
         </Card>
-        <Card className="flex w-fit flex-col p-6">
+        <Card className="flex h-full w-full flex-col p-6">
           <span className="text-4xl font-semibold text-primary">
             {summary?.completionRate.toFixed(1)}%
           </span>
           <p className="text-sm text-secondary-foreground">Taxa de conclusão</p>
         </Card>
+        <Card className="flex h-full w-full flex-col p-6">
+          <span className="text-4xl font-semibold text-primary">
+            {summary?.averageResponsesPerSession}
+          </span>
+          <p className="text-sm text-secondary-foreground">
+            Média de respostas por sessão
+          </p>
+        </Card>
       </header>
-
-      <div className="mx-auto mt-8 w-full max-w-screen-lg px-4">
-        {/* <ScrollArea className="rounded-md border"> */}
-        {results?.questions.map((question) => (
-          <Card key={question.id} className="mb-6 p-6">
+      <div className="flex w-full flex-col space-y-6">
+        {questionResults?.questions.map((question) => (
+          <Card key={question.id} className="p-6">
             <h3 className="mb-4 text-xl font-semibold">{question.text}</h3>
 
             {question.statistics && (
-              <div className="mb-4 grid grid-cols-4 gap-4">
+              <div className="mb-6 grid grid-cols-4 gap-4">
                 <Card className="p-4">
                   <p className="text-sm text-secondary-foreground">Média</p>
                   <p className="text-lg font-medium">
@@ -208,8 +173,7 @@ export function Responses() {
                 </Card>
               </div>
             )}
-
-            {renderChart(question)}
+            {question.totalResponses > 0 && renderChart(question)}
 
             {question.responses && (
               <Table>
@@ -222,7 +186,9 @@ export function Responses() {
                 <TableBody>
                   {question.responses.map((response, index) => (
                     <TableRow key={index}>
-                      <TableCell>{response.text}</TableCell>
+                      <TableCell>
+                        {formatResponse(response.text, question.type)}
+                      </TableCell>
                       <TableCell className="text-right">
                         {response.count}
                       </TableCell>
@@ -237,7 +203,6 @@ export function Responses() {
             </div>
           </Card>
         ))}
-        {/* </ScrollArea> */}
       </div>
     </div>
   )

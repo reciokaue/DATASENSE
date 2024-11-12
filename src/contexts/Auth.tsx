@@ -83,7 +83,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setCookie('datasense-token', response.data)
       api.defaults.headers.common.Authorization = `Bearer ${response.data}`
 
-      router.push('/forms')
+      router.push('/home')
     } catch (e: any) {
       const isAppError = e instanceof AppError
       console.log(e)
