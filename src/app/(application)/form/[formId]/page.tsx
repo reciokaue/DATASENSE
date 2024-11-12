@@ -9,12 +9,7 @@ import { useForm } from 'react-hook-form'
 // import useFormPersist from 'react-hook-form-persist'
 import { getForm } from '@/api/get-form'
 import { updateForm } from '@/api/update-form'
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/ui/tabs'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Form, FormSchema } from '@/models'
 
 import { Config } from './screens/config'
@@ -78,7 +73,7 @@ export default function FormDetailPage({
           />
         </TabsContent>
         <TabsContent value="responses">
-          <Responses />
+          <Responses formId={params.formId} />
         </TabsContent>
         <TabsContent value="config">
           <Config
