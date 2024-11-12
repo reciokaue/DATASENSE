@@ -6,6 +6,10 @@
 .pnp.js
 .yarn/install-state.gz
 yarn.lock
+
+# content layer static pages
+.contentlayer
+
 # testing
 /coverage
 /prisma/dev.db
