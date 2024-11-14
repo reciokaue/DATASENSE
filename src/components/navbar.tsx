@@ -50,6 +50,7 @@ export function Navbar() {
   const links = [
     { href: '/community', icon: <Users />, text: 'Community' },
     { href: '/blog', icon: <Book />, text: 'Blog' },
+    { href: '/pricing', icon: <GanttChart />, text: 'Planos' },
   ]
 
   return (
