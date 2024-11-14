@@ -1,4 +1,3 @@
-import { ClipboardPlus } from 'lucide-react'
 import Link from 'next/link'
 
 import { buttonVariants } from '@/components/ui/button'

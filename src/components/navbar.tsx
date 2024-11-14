@@ -1,6 +1,6 @@
 'use client'
 
-import { Book, Home, Users } from 'lucide-react'
+import { Book, GanttChart, Home, Users } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { ReactNode } from 'react'
@@ -43,8 +43,9 @@ export function Navbar() {
 
   const authLinks = [
     { href: '/home', icon: <Home />, text: 'Home' },
-    { href: '/community', icon: <Users />, text: 'Community' },
+    { href: '/community', icon: <Users />, text: 'Comunidade' },
     { href: '/blog', icon: <Book />, text: 'Blog' },
+    { href: '/pricing', icon: <GanttChart />, text: 'Planos' },
   ]
   const links = [
     { href: '/community', icon: <Users />, text: 'Community' },
