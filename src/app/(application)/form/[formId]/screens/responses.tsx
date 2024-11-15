@@ -96,8 +96,16 @@ export function Responses({ formId }: ResponsesProps) {
 
   if (summaryLoading || questionLoading) {
     return (
-      <div className="p-8">
-        <Skeleton className="h-[400px]" />
+      <div className="space-y-3">
+        <header className="grid grid-cols-2 gap-3 md:grid-cols-5">
+          <Skeleton className="h-36" />
+          <Skeleton className="h-36" />
+          <Skeleton className="h-36" />
+          <Skeleton className="h-36" />
+          <Skeleton className="h-36" />
+        </header>
+        <Skeleton className="h-[300px]" />
+        <Skeleton className="h-[300px]" />
       </div>
     )
   }
@@ -140,6 +148,7 @@ export function Responses({ formId }: ResponsesProps) {
           </p>
         </Card>
       </header>
+      <nav></nav>
       <div className="flex w-full flex-col space-y-6">
         {questionResults?.questions.map((question) => (
           <Card key={question.id} className="p-6">

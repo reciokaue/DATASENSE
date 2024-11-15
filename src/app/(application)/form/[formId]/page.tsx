@@ -60,7 +60,7 @@ export default function FormDetailPage({
   return (
     <>
       <Tabs defaultValue="questions" className="flex w-full flex-col">
-        <TabsList className="mx-auto">
+        <TabsList className="sticky top-10 z-10 mx-auto">
           <TabsTrigger value="questions">Questões</TabsTrigger>
           <TabsTrigger value="responses">Respostas</TabsTrigger>
           <TabsTrigger value="config">Configurações</TabsTrigger>

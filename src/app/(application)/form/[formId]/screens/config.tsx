@@ -41,7 +41,7 @@ export function Config({ form, formObject, updateForm }: ConfigProps) {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="mx-auto flex  max-w-3xl flex-col">
       <header className="flex flex-col space-y-1.5 text-center sm:text-left">
         <h1 className="text-2xl font-semibold leading-none tracking-tight">
           Configurações
