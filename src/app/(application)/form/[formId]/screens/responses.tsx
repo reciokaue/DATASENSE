@@ -12,8 +12,16 @@ import {
 } from 'recharts'
 
 import { getFormSummary } from '@/api/get-form-sumary'
-import { getQuestionsResults, QuestionResult } from '@/api/get-question-results'
+import { getQuestionsResults } from '@/api/get-question-results'
+import { Example, renderChart } from '@/components/chart'
 import { Card } from '@/components/ui/card'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
@@ -23,7 +31,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { formatResponse } from '@/utils/formatRespnse'
+import { formatResponse } from '@/utils/formatResponse'
+
+import { ResponseCard } from '../components/response-card'
 
 const COLORS = [
   '#0088FE',
@@ -37,6 +47,14 @@ const COLORS = [
 interface ResponsesProps {
   formId: number | string
 }
+
+const summaryTitles = [
+  'Total de questões',
+  'Total de sessões',
+  'Total de respostas',
+  'Taxa de conclusão',
+  'Média de respostas por sessão',
+]
 
 export function Responses({ formId }: ResponsesProps) {
   const { data: summary, isLoading: summaryLoading } = useQuery({
@@ -113,105 +131,54 @@ export function Responses({ formId }: ResponsesProps) {
   return (
     <div className="mx-auto flex max-w-screen-lg flex-col  items-center space-y-6 pb-10">
       <header className="grid grid-cols-2 gap-3 md:grid-cols-5">
-        <Card className="flex h-full w-full flex-col p-6">
-          <span className="text-4xl font-semibold text-primary">
-            {summary?.totalQuestions}
-          </span>
-          <p className="text-sm text-secondary-foreground">Total de questões</p>
-        </Card>
-        <Card className="flex h-full w-full flex-col p-6">
-          <span className="text-4xl font-semibold text-primary">
-            {summary?.totalSessions}
-          </span>
-          <p className="text-sm text-secondary-foreground">Total de sessões</p>
-        </Card>
-        <Card className="flex h-full w-full flex-col p-6">
-          <span className="text-4xl font-semibold text-primary">
-            {summary?.totalResponses}
-          </span>
-          <p className="text-sm text-secondary-foreground">
-            Total de respostas
-          </p>
-        </Card>
-        <Card className="flex h-full w-full flex-col p-6">
-          <span className="text-4xl font-semibold text-primary">
-            {summary?.completionRate.toFixed(1)}%
-          </span>
-          <p className="text-sm text-secondary-foreground">Taxa de conclusão</p>
-        </Card>
-        <Card className="flex h-full w-full flex-col p-6">
-          <span className="text-4xl font-semibold text-primary">
-            {summary?.averageResponsesPerSession}
-          </span>
-          <p className="text-sm text-secondary-foreground">
-            Média de respostas por sessão
-          </p>
-        </Card>
+        {summaryLoading ? (
+          <>
+            <Skeleton className="h-36" />
+            <Skeleton className="h-36" />
+            <Skeleton className="h-36" />
+            <Skeleton className="h-36" />
+            <Skeleton className="h-36" />
+          </>
+        ) : (
+          <>
+            {Object.values(summary).map((summaryValue, index) => (
+              <Card
+                key={summaryTitles[index]}
+                className="flex h-full w-full flex-col p-6"
+              >
+                <span className="text-4xl font-semibold text-primary">
+                  {summaryValue}
+                </span>
+                <p className="text-sm text-secondary-foreground">
+                  {summaryTitles[index]}
+                </p>
+              </Card>
+            ))}
+          </>
+        )}
       </header>
-      <nav></nav>
-      <div className="flex w-full flex-col space-y-6">
-        {questionResults?.questions.map((question) => (
-          <Card key={question.id} className="p-6">
-            <h3 className="mb-4 text-xl font-semibold">{question.text}</h3>
-
-            {question.statistics && (
-              <div className="mb-6 grid grid-cols-4 gap-4">
-                <Card className="p-4">
-                  <p className="text-sm text-secondary-foreground">Média</p>
-                  <p className="text-lg font-medium">
-                    {question.statistics.average.toFixed(1)}
-                  </p>
-                </Card>
-                <Card className="p-4">
-                  <p className="text-sm text-secondary-foreground">Mediana</p>
-                  <p className="text-lg font-medium">
-                    {question.statistics.median.toFixed(1)}
-                  </p>
-                </Card>
-                <Card className="p-4">
-                  <p className="text-sm text-secondary-foreground">Mínimo</p>
-                  <p className="text-lg font-medium">
-                    {question.statistics.min.toFixed(1)}
-                  </p>
-                </Card>
-                <Card className="p-4">
-                  <p className="text-sm text-secondary-foreground">Máximo</p>
-                  <p className="text-lg font-medium">
-                    {question.statistics.max.toFixed(1)}
-                  </p>
-                </Card>
-              </div>
-            )}
-            {question.totalResponses > 0 && renderChart(question)}
-
-            {question.responses && (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Resposta</TableHead>
-                    <TableHead className="text-right">Quantidade</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {question.responses.map((response, index) => (
-                    <TableRow key={index}>
-                      <TableCell>
-                        {formatResponse(response.text, question.type)}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {response.count}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-
-            <div className="mt-4 text-sm text-secondary-foreground">
-              Total de respostas: {question.totalResponses}
-            </div>
-          </Card>
-        ))}
+      <nav>
+        <Select>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Selecione os gráficos" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="pizza">Pizza</SelectItem>
+            <SelectItem value="waffle">Waffle</SelectItem>
+          </SelectContent>
+        </Select>
+      </nav>
+      <div className="grid grid-cols-2 gap-6">
+        {questionLoading ? (
+          <>
+            <Skeleton className="h-[300px]" />
+            <Skeleton className="h-[300px]" />
+          </>
+        ) : (
+          questionResults?.questions.map((question) => (
+            <ResponseCard key={question.id} question={question} />
+          ))
+        )}
       </div>
     </div>
   )

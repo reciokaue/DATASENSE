@@ -21,6 +21,25 @@
   background: rgba(0,0,0,.9);
 }
 
+@layer base {
+  :root {
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
+
+  .dark {
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+
 
 body, html {
   width: 100vw;
@@ -86,22 +105,21 @@ body, html {
     @apply bg-background text-foreground;
   }
 }
-
-.bg-#ff6384 {
-  background-color: '#ff6384';
+.bg-chart-0 {
+  background: #0088FE;
 }
-.bg-#36a3eb {
-  background-color: '#36a3eb';
+.bg-chart-1 {
+  background: #00C49F;
 }
-.bg-#ffce56 {
-  background-color: '#ffce56';
+.bg-chart-2 {
+  background: #FFBB28;
 }
-.bg-4bc0c0 {
-  background-color: '#4bc0c0';
+.bg-chart-3 {
+  background: #FF8042;
 }
-.bg-#9966ff {
-  background-color: '#9966ff';
+.bg-chart-4 {
+  background: #8884d8;
 }
-.bg-#ff9f40 {
-  background-color: '#ff9f40';
+.bg-chart-5 {
+  background: #82ca9d;
 }
