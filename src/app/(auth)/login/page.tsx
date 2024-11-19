@@ -55,7 +55,7 @@ export default function LoginPage() {
         className="flex max-w-md flex-1 flex-col gap-6 rounded-md border p-6"
       >
         <header className="mb-4 flex flex-col items-center justify-center">
-          <h1 className="text-2xl font-medium text-primary">Bem vindo</h1>
+          <h1 className="text-2xl font-medium text-primary">Bem-vindo</h1>
           <p className="text-muted-foreground">
             Informe seus dados para entrar
           </p>

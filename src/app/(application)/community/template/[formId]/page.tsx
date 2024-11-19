@@ -18,29 +18,28 @@ export default function TemplatePage({
   })
 
   return (
-    <div className="flex h-full flex-col px-10">
-      <div className="grid grid-cols-2 ">
+    <div className="flex h-full flex-col space-y-6 px-10">
+      <Breadcrumb
+        steps={[
+          {
+            title: 'Comunidade',
+            icon: 'layout-template',
+            href: '/community',
+          },
+          {
+            title: form?.category?.label,
+            icon: form?.category?.icon,
+            href: `/community/categories/${form?.category?.name}`,
+          },
+          { title: form?.name, icon: 'book-copy', href: '/' },
+        ]}
+      />
+      <div className="grid grid-cols-2 gap-6">
         <div className="flex flex-col">
-          <Breadcrumb
-            steps={[
-              {
-                title: 'Comunidade',
-                icon: 'layout-template',
-                href: '/community',
-              },
-              {
-                title: form?.category?.label,
-                icon: form?.category?.icon,
-                href: `/community/categories/${form?.category?.name}`,
-              },
-              { title: form?.name, icon: 'book-copy', href: '/' },
-            ]}
-          />
-
-          <header className="mb-3 mt-2 flex items-center gap-2 text-primary">
+          <header className="mb-3 mt-2 flex items-center gap-4 text-primary">
             <Icon
               name={form?.category?.icon || ''}
-              className="size-6"
+              className="size-10"
               strokeWidth={3}
             />
             <h1 className="text-3xl font-semibold leading-relaxed ">
@@ -57,11 +56,13 @@ export default function TemplatePage({
           <div className="h-full w-full rounded-md bg-primary/20"></div>
         </div>
       </div>
-      <div className="my-6 flex h-20 border-y border-border"></div>
-      {/* {JSON.stringify(form?.questions)} */}
-      <section className="flex flex-col gap-6">
+      <h2 className="text-2xl font-semibold">Questões</h2>
+      <section className="grid grid-cols-2 gap-6">
         {form?.questions?.map((question, index) => (
-          <div key={question.id} className="flex w-full flex-col space-y-4 p-6">
+          <div
+            key={question.id}
+            className="flex w-full flex-col space-y-4 rounded-md border p-6"
+          >
             <header className="flex items-center justify-between">
               <h2 className="text-base font-medium">Questão {index + 1}</h2>
               <div className="flex gap-2">
@@ -70,15 +71,13 @@ export default function TemplatePage({
               </div>
             </header>
             <p>{question.text}</p>
-            {question.options && (
-              <ul>
-                {question.options.map((option) => (
-                  <li className="" key={option.id}>
-                    {option.text}
-                  </li>
-                ))}
-              </ul>
-            )}
+            <div className="flex h-fit flex-wrap justify-center gap-2">
+              {question?.options?.map((option: any) => (
+                <Button key={option.id} type="button" variant="outline">
+                  {option.text}
+                </Button>
+              ))}
+            </div>
           </div>
         ))}
       </section>
