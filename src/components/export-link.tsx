@@ -1,5 +1,5 @@
+import { QRCodeSVG } from 'qrcode.react'
 import React, { useRef } from 'react'
-import QrCode from 'react-qrcode-svg'
 
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
@@ -33,8 +33,8 @@ export function ExportLink() {
       </DialogTrigger>
       <DialogContent className="flex w-64 min-w-[400px] flex-col items-center p-4">
         <div className="mb-4 flex flex-col justify-center">
-          <QrCode
-            data="https://github.com/dral/react-qrcode-svg"
+          <QRCodeSVG
+            value="https://github.com/dral/react-qrcode-svg"
             height="300"
             width="300"
             fgColor="#000"
