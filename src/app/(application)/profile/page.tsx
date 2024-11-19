@@ -20,7 +20,7 @@ export default function UserProfile() {
   const {
     register,
     handleSubmit,
-    setValue,
+    // setValue,
     formState: { errors },
   } = useForm<User>({
     defaultValues: {
@@ -38,10 +38,10 @@ export default function UserProfile() {
 
   const handleEdit = () => setIsEditing((prev) => !prev)
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) setValue('profileImage', file)
-  }
+  // const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0]
+  //   if (file) setValue('profileImage', file)
+  // }
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col">

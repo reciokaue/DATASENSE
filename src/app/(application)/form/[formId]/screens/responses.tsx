@@ -1,20 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
-import {
-  Bar,
-  BarChart,
-  Cell,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts'
+import { FileUpIcon } from 'lucide-react'
 
 import { getFormSummary } from '@/api/get-form-sumary'
 import { getQuestionsResults } from '@/api/get-question-results'
-import { Example, renderChart } from '@/components/chart'
+import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { DateRangePicker } from '@/components/ui/date-range-picker'
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -23,26 +15,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Skeleton } from '@/components/ui/skeleton'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { formatResponse } from '@/utils/formatResponse'
 
 import { ResponseCard } from '../components/response-card'
-
-const COLORS = [
-  '#0088FE',
-  '#00C49F',
-  '#FFBB28',
-  '#FF8042',
-  '#8884d8',
-  '#82ca9d',
-]
 
 interface ResponsesProps {
   formId: number | string
@@ -66,78 +40,16 @@ export function Responses({ formId }: ResponsesProps) {
     queryFn: () => getQuestionsResults(formId),
   })
 
-  const renderChart = (question: QuestionResult) => {
-    if (!question.chartData) return null
-
-    if (question.isMultipleChoice) {
-      return (
-        <ResponsiveContainer width="100%" height={300}>
-          <PieChart>
-            <Pie
-              data={question.chartData}
-              dataKey="value"
-              nameKey="label"
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              fill="#8884d8"
-              label={({ label, percentage }) =>
-                `${label}: ${percentage.toFixed(1)}%`
-              }
-            >
-              {question.chartData.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
-        </ResponsiveContainer>
-      )
-    }
-
-    if (question.hasNumericValues) {
-      return (
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={question.chartData}>
-            <XAxis dataKey="label" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="value" fill="#8884d8" />
-          </BarChart>
-        </ResponsiveContainer>
-      )
-    }
-  }
-
-  if (summaryLoading || questionLoading) {
-    return (
-      <div className="space-y-3">
-        <header className="grid grid-cols-2 gap-3 md:grid-cols-5">
-          <Skeleton className="h-36" />
-          <Skeleton className="h-36" />
-          <Skeleton className="h-36" />
-          <Skeleton className="h-36" />
-          <Skeleton className="h-36" />
-        </header>
-        <Skeleton className="h-[300px]" />
-        <Skeleton className="h-[300px]" />
-      </div>
-    )
-  }
-
   return (
     <div className="mx-auto flex max-w-screen-lg flex-col  items-center space-y-6 pb-10">
       <header className="grid grid-cols-2 gap-3 md:grid-cols-5">
         {summaryLoading ? (
           <>
-            <Skeleton className="h-36" />
-            <Skeleton className="h-36" />
-            <Skeleton className="h-36" />
-            <Skeleton className="h-36" />
-            <Skeleton className="h-36" />
+            <Skeleton className="h-36 w-full" />
+            <Skeleton className="h-36 w-full" />
+            <Skeleton className="h-36 w-full" />
+            <Skeleton className="h-36 w-full" />
+            <Skeleton className="h-36 w-full" />
           </>
         ) : (
           <>
@@ -157,8 +69,13 @@ export function Responses({ formId }: ResponsesProps) {
           </>
         )}
       </header>
-      <nav>
-        <Select>
+      <nav className="flex w-full items-center justify-start gap-3">
+        <DateRangePicker />
+        <Input placeholder="Filtrar" />
+        <Button className="ml-auto">
+          Exportar <FileUpIcon />
+        </Button>
+        {/* <Select>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Selecione os gráficos" />
           </SelectTrigger>
@@ -166,7 +83,7 @@ export function Responses({ formId }: ResponsesProps) {
             <SelectItem value="pizza">Pizza</SelectItem>
             <SelectItem value="waffle">Waffle</SelectItem>
           </SelectContent>
-        </Select>
+        </Select> */}
       </nav>
       <div className="grid grid-cols-2 gap-6">
         {questionLoading ? (
