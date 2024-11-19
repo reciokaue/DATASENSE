@@ -1,9 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { UseMutationResult, UseQueryResult } from '@tanstack/react-query'
 import { AxiosResponse } from 'axios'
+import { Upload } from 'lucide-react'
 import { SubmitHandler } from 'react-hook-form'
 
 import { CategorySelector } from '@/components/category-selector'
+import { ExportLink } from '@/components/export-link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -41,7 +43,7 @@ export function Config({ form, formObject, updateForm }: ConfigProps) {
   }
 
   return (
-    <div className="mx-auto flex  max-w-3xl flex-col">
+    <div className="mx-auto flex  h-full max-w-3xl flex-col overflow-x-hidden pb-10">
       <header className="flex flex-col space-y-1.5 text-center sm:text-left">
         <h1 className="text-2xl font-semibold leading-none tracking-tight">
           Configurações
@@ -75,6 +77,17 @@ export function Config({ form, formObject, updateForm }: ConfigProps) {
           {errors.description && (
             <p className="text-sm text-red-500">{errors.description.message}</p>
           )}
+        </div>
+        <div className="flex items-center justify-center">
+          <label
+            htmlFor="dropzone-file"
+            className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600 dark:hover:bg-gray-800"
+          >
+            <div className="flex flex-col items-center justify-center pb-6 pt-5">
+              <Upload />
+            </div>
+            <input id="dropzone-file" type="file" className="hidden" />
+          </label>
         </div>
         <div className="grid grid-cols-4 gap-4">
           <CategorySelector
@@ -112,13 +125,14 @@ export function Config({ form, formObject, updateForm }: ConfigProps) {
           />
         </div>
         <footer className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-          <Button
+          {/* <Button
             onClick={resetForm}
             variant="outline"
             link={`/answer/${form?.data?.id}`}
           >
             Link
-          </Button>
+          </Button> */}
+          <ExportLink />
           <Button
             onClick={resetForm}
             variant="outline"

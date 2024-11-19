@@ -7,13 +7,6 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { DateRangePicker } from '@/components/ui/date-range-picker'
 import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { Skeleton } from '@/components/ui/skeleton'
 
 import { ResponseCard } from '../components/response-card'
@@ -41,8 +34,8 @@ export function Responses({ formId }: ResponsesProps) {
   })
 
   return (
-    <div className="mx-auto flex max-w-screen-lg flex-col  items-center space-y-6 pb-10">
-      <header className="grid grid-cols-2 gap-3 md:grid-cols-5">
+    <div className="mx-auto flex w-full max-w-screen-lg flex-col  items-center space-y-6 pb-10">
+      <header className="grid w-full grid-cols-2 gap-3 md:grid-cols-5">
         {summaryLoading ? (
           <>
             <Skeleton className="h-36 w-full" />
@@ -85,11 +78,11 @@ export function Responses({ formId }: ResponsesProps) {
           </SelectContent>
         </Select> */}
       </nav>
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid w-full grid-cols-2 gap-6">
         {questionLoading ? (
           <>
-            <Skeleton className="h-[300px]" />
-            <Skeleton className="h-[300px]" />
+            <Skeleton className="h-[300px] w-full" />
+            <Skeleton className="h-[300px] w-full" />
           </>
         ) : (
           questionResults?.questions.map((question) => (

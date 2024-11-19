@@ -23,7 +23,7 @@ export function Questions({ form, formObject, updateForm }: QuestionsProps) {
   const { fields, append, swap, remove, insert } = useFieldArray({
     control,
     name: 'questions',
-  })
+  }) as any
 
   async function handleSaveQuestions() {
     const form = formObject.getValues()
