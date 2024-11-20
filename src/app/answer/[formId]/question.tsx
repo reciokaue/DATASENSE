@@ -102,7 +102,6 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
                 onClick={() =>
                   field.onChange({
                     questionId: question?.id,
-                    text: question.text,
                     value: star,
                   })
                 }
@@ -115,7 +114,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
         rules={{
           required: {
             value: question?.required || false,
-            message: 'Questão obrigatoria',
+            message: 'Questão obrigatória',
           },
         }}
       />
@@ -213,7 +212,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
         rules={{
           required: {
             value: question?.required || false,
-            message: 'Questão obrigatoria',
+            message: 'Questão obrigatória',
           },
         }}
         control={control}
@@ -233,7 +232,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
         rules={{
           required: {
             value: question?.required || false,
-            message: 'Questão obrigatoria',
+            message: 'Questão obrigatória',
           },
         }}
         name={`responses.${question?.index}.value`}

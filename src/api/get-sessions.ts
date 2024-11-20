@@ -1,12 +1,17 @@
 import { api } from '../lib/api'
-import { Question } from '../models'
+import { Response } from '../models'
 
 interface GetSessionsProps {
   formId: number | string
 }
 
 interface GetSessionsData {
-  questions: Question[]
+  sessions: {
+    id: string
+    createdAt: string
+    formId: string
+    responses: Response[]
+  }[]
 }
 
 export async function getSessions({

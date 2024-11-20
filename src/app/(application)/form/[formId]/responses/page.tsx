@@ -19,6 +19,15 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Skeleton } from '@/components/ui/skeleton'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { formatResponse } from '@/utils/formatResponse'
 
 import { ResponseCard } from '../../../../../components/form/response-card'
 
@@ -97,20 +106,46 @@ export default function ResponsesPage({
           Exportar <FileUpIcon />
         </Button>
       </nav>
-      <div className="grid w-full grid-cols-2 gap-6">
-        {questionLoading ? (
-          <>
-            <Skeleton className="h-[300px] w-full" />
-            <Skeleton className="h-[300px] w-full" />
-          </>
-        ) : viewType === 'cards' ? (
-          questionResults?.questions.map((question) => (
-            <ResponseCard key={question.id} question={question} />
-          ))
-        ) : (
-          viewType === 'table' && <>{JSON.stringify(sessions)}</>
-        )}
-      </div>
+      {viewType === 'cards' && (
+        <div className="grid w-full grid-cols-2 gap-6">
+          {questionLoading ? (
+            <>
+              <Skeleton className="h-[300px] w-full" />
+              <Skeleton className="h-[300px] w-full" />
+            </>
+          ) : (
+            questionResults?.questions.map((question) => (
+              <ResponseCard key={question.id} question={question} />
+            ))
+          )}
+        </div>
+      )}
+      {viewType === 'table' && (
+        <Table className="">
+          <TableHeader>
+            <TableRow>
+              {/* <TableHead></TableHead> */}
+              {questionResults.questions.map((question) => (
+                <TableHead key={question.id}>{question.text}</TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {sessions?.sessions?.map((session, index) => (
+              <TableRow key={index}>
+                {session.responses.map((response, index) => (
+                  <TableCell key={response.id} className="">
+                    {formatResponse(
+                      String(response.text || response.value),
+                      questionResults.questions[index].type,
+                    )}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
     </div>
   )
 }

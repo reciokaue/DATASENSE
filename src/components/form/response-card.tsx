@@ -43,7 +43,6 @@ export function ResponseCard({ question }: ResponseCardProps) {
           ))}
         </header>
       )}
-
       {question.hasNumericValues && (
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={question.chartData}>
