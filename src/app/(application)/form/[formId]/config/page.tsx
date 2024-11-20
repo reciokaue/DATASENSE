@@ -10,6 +10,7 @@ import { getForm } from '@/api/get-form'
 import { updateForm } from '@/api/update-form'
 import { CategorySelector } from '@/components/category-selector'
 import { ExportLink } from '@/components/export-link'
+import { RemoveButton } from '@/components/form/remove-button'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -19,16 +20,6 @@ import { Form, FormSchema } from '@/models'
 
 export default function Config({ params }: { params: { formId: string } }) {
   const { formId } = params
-
-  const form = useQuery({
-    queryKey: ['form', formId],
-    queryFn: async () => {
-      const data = await getForm(formId)
-      console.log(data)
-      reset(data)
-      return data
-    },
-  })
 
   const updateFormMutation = useMutation({
     mutationFn: (form: Form) => updateForm(form),
@@ -53,6 +44,16 @@ export default function Config({ params }: { params: { formId: string } }) {
   }
 
   const category = watch('category')
+
+  const form = useQuery({
+    queryKey: ['form', formId],
+    queryFn: async () => {
+      const data = await getForm(formId)
+      console.log(data)
+      reset(data)
+      return data
+    },
+  })
 
   function resetForm() {
     reset(form.data)
@@ -141,14 +142,15 @@ export default function Config({ params }: { params: { formId: string } }) {
           />
         </div>
         <footer className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+          <RemoveButton form={form.data} />
           <ExportLink />
-          <Button
+          {/* <Button
             onClick={resetForm}
             variant="outline"
             disabled={updateFormMutation.isPending}
           >
             Cancelar
-          </Button>
+          </Button> */}
           <Button isLoading={updateFormMutation.isPending} type="submit">
             Salvar Formulário
           </Button>
