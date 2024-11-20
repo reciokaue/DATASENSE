@@ -2,13 +2,22 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { FileUpIcon } from 'lucide-react'
+import { useState } from 'react'
 
 import { getFormSummary } from '@/api/get-form-sumary'
 import { getQuestionsResults } from '@/api/get-question-results'
+import { getSessions } from '@/api/get-sessions'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { DateRangePicker } from '@/components/ui/date-range-picker'
 import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Skeleton } from '@/components/ui/skeleton'
 
 import { ResponseCard } from '../../../../../components/form/response-card'
@@ -26,6 +35,7 @@ export default function ResponsesPage({
 }: {
   params: { formId: string }
 }) {
+  const [viewType, setViewType] = useState('cards')
   const { formId } = params
 
   const { data: summary, isLoading: summaryLoading } = useQuery({
@@ -35,6 +45,10 @@ export default function ResponsesPage({
   const { data: questionResults, isLoading: questionLoading } = useQuery({
     queryKey: ['questionsResults', formId],
     queryFn: () => getQuestionsResults(formId),
+  })
+  const { data: sessions } = useQuery({
+    queryKey: ['sessions', formId],
+    queryFn: () => getSessions({ formId }),
   })
 
   return (
@@ -68,19 +82,20 @@ export default function ResponsesPage({
       </header>
       <nav className="flex w-full items-center justify-start gap-3">
         <DateRangePicker />
+        <Select onValueChange={setViewType}>
+          <SelectTrigger className="h-full w-fit">
+            <SelectValue placeholder="Visualização" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="cards">Cards</SelectItem>
+            <SelectItem value="table">Tabela</SelectItem>
+          </SelectContent>
+        </Select>
         <Input placeholder="Filtrar" />
+
         <Button className="ml-auto">
           Exportar <FileUpIcon />
         </Button>
-        {/* <Select>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Selecione os gráficos" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="pizza">Pizza</SelectItem>
-            <SelectItem value="waffle">Waffle</SelectItem>
-          </SelectContent>
-        </Select> */}
       </nav>
       <div className="grid w-full grid-cols-2 gap-6">
         {questionLoading ? (
@@ -88,10 +103,12 @@ export default function ResponsesPage({
             <Skeleton className="h-[300px] w-full" />
             <Skeleton className="h-[300px] w-full" />
           </>
-        ) : (
+        ) : viewType === 'cards' ? (
           questionResults?.questions.map((question) => (
             <ResponseCard key={question.id} question={question} />
           ))
+        ) : (
+          viewType === 'table' && <>{JSON.stringify(sessions)}</>
         )}
       </div>
     </div>

@@ -3,6 +3,7 @@ import { LayoutGrid, Plus, Save } from 'lucide-react'
 import { SortableItem } from '../sortable/sortable-item'
 import { SortableList } from '../sortable/sortable-list'
 import { Button } from '../ui/button'
+import { QuestionBaseButton } from './question-base-button'
 
 interface SidebarProps {
   addQuestion: () => void
@@ -24,13 +25,7 @@ export function FormSidebar({
       <Button onClick={addQuestion} className="justify-between">
         Nova questão <Plus />
       </Button>
-      <Button
-        variant="outline"
-        onClick={addQuestion}
-        className="justify-between"
-      >
-        Banco de Questões <LayoutGrid />
-      </Button>
+      <QuestionBaseButton />
       <Button
         onClick={save}
         variant="outline"

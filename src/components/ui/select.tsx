@@ -5,7 +5,7 @@ import { Check, ChevronDown, ChevronsUpDown, ChevronUp } from 'lucide-react'
 import * as React from 'react'
 
 import { cn } from '@/lib/utils'
-import { QuestionType } from '@/models'
+import { Category, QuestionType } from '@/models'
 
 const Select = SelectPrimitive.Root
 
@@ -27,7 +27,7 @@ const SelectTrigger = React.forwardRef<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <ChevronsUpDown className="h-4 w-4 opacity-50" />
+      <ChevronsUpDown className="ml-4 h-4 w-4 opacity-50" />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ))
@@ -162,8 +162,9 @@ export {
 interface DropdownProps {
   placeholder: string
   listTitle?: string
-  options?: QuestionType[]
+  options?: QuestionType[] | Category[]
   setSelected: (value: string) => void
+  className: string
 }
 
 export function Dropdown({
@@ -171,10 +172,11 @@ export function Dropdown({
   placeholder,
   listTitle,
   setSelected,
+  className,
 }: DropdownProps) {
   return (
     <Select onValueChange={(option) => setSelected(option)}>
-      <SelectTrigger className="h-10 min-w-28 px-4 py-2">
+      <SelectTrigger className={cn(['h-10 min-w-28 px-4 py-2', className])}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
@@ -185,7 +187,7 @@ export function Dropdown({
               key={`dropdown-option-${Math.round(Math.random() * 10000)}`}
               value={JSON.stringify(option)}
             >
-              {option.label}
+              {option?.label}
             </SelectItem>
           ))}
         </SelectGroup>
