@@ -1,4 +1,4 @@
-import { LayoutGrid, Plus, Save } from 'lucide-react'
+import { Plus, Save } from 'lucide-react'
 
 import { SortableItem } from '../sortable/sortable-item'
 import { SortableList } from '../sortable/sortable-list'

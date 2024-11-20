@@ -55,9 +55,9 @@ export default function Config({ params }: { params: { formId: string } }) {
     },
   })
 
-  function resetForm() {
-    reset(form.data)
-  }
+  // function resetForm() {
+  //   reset(form.data)
+  // }
 
   return (
     <div className="mx-auto flex  h-full max-w-3xl flex-col overflow-x-hidden pb-10">

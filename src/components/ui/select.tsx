@@ -164,7 +164,7 @@ interface DropdownProps {
   listTitle?: string
   options?: QuestionType[] | Category[]
   setSelected: (value: string) => void
-  className: string
+  className?: string
 }
 
 export function Dropdown({

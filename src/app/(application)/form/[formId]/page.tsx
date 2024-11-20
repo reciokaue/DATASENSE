@@ -3,7 +3,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { LayoutGrid, Loader2, Plus, Save } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import { useEffect } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 
@@ -14,7 +14,6 @@ import { EditCard } from '@/components/form/edit-card'
 import { FormSidebar } from '@/components/form/sidebar'
 import { SortableItem } from '@/components/sortable/sortable-item'
 import { SortableList } from '@/components/sortable/sortable-list'
-import { Button } from '@/components/ui/button'
 import { Form, FormSchema } from '@/models'
 
 export default function FormDetailPage({
