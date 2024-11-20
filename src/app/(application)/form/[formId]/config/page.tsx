@@ -9,7 +9,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { getForm } from '@/api/get-form'
 import { updateForm } from '@/api/update-form'
 import { CategorySelector } from '@/components/category-selector'
-import { ExportLink } from '@/components/export-link'
+import { ExportLink } from '@/components/form/export-link'
 import { RemoveButton } from '@/components/form/remove-button'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -143,7 +143,7 @@ export default function Config({ params }: { params: { formId: string } }) {
         </div>
         <footer className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
           <RemoveButton form={form.data} />
-          <ExportLink />
+          <ExportLink formId={form?.data?.id} />
           {/* <Button
             onClick={resetForm}
             variant="outline"

@@ -4,10 +4,14 @@ import React, { useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 
-import { Input } from './ui/input'
+import { Input } from '../ui/input'
 
-export function ExportLink() {
-  const link = 'https://example.com/form' // Substitua pelo seu link dinâmico
+interface ExportLinkProps {
+  formId: number | string
+}
+
+export function ExportLink({ formId }: ExportLinkProps) {
+  const link = `${process.env.NEXT_PUBLIC_APP_URL}/answer/${formId}` // Substitua pelo seu link dinâmico
   const qrCodeRef = useRef<SVGSVGElement>(null)
 
   const handleDownloadQRCode = () => {

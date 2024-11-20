@@ -70,7 +70,7 @@ export function QuestionBaseButton() {
           <Dropdown
             setSelected={() => {}}
             placeholder={'Categoria'}
-            options={categories.categories}
+            options={categories?.categories}
             className="w-52"
           />
         </header>
@@ -79,7 +79,8 @@ export function QuestionBaseButton() {
             questions?.map((question) => (
               <Card
                 key={question.id}
-                className="cursor flex h-auto max-w-[250px] gap-2 px-4 py-2 ring-primary hover:ring-2"
+                aria-selected={selectedQuestion?.id === question.id}
+                className="cursor flex h-auto max-w-[250px] gap-2 px-4 py-2 ring-primary hover:ring-2 aria-selected:ring-2"
                 onClick={() => setSelectedQuestion(question)}
               >
                 <div className="flex w-full flex-col ">
