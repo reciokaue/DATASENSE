@@ -13,7 +13,7 @@ export default function TemplatePage({
   params: { formId: string }
 }) {
   const { data: form } = useQuery({
-    queryKey: ['form', params.formId],
+    queryKey: ['form-template', params.formId],
     queryFn: () => getForm(params.formId),
   })
 

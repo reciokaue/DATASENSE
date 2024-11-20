@@ -14,7 +14,7 @@ export default function CategoryPage({
   params: { categoryName: string }
 }) {
   const { data: category } = useQuery({
-    queryKey: ['category', params.categoryName],
+    queryKey: ['category-templates', params.categoryName],
     queryFn: () => getCategoryByName(params.categoryName),
   })
 

@@ -10,7 +10,7 @@ import { SortableList } from '@/components/sortable/sortable-list'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/models'
 
-import { EditCard } from '../components/edit-card'
+import { EditCard } from '../../../../../components/form/edit-card'
 
 interface QuestionsProps {
   form: UseQueryResult<Form | undefined, Error>

@@ -1,3 +1,5 @@
+'use client'
+
 import { useQuery } from '@tanstack/react-query'
 import { FileUpIcon } from 'lucide-react'
 
@@ -11,19 +13,21 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 import { ResponseCard } from '../../../../../components/form/response-card'
 
-interface ResponsesProps {
-  formId: number | string
-}
-
 const summaryTitles = [
-  'Total de questões',
   'Total de sessões',
   'Total de respostas',
+  'Total de questões',
   'Taxa de conclusão',
   'Média de respostas por sessão',
 ]
 
-export function Responses({ formId }: ResponsesProps) {
+export default function ResponsesPage({
+  params,
+}: {
+  params: { formId: string }
+}) {
+  const { formId } = params
+
   const { data: summary, isLoading: summaryLoading } = useQuery({
     queryKey: ['formSummary', formId],
     queryFn: () => getFormSummary(formId),

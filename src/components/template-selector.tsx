@@ -26,7 +26,7 @@ export function TemplateSelector({ control, name }: TemplateSelectorProps) {
     <div className="col-span-2 flex flex-col space-y-2">
       <Label>Copiar formulário</Label>
       <Label className="text-xs text-secondary-foreground">
-        As questões do formularão antigo serão copiadas para o novo formulário
+        As questões do formulário antigo serão copiadas para o novo formulário
       </Label>
       <Controller
         control={control}

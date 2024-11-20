@@ -32,7 +32,7 @@ export function ExportLink() {
         <Button variant="outline">Compartilhar</Button>
       </DialogTrigger>
       <DialogContent className="flex w-64 min-w-[400px] flex-col items-center p-4">
-        <div className="mb-4 flex flex-col justify-center">
+        <div className="mb-4 flex flex-col justify-center space-y-6">
           <QRCodeSVG
             value="https://github.com/dral/react-qrcode-svg"
             height="300"
