@@ -38,7 +38,7 @@ export function ResponseCard({ question }: ResponseCardProps) {
               <p className="text-sm text-secondary-foreground">
                 {staticsLabels[index]}
               </p>
-              <p className="text-lg font-medium">{statistic.toFixed(1)}</p>
+              <p className="text-lg font-medium">{statistic?.toFixed(1)}</p>
             </Card>
           ))}
         </header>
