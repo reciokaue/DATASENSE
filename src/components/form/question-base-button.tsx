@@ -67,6 +67,12 @@ export function QuestionBaseButton() {
             options={questionTypes}
             className="w-52"
           />
+          <Dropdown
+            setSelected={() => {}}
+            placeholder={'Categoria'}
+            options={categories.categories}
+            className="w-52"
+          />
         </header>
         <section className="grid grid-cols-4 gap-2">
           {questions &&

@@ -8,18 +8,14 @@ interface GetQuestionsProps {
   categoryId?: number
 }
 
-interface GetQuestionsData {
-  questions: Question[]
-}
-
 export async function getQuestions({
   query,
   page = 0,
   pageSize = 10,
   categoryId,
-}: GetQuestionsProps): Promise<GetQuestionsData> {
+}: GetQuestionsProps): Promise<Question[]> {
   const response = await api.get(`/questions`, {
     params: { query, page, pageSize, categoryId },
   })
-  return response.data as GetQuestionsData
+  return response.data as Question[]
 }
