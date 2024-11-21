@@ -7,7 +7,7 @@ export async function createNewForm(
 ) {
   const response = await api.post<Form>('/form', form, {
     params: {
-      templateId, // Envia o templateId como um parâmetro de consulta
+      templateId, // Envia o templateId para copiar as questões
     },
   })
   return response.data

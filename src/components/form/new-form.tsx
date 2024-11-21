@@ -1,15 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { createNewForm } from '../api/create-new-form'
-import { FormSchema } from '../models'
-import { CategorySelector } from './category-selector'
-import { TemplateSelector } from './template-selector'
-import { Button } from './ui/button'
+import { GetFormsData } from '@/api/get-forms'
+
+import { createNewForm } from '../../api/create-new-form'
+import { FormSchema } from '../../models'
+import { CategorySelector } from '../category-selector'
+import { TemplateSelector } from '../template-selector'
+import { Button } from '../ui/button'
 import {
   Dialog,
   DialogClose,
@@ -19,10 +21,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from './ui/dialog'
-import { Input } from './ui/input'
-import { Label } from './ui/label'
-import { Textarea } from './ui/textarea'
+} from '../ui/dialog'
+import { Input } from '../ui/input'
+import { Label } from '../ui/label'
+import { Textarea } from '../ui/textarea'
 
 const CreateFormSchema = FormSchema.pick({
   name: true,
@@ -36,6 +38,7 @@ type CreateForm = z.infer<typeof CreateFormSchema>
 
 export function NewFormButton() {
   const { push } = useRouter()
+  const queryClient = useQueryClient()
 
   const {
     register,
@@ -46,14 +49,25 @@ export function NewFormButton() {
     resolver: zodResolver(CreateFormSchema),
   })
   const onSubmit: SubmitHandler<CreateForm> = async (data) => {
-    const newForm = await newFormMutation.mutateAsync(data)
-    console.log(newForm)
-    push(`/form/${newForm.id}`)
+    mutateAsync(data)
   }
 
-  const newFormMutation = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationFn: async (data: CreateForm) => {
       return await createNewForm(data, data.templateId)
+    },
+    onSuccess: (newForm) => {
+      const previous: GetFormsData = queryClient.getQueryData(['user-forms'])
+
+      queryClient.setQueryData(['user-forms'], {
+        meta: {
+          ...previous.meta,
+          totalCount: previous.meta.totalCount + 1,
+        },
+        forms: [...previous.forms, newForm],
+      })
+
+      push(`/form/${newForm.id}`)
     },
   })
 
@@ -113,11 +127,11 @@ export function NewFormButton() {
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline" disabled={newFormMutation.isPending}>
+              <Button variant="outline" disabled={isPending}>
                 Cancelar
               </Button>
             </DialogClose>
-            <Button isLoading={newFormMutation.isPending} type="submit">
+            <Button isLoading={isPending} type="submit">
               Criar Formulário
             </Button>
           </DialogFooter>

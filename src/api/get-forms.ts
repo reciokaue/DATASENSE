@@ -9,7 +9,7 @@ interface GetFormsProps {
   topics?: string
 }
 
-interface GetFormsData {
+export interface GetFormsData {
   meta: {
     page: number
     pageSize: number
