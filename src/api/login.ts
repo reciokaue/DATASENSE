@@ -1,5 +1,6 @@
 import { setCookie } from 'cookies-next'
-import { jwtDecode } from 'jwt-decode'
+
+import { User } from '@/models'
 
 import { api } from '../lib/api'
 
@@ -9,16 +10,20 @@ interface LoginProps {
   remember?: boolean
 }
 
+interface AuthData {
+  user: User
+  token: string
+}
+
 export async function login({ email, password, remember }: LoginProps) {
   const response = await api.post('/login', { email, password })
-  const decoded: any = await jwtDecode(response.data)
 
-  setCookie('datasense-token', response.data)
-  api.defaults.headers.common.Authorization = `Bearer ${response.data}`
+  setCookie('datasense-token', response.data.token)
+  api.defaults.headers.common.Authorization = `Bearer ${response.data.token}`
 
   if (remember) {
     localStorage.setItem('datasense_email', email)
   }
 
-  return decoded
+  return response.data as AuthData
 }

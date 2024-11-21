@@ -46,7 +46,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function login(email: string, password: string, remember: boolean) {
     try {
-      const { data: token } = await api.post('/login', { email, password })
+      const { data } = await api.post('/login', { email, password })
+      const { token, user } = data
+      setUser(user)
 
       setCookie('datasense-token', token)
       api.defaults.headers.common.Authorization = `Bearer ${token}`

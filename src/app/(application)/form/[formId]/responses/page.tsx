@@ -35,8 +35,8 @@ const summaryTitles = [
   'Total de sessões',
   'Total de respostas',
   'Total de questões',
-  'Taxa de conclusão',
   'Média de respostas por sessão',
+  'Taxa de conclusão',
 ]
 
 export default function ResponsesPage({
