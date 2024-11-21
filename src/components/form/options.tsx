@@ -49,40 +49,43 @@ export function Options({ formObject, index }: OptionsProps) {
     remove(option.index)
   }
 
+  function customSwap(activeIndex: number, overIndex: number) {
+    setValue(`questions.${index}.options.${activeIndex}.index`, overIndex)
+    setValue(`questions.${index}.options.${overIndex}index`, activeIndex)
+    swap(activeIndex, overIndex)
+  }
+
   if (questionType.name === types.OPTIONS || questionType.name === types.LIST)
     return (
       <section className="space-y-3">
         <Header onPress={newOption} />
         <SortableList
           items={fields}
-          swap={swap}
+          swap={customSwap}
           direction={questionType.name === 'emoji' ? 'horizontal' : 'vertical'}
-          renderItem={(item, optionIndex) => {
-            const textInputName = `questions.${index}.options.${optionIndex}.text`
-            const formObject = `questions.${index}.options.${optionIndex}.index`
-            setValue(formObject, optionIndex)
-
-            return (
-              <SortableItem
-                sortableId={item.id}
-                className={cn(
-                  'flex flex-row-reverse items-center gap-2',
-                  questionType.name === 'emoji' && 'flex-col-reverse',
-                )}
+          renderItem={(item, optionIndex) => (
+            <SortableItem
+              sortableId={item.id}
+              className={cn(
+                'flex flex-row-reverse items-center gap-2',
+                questionType.name === 'emoji' && 'flex-col-reverse',
+              )}
+            >
+              <Button
+                onClick={() => deleteOption(item)}
+                className="hover:text-red-500"
+                size="icon"
+                variant="ghost"
+                type="button"
               >
-                <Button
-                  onClick={() => deleteOption(item)}
-                  className="hover:text-red-500"
-                  size="icon"
-                  variant="ghost"
-                  type="button"
-                >
-                  <Trash2 />
-                </Button>
-                <InputEmojiPicker name={textInputName} control={control} />
-              </SortableItem>
-            )
-          }}
+                <Trash2 />
+              </Button>
+              <InputEmojiPicker
+                name={`questions.${index}.options.${optionIndex}.text`}
+                control={control}
+              />
+            </SortableItem>
+          )}
         />
       </section>
     )

@@ -9,7 +9,7 @@ interface SidebarProps {
   addQuestion: () => void
   save: () => void
   fields: any
-  swap: () => void
+  swap: (activeIndex: number, overIndex: number) => void
   loading: boolean
 }
 

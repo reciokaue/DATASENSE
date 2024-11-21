@@ -4,10 +4,9 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Loader2 } from 'lucide-react'
-import { useEffect } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
+import useFormPersist from 'react-hook-form-persist'
 
-// import useFormPersist from 'react-hook-form-persist'
 import { getForm } from '@/api/get-form'
 import { updateForm } from '@/api/update-form'
 import { EditCard } from '@/components/form/edit-card'
@@ -24,7 +23,7 @@ export default function FormDetailPage({
   const formObject = useForm<Form>({
     resolver: zodResolver(FormSchema),
   })
-  const { reset, control } = formObject
+  const { reset, control, setValue, watch } = formObject
   const { fields, append, swap, remove, insert } = useFieldArray({
     control,
     name: 'questions',
@@ -34,19 +33,21 @@ export default function FormDetailPage({
     queryKey: ['form', params.formId],
     queryFn: async () => {
       const data = await getForm(params.formId)
-      reset(data)
+      reset(data, { keepDirty: false })
       return data
     },
   })
 
-  const updateFormMutation = useMutation({
-    mutationFn: (form: Form) => updateForm(form),
+  const { mutateAsync: saveForm, isPending: savingForm } = useMutation({
+    mutationFn: () => updateForm(formObject.getValues()),
+    onSuccess: () => {
+      reset(watch(), {
+        keepValues: false,
+        keepDirty: false,
+        keepDefaultValues: false,
+      })
+    },
   })
-  async function handleSaveQuestions() {
-    const form = formObject.getValues()
-    await updateFormMutation.mutateAsync(form)
-    reset(form)
-  }
 
   const actions = {
     removeQuestion: (index: number) => {
@@ -76,27 +77,30 @@ export default function FormDetailPage({
   // TODO Dar um jeito do persist form funcionar junto do useQuery tbm
   // ele não funciona com oq ja tem pq toda vez q salva ele da um reload e fica num ciclo infinito
   // fazer o swap dar o setValue no Sortable
-  // useFormPersist(`datasense@form${params.formId}`, {
-  //   watch,
-  //   setValue,
-  //   storage: window.localStorage,
-  // })
+  useFormPersist(`datasense@form${params.formId}`, {
+    watch,
+    setValue,
+    storage: window.localStorage,
+  })
 
   // TODO update the data in the react query
   // causes an inconsistency when saves and go home and return to form
   // TODO Notificação de salvo com sucesso
 
-  useEffect(() => {
-    if (form) reset(form.data)
-  }, [])
+  function customSwap(activeIndex: number, overIndex: number) {
+    setValue(`questions.${activeIndex}.index`, overIndex)
+    setValue(`questions.${overIndex}.index`, activeIndex)
+    swap(activeIndex, overIndex)
+  }
 
   return (
     <div className="relative flex items-start justify-center gap-4 pb-10">
       <div className="flex w-full max-w-3xl flex-col ">
+        {/* {isDirty ? 'DIRTY' : 'CLEAN'} */}
         {form && (
           <SortableList
             items={fields}
-            swap={swap}
+            swap={customSwap}
             renderItem={(item, index) => (
               <SortableItem
                 sortableId={item.id}
@@ -115,7 +119,7 @@ export default function FormDetailPage({
             )}
           />
         )}
-        {form.isPending && (
+        {(form.isPending || !fields) && (
           <Loader2 className="mx-auto mt-20 size-5 animate-spin" />
         )}
         {/* {form.isPending &&
@@ -126,9 +130,9 @@ export default function FormDetailPage({
       <FormSidebar
         addQuestion={actions.addQuestion}
         fields={fields}
-        loading={updateFormMutation.isPending}
-        save={handleSaveQuestions}
-        swap={swap}
+        loading={savingForm}
+        save={saveForm}
+        swap={customSwap}
       />
     </div>
   )
