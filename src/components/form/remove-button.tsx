@@ -52,11 +52,7 @@ export function RemoveButton({ form }: RemoveButtonProps) {
           <DialogTitle>Excluir Formulário</DialogTitle>
           {form ? (
             <p>
-              Voce tem certeza que realmente deseja excluir o formulário{' '}
-              <b>{form?.name}</b> com <b>{form?.questions?.length}</b> questões
-              criado em
-              <b> {format(new Date(form?.createdAt), 'dd/MM/yyyy')}</b> essa
-              ação sera irreversível e todos os dados do formulário serão
+              Essa ação sera irreversível e todos os dados do formulário serão
               perdidos, questões, respostas etc, realmente deseja excluir este
               formulário?
             </p>

@@ -58,15 +58,17 @@ export default function AnswerPage({ params }: { params: { formId: string } }) {
           DATASENSE
         </h1>
       </nav>
-      <div className="flex w-full items-center justify-center">
-        {form?.logoUrl && (
+      <div className="flex w-full items-center justify-center px-4 py-3 sm:px-6 md:px-10">
+        {form?.logoUrl ? (
           <Image
             width="600"
             height="600"
             src={form?.logoUrl}
             alt="imagem do proprietário"
-            className="image aspect-square w-full object-fill sm:max-w-lg"
+            className="h-80 w-full rounded-lg object-fill"
           />
+        ) : (
+          <div className="h-80 w-full rounded-lg bg-primary/20 object-fill"></div>
         )}
       </div>
       <form
