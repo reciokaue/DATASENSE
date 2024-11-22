@@ -11,7 +11,7 @@ import {
 } from 'recharts'
 
 import { QuestionResult } from '@/api/get-question-results'
-import { renderCustomizedLabel } from '@/components/custom-label'
+import { renderCustomizedLabel } from '@/components/form/custom-label'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { COLORS } from '@/styles/colors'
@@ -45,32 +45,29 @@ export function ResponseCard({ question }: ResponseCardProps) {
       )}
       {question.hasNumericValues && (
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={question.chartData}>
+          <BarChart data={question.chartData} className="-ml-6 mt-2">
             <XAxis dataKey="label" />
-            <YAxis />
+            <YAxis interval={1} />
             <Tooltip />
-            <Bar dataKey="value" fill="#8884d8" />
+            <Bar dataKey="value" fill="#8884d8">
+              {question.chartData.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       )}
       {question.isMultipleChoice && (
-        <div className="grid grid-cols-5 items-start">
-          <div className="col-span-2 flex flex-col space-y-2">
-            {question.chartData.map((option, index) => (
-              <Button
-                className="justify-between overflow-hidden"
-                variant="secondary"
-                key={option.label}
-              >
-                {option.label}
-                <span>{option.percentage.toFixed(0)}%</span>
-                <span
-                  className={`absolute left-0 h-full w-2 bg-chart-${index}`}
-                />
-              </Button>
-            ))}
-          </div>
-          <ResponsiveContainer className="col-span-3" width="100%" height={200}>
+        <div className="flex flex-col items-start">
+          <ResponsiveContainer
+            className="col-span-3"
+            width="100%"
+            // height="100%"
+            height={300}
+          >
             <PieChart>
               <Pie
                 data={question.chartData}
@@ -89,9 +86,23 @@ export function ResponseCard({ question }: ResponseCardProps) {
                   />
                 ))}
               </Pie>
-              <Tooltip />
             </PieChart>
           </ResponsiveContainer>
+          <div className="flex flex-wrap gap-2">
+            {question.chartData.map((option, index) => (
+              <Button
+                className="justify-between overflow-hidden"
+                variant="secondary"
+                key={option.label}
+              >
+                {option.label}
+                <span>{option.percentage.toFixed(1)}%</span>
+                <span
+                  className={`absolute left-0 h-full w-2 bg-chart-${index}`}
+                />
+              </Button>
+            ))}
+          </div>
         </div>
       )}
 

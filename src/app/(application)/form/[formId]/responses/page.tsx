@@ -1,6 +1,7 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
+import { format } from 'date-fns'
 import { FileUpIcon } from 'lucide-react'
 import { useState } from 'react'
 
@@ -124,19 +125,24 @@ export default function ResponsesPage({
         <Table className="">
           <TableHeader>
             <TableRow>
-              {/* <TableHead></TableHead> */}
+              <TableHead>Respondido em</TableHead>
               {questionResults.questions.map((question) => (
-                <TableHead key={question.id}>{question.text}</TableHead>
+                <TableHead className="w-auto" key={question.id}>
+                  {question.text}
+                </TableHead>
               ))}
             </TableRow>
           </TableHeader>
           <TableBody>
             {sessions?.sessions?.map((session, index) => (
               <TableRow key={index}>
+                <TableCell className="w-auto">
+                  {format(new Date(session.createdAt), 'dd/MM/yyyy HH:mm')}
+                </TableCell>
                 {session.responses.map((response, index) => (
-                  <TableCell key={response.id} className="">
+                  <TableCell key={response?.id} className="w-auto">
                     {formatResponse(
-                      String(response.text || response.value),
+                      String(response?.text || response?.value),
                       questionResults.questions[index].type,
                     )}
                   </TableCell>

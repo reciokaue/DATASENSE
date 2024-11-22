@@ -14,14 +14,12 @@ import { format } from 'date-fns'
 export function formatResponse(text: string, type: string): string {
   switch (type) {
     case 'date':
-      return format(new Date(text), 'dd/MM/yyyy')
+      if (text !== 'undefined') return format(new Date(text), 'dd/MM/yyyy')
+      break
     case 'time':
+      if (text === 'undefined') return
       if (text.length === 5) return text
-      else
-        return format(
-          new Date(text),
-          "'Não respondido, horário da resposta: 'HH:mm",
-        )
+      else return format(new Date(text), 'HH:mm')
     case 'phone':
       return formatPhoneNumber(text)
     case 'email':
