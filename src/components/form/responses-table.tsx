@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/table'
 import { formatResponse } from '@/utils/formatResponse'
 
-const ITEMS_PER_PAGE = 5 // Número de itens por página
+const ITEMS_PER_PAGE = 7 // Número de itens por página
 
 interface ResponseTableProps {
   question: QuestionResult

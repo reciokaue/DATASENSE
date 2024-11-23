@@ -96,7 +96,9 @@ export function ResponseCard({ question }: ResponseCardProps) {
                 key={option.label}
               >
                 {option.label}
-                <span>{option.percentage.toFixed(1)}%</span>
+                <span>
+                  {option.percentage.toFixed(1)}% {option.value}
+                </span>
                 <span
                   className={`absolute left-0 h-full w-2 bg-chart-${index}`}
                 />
