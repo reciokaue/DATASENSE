@@ -8,7 +8,7 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import useFormPersist from 'react-hook-form-persist'
 
 import { getForm } from '@/api/get-form'
-import { updateForm } from '@/api/update-form'
+import { updateQuestions } from '@/api/update-questions'
 import { EditCard } from '@/components/form/edit-card'
 import { FormSidebar } from '@/components/form/sidebar'
 import { SortableItem } from '@/components/sortable/sortable-item'
@@ -39,7 +39,11 @@ export default function FormDetailPage({
   })
 
   const { mutateAsync: saveForm, isPending: savingForm } = useMutation({
-    mutationFn: () => updateForm(formObject.getValues()),
+    mutationFn: async () => {
+      const { id, questions } = formObject.getValues()
+      console.log(questions)
+      await updateQuestions(id, questions)
+    },
     onSuccess: () => {
       reset(watch(), {
         keepValues: false,

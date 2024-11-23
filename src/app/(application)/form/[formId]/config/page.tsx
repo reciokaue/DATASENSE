@@ -7,7 +7,7 @@ import { Upload } from 'lucide-react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { getForm } from '@/api/get-form'
-import { updateForm } from '@/api/update-form'
+import { updateForm } from '@/api/update-questions'
 import { CategorySelector } from '@/components/category-selector'
 import { ExportLink } from '@/components/form/export-link'
 import { RemoveButton } from '@/components/form/remove-button'
