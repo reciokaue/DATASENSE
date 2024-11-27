@@ -3,14 +3,15 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Upload } from 'lucide-react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import useFormPersist from 'react-hook-form-persist'
 
 import { getForm } from '@/api/get-form'
-import { updateForm } from '@/api/update-questions'
+import { updateForm } from '@/api/update-form'
 import { CategorySelector } from '@/components/category-selector'
 import { ExportLink } from '@/components/form/export-link'
 import { RemoveButton } from '@/components/form/remove-button'
+import { UploadImage } from '@/components/form/upload-image'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -35,32 +36,38 @@ export default function Config({ params }: { params: { formId: string } }) {
     control,
     watch,
     reset,
+    setValue,
     formState: { errors },
   } = formObject
 
   const onSubmit: SubmitHandler<Form> = async (data) => {
-    const newForm = await updateFormMutation.mutateAsync(data)
-    console.log(newForm)
+    await updateFormMutation.mutateAsync({
+      id: data.id,
+      name: data.name,
+      description: data.description,
+      active: data.active,
+      isPublic: data.isPublic,
+      category: data.category,
+    })
   }
-
-  const category = watch('category')
 
   const form = useQuery({
     queryKey: ['form', formId],
     queryFn: async () => {
       const data = await getForm(formId)
-      console.log(data)
       reset(data)
       return data
     },
   })
 
-  // function resetForm() {
-  //   reset(form.data)
-  // }
+  useFormPersist(`datasense@form${formId}`, {
+    watch,
+    setValue,
+    storage: window.localStorage,
+  })
 
   return (
-    <div className="mx-auto flex  h-full max-w-3xl flex-col overflow-x-hidden pb-10">
+    <div className="mx-auto flex  h-full max-w-3xl flex-col pb-10">
       <header className="flex flex-col space-y-1.5 text-center sm:text-left">
         <h1 className="text-2xl font-semibold leading-none tracking-tight">
           Configurações
@@ -95,22 +102,11 @@ export default function Config({ params }: { params: { formId: string } }) {
             <p className="text-sm text-red-500">{errors.description.message}</p>
           )}
         </div>
-        <div className="flex items-center justify-center">
-          <label
-            htmlFor="dropzone-file"
-            className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600 dark:hover:bg-gray-800"
-          >
-            <div className="flex flex-col items-center justify-center pb-6 pt-5">
-              <Upload />
-            </div>
-            <input id="dropzone-file" type="file" className="hidden" />
-          </label>
-        </div>
+        <UploadImage form={form?.data} />
         <div className="grid grid-cols-4 gap-4">
           <CategorySelector
             control={control}
-            name="categoryId"
-            category={category}
+            name="category"
             error={errors?.categoryId?.message}
           />
         </div>
@@ -143,7 +139,7 @@ export default function Config({ params }: { params: { formId: string } }) {
         </div>
         <footer className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
           <RemoveButton form={form.data} />
-          <ExportLink formId={form?.data?.id} />
+          <ExportLink formId={formId} />
           {/* <Button
             onClick={resetForm}
             variant="outline"

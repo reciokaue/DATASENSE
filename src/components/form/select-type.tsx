@@ -25,7 +25,7 @@ export function SelectQuestionType({ control, name }: SelectProps) {
         render={({ field }) => (
           <>
             <Dropdown
-              setSelected={(type: string) => field.onChange(JSON.parse(type))}
+              setSelected={(type: string) => field.onChange(type)}
               placeholder={field?.value?.label}
               options={questionTypes}
             />

@@ -163,7 +163,7 @@ interface DropdownProps {
   placeholder: string
   listTitle?: string
   options?: QuestionType[] | Category[]
-  setSelected: (value: string) => void
+  setSelected: (value: QuestionType | Category) => void
   className?: string
 }
 
@@ -175,7 +175,7 @@ export function Dropdown({
   className,
 }: DropdownProps) {
   return (
-    <Select onValueChange={(option) => setSelected(option)}>
+    <Select onValueChange={(option) => setSelected(JSON.parse(option))}>
       <SelectTrigger className={cn(['h-10 min-w-28 px-4 py-2', className])}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>

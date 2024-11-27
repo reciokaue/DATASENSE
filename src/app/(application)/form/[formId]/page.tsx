@@ -20,6 +20,8 @@ export default function FormDetailPage({
 }: {
   params: { formId: string }
 }) {
+  const { formId } = params
+
   const formObject = useForm<Form>({
     resolver: zodResolver(FormSchema),
   })
@@ -30,9 +32,9 @@ export default function FormDetailPage({
   }) as any
 
   const form = useQuery({
-    queryKey: ['form', params.formId],
+    queryKey: ['form', formId],
     queryFn: async () => {
-      const data = await getForm(params.formId)
+      const data = await getForm(formId)
       reset(data, { keepDirty: false })
       return data
     },
@@ -77,19 +79,11 @@ export default function FormDetailPage({
       })
     },
   }
-
-  // TODO Dar um jeito do persist form funcionar junto do useQuery tbm
-  // ele não funciona com oq ja tem pq toda vez q salva ele da um reload e fica num ciclo infinito
-  // fazer o swap dar o setValue no Sortable
-  useFormPersist(`datasense@form${params.formId}`, {
+  useFormPersist(`datasense@form${formId}`, {
     watch,
     setValue,
     storage: window.localStorage,
   })
-
-  // TODO update the data in the react query
-  // causes an inconsistency when saves and go home and return to form
-  // TODO Notificação de salvo com sucesso
 
   function customSwap(activeIndex: number, overIndex: number) {
     setValue(`questions.${activeIndex}.index`, overIndex)
@@ -100,7 +94,6 @@ export default function FormDetailPage({
   return (
     <div className="relative flex items-start justify-center gap-4 pb-10">
       <div className="flex w-full max-w-3xl flex-col ">
-        {/* {isDirty ? 'DIRTY' : 'CLEAN'} */}
         {form && (
           <SortableList
             items={fields}

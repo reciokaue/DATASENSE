@@ -29,9 +29,8 @@ import { Textarea } from '../ui/textarea'
 const CreateFormSchema = FormSchema.pick({
   name: true,
   description: true,
-  categoryId: true,
+  category: true,
 }).extend({
-  categoryId: z.number({ required_error: 'Campo obrigatório' }),
   templateId: z.number().nullable().optional().default(null),
 })
 type CreateForm = z.infer<typeof CreateFormSchema>
@@ -49,11 +48,13 @@ export function NewFormButton() {
     resolver: zodResolver(CreateFormSchema),
   })
   const onSubmit: SubmitHandler<CreateForm> = async (data) => {
+    console.log(data)
     mutateAsync(data)
   }
-
+  // TODO loading and toast
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (data: CreateForm) => {
+      console.log(data)
       return await createNewForm(data, data.templateId)
     },
     onSuccess: (newForm) => {
@@ -68,6 +69,9 @@ export function NewFormButton() {
       })
 
       push(`/form/${newForm.id}`)
+    },
+    onError(error) {
+      console.log(error)
     },
   })
 
@@ -120,8 +124,8 @@ export function NewFormButton() {
           <div className="grid grid-cols-4 gap-4">
             <CategorySelector
               control={control}
-              name="categoryId"
-              error={errors?.categoryId?.message}
+              name="category"
+              error={errors?.category?.message}
             />
             <TemplateSelector name="templateId" control={control} />
           </div>
@@ -135,6 +139,7 @@ export function NewFormButton() {
               Criar Formulário
             </Button>
           </DialogFooter>
+          {JSON.stringify(errors)}
         </form>
       </DialogContent>
     </Dialog>
