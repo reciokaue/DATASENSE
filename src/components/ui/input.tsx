@@ -41,6 +41,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             onClick={(e) => toggleVisibility(e)}
             className="absolute right-0 top-0 aspect-square h-full px-1 text-primary/70"
             variant="link"
+            disabled={props.disabled}
           >
             {isVisible ? <Eye /> : <EyeOff />}
           </Button>

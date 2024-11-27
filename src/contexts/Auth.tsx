@@ -52,12 +52,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       setCookie('datasense-token', token)
       api.defaults.headers.common.Authorization = `Bearer ${token}`
-      const decoded: any = await jwtDecode(token as string)
 
-      setUser({
-        ...decoded,
-        id: decoded.sub,
-      } as User)
+      setUser(user)
 
       if (remember) {
         localStorage.setItem('datasense_email', email)

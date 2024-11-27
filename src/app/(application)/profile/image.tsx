@@ -1,16 +1,15 @@
 import { Upload } from 'lucide-react'
 import { useState } from 'react'
 
-import { uploadFormImage } from '@/api/upload-form-image'
-import { Form } from '@/models'
-
-import { Button } from '../ui/button'
+import { uploadUserImage } from '@/api/upload-profile-image'
+import { Button } from '@/components/ui/button'
+import { User } from '@/models'
 
 interface UploadImageProps {
-  form?: Form
+  user?: User
 }
 
-export function UploadImage({ form }: UploadImageProps) {
+export function UploadImage({ user }: UploadImageProps) {
   const [file, setFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
@@ -23,9 +22,9 @@ export function UploadImage({ form }: UploadImageProps) {
   }
 
   const handleUpload = async () => {
-    if (file && form?.id) {
+    if (file && user?.id) {
       try {
-        await uploadFormImage(form.id, file)
+        await uploadUserImage(user.id, file)
         console.log('Image uploaded successfully!')
         setFile(null)
       } catch (error) {
@@ -46,11 +45,11 @@ export function UploadImage({ form }: UploadImageProps) {
     <div className="flex flex-col items-center justify-center">
       <label
         htmlFor="dropzone-file"
-        className="relative flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-800"
+        className="relative flex size-64 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-800"
       >
-        {previewUrl || form?.logoUrl !== '' ? (
+        {previewUrl || user?.profileImage !== '' ? (
           <img
-            src={previewUrl || form?.logoUrl}
+            src={previewUrl || user?.profileImage}
             alt="Preview"
             className="absolute h-full w-full object-cover"
           />
