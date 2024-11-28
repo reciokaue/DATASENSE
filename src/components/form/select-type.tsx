@@ -5,6 +5,7 @@ import { Controller } from 'react-hook-form'
 
 import { getQuestionTypes } from '@/api/get-question-types'
 import { Dropdown } from '@/components/ui/select'
+import { QuestionType } from '@/models'
 
 interface SelectProps {
   control: any
@@ -25,7 +26,7 @@ export function SelectQuestionType({ control, name }: SelectProps) {
         render={({ field }) => (
           <>
             <Dropdown
-              setSelected={(type: string) => field.onChange(type)}
+              setSelected={(type: QuestionType) => field.onChange(type)}
               placeholder={field?.value?.label}
               options={questionTypes}
             />
