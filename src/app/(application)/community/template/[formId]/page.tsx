@@ -1,6 +1,7 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
+import Image from 'next/image'
 
 import { getForm } from '@/api/get-form'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
@@ -52,12 +53,18 @@ export default function TemplatePage({
             <Button>Visualizar</Button>
           </footer>
         </div>
-        <div className="min-h-96 ">
-          <div className="h-full w-full rounded-md bg-primary/20"></div>
+        <div className="flex h-96 w-full items-center justify-center rounded-lg bg-primary/20">
+          <Image
+            className="size-20"
+            src={'/images/avatars/datasense.png'}
+            width={100}
+            height={100}
+            alt={''}
+          />
         </div>
       </div>
       <h2 className="text-2xl font-semibold">Questões</h2>
-      <section className="grid grid-cols-2 gap-6">
+      <section className="grid grid-cols-2 gap-6 pb-10">
         {form?.questions?.map((question, index) => (
           <div
             key={question.id}

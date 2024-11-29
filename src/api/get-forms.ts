@@ -6,7 +6,8 @@ interface GetFormsProps {
   page?: number
   pageSize?: number
   isPublic?: boolean
-  topics?: string
+  categoryId?: string | number
+  datasense?: boolean
 }
 
 export interface GetFormsData {
@@ -23,12 +24,18 @@ export async function getForms({
   page,
   pageSize,
   isPublic,
-  topics,
+  categoryId,
+  datasense,
 }: GetFormsProps) {
-  const response = await api.get(`/forms`, {
-    ...((query || page || pageSize || isPublic || topics) && {
-      params: { query, page, pageSize, isPublic, topics },
-    }),
-  })
+  const params: any = {}
+
+  if (query) params.query = query
+  if (page) params.page = page
+  if (pageSize) params.pageSize = pageSize
+  if (isPublic !== undefined) params.isPublic = isPublic
+  if (categoryId) params.categoryId = categoryId
+  if (datasense) params.datasense = datasense
+
+  const response = await api.get(`/forms`, { params })
   return response.data as GetFormsData
 }

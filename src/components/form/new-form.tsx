@@ -139,7 +139,6 @@ export function NewFormButton() {
               Criar Formulário
             </Button>
           </DialogFooter>
-          {JSON.stringify(errors)}
         </form>
       </DialogContent>
     </Dialog>

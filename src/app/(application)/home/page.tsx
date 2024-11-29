@@ -12,7 +12,7 @@ import { HomeCard } from './home-card'
 export default function HomePage() {
   const { data: result, isLoading } = useQuery({
     queryKey: ['user-forms'],
-    queryFn: () => getForms({ pageSize: 20 }),
+    queryFn: () => getForms({ pageSize: 6 }),
   })
 
   return (
@@ -21,7 +21,7 @@ export default function HomePage() {
         <h1 className="text-2xl font-semibold">Formulários</h1>
         <NewFormButton />
       </div>
-      <div className="mt-8 grid grid-cols-1 gap-3 md:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-3 pb-10 md:grid-cols-3">
         {!isLoading && result
           ? result?.forms?.map((form) => (
               <Link key={form.id} href={`/form/${form.id}`} className="group">
