@@ -7,8 +7,6 @@ import { QuestionBaseButton } from './question-base-button'
 
 interface SidebarProps {
   addQuestion: () => void
-  save: () => void
-  fields: any
   swap: (activeIndex: number, overIndex: number) => void
   loading: boolean
 }
