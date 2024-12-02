@@ -1,5 +1,6 @@
 import { Slot } from '@radix-ui/react-slot'
 import { ChevronRightIcon, CircleEllipsis as EllipsisIcon } from 'lucide-react'
+import Link from 'next/link'
 import * as React from 'react'
 
 import { cn } from '@/lib/utils'
@@ -128,13 +129,12 @@ const Breadcrumb = ({ steps }: BreadcrumbProps) => (
               {step.title}
             </BreadcrumbPage>
           ) : (
-            <BreadcrumbLink
-              className="flex items-center gap-2 font-semibold"
-              href={step.href}
-            >
-              <Icon name={step.icon} className="size-4" />
-              {step.title}
-            </BreadcrumbLink>
+            <Link href={step.href}>
+              <BreadcrumbLink className="flex items-center gap-2 font-semibold">
+                <Icon name={step.icon} className="size-4" />
+                {step.title}
+              </BreadcrumbLink>
+            </Link>
           )}
           {index + 1 < steps.length && <BreadcrumbSeparator />}
         </BreadcrumbItem>

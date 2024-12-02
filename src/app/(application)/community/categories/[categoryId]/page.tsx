@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query'
 
-import { getCategoryByName } from '@/api/get-category'
+import { getCategory } from '@/api/get-category'
 import { getForms } from '@/api/get-forms'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
 import {
@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/carousel'
 import { Icon } from '@/components/ui/icon'
 import { Label } from '@/components/ui/label'
+import { useQueryParams } from '@/utils/useQueryParams'
 
 import { CategoryList } from '../../category-list'
 import { FormCard } from '../../form-card'
@@ -21,27 +22,34 @@ import { FormCard } from '../../form-card'
 export default function CategoryPage({
   params,
 }: {
-  params: { categoryName: string }
+  params: { categoryId: string }
 }) {
+  const { searchParams } = useQueryParams()
+  const categoryName = searchParams.get('name')
+  const { categoryId } = params
+
   const { data: category } = useQuery({
-    queryKey: ['category', params.categoryName],
-    queryFn: () => getCategoryByName(params.categoryName),
+    queryKey: ['category', categoryId],
+    queryFn: () => getCategory(categoryId),
   })
 
   const { data: datasense } = useQuery({
-    queryKey: ['datasense-forms', params.categoryName],
+    queryKey: ['datasense-forms', categoryId],
     queryFn: () =>
       getForms({
         page: 0,
         pageSize: 8,
         datasense: true,
-        categoryId: category.id,
+        categoryId,
       }),
+    enabled: !!categoryId,
   })
 
   const { data: community } = useQuery({
-    queryKey: ['community-forms', params.categoryName],
-    queryFn: () => getForms({ page: 0, pageSize: 8, isPublic: true }),
+    queryKey: ['community-forms', categoryId],
+    queryFn: () =>
+      getForms({ page: 0, pageSize: 8, isPublic: true, categoryId }),
+    enabled: !!categoryId,
   })
 
   return (
@@ -62,7 +70,7 @@ export default function CategoryPage({
           {category?.label}
         </h1>
       </header>
-      <CategoryList parentId={}/>
+      <CategoryList parentId={categoryId} key={categoryName} />
 
       <section className="flex flex-col py-6">
         <Label className="mb-2 text-2xl">Formulários Datasense</Label>

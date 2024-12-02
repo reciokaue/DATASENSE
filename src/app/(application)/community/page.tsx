@@ -1,10 +1,7 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import Image from 'next/image'
-import Link from 'next/link'
 
-import { getCategories } from '@/api/get-categories'
 import { getForms } from '@/api/get-forms'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
 import {
@@ -14,7 +11,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel'
-import { Icon } from '@/components/ui/icon'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
@@ -53,7 +49,7 @@ export default function CommunityPage() {
           placeholder="Buscar"
         />
       </header>
-      <CategoryList />
+      <CategoryList parentId={null} key={'home'} />
       <section className="flex flex-col py-6">
         <Label className="mb-2 text-2xl">Formulários Datasense</Label>
         <Carousel>

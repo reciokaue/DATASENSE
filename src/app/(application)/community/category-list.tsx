@@ -27,7 +27,7 @@ export function CategoryList({ parentId }: CategoryListProps) {
       {data
         ? data.categories.map((category) => (
             <Link
-              href={`/community/categories/${category.name}`}
+              href={`/community/categories/${category.id}?=${category.name}`}
               key={category.id}
             >
               <Badge className="gap-2" variant="secondary">
