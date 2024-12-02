@@ -3,6 +3,7 @@
 
 import {
   Building,
+  Circle,
   CircleHelp,
   Coffee,
   Gift,
@@ -43,6 +44,7 @@ const icons = {
   leaf: Leaf,
   package: Package,
   'layout-template': LayoutDashboard,
+  circle: Circle,
 }
 
 export const Icon = ({ name, ...props }: IconProps) => {

@@ -1,19 +1,31 @@
+import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 
+import { getCategories } from '@/api/get-categories'
 import { Badge } from '@/components/ui/badge'
 import { Icon } from '@/components/ui/icon'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Category } from '@/models'
 
 interface CategoryListProps {
-  categories: Category[] | undefined
+  parentId?: number | string
 }
 
-export function CategoryList({ categories }: CategoryListProps) {
+export function CategoryList({ parentId }: CategoryListProps) {
+  const { data } = useQuery({
+    queryKey: ['categories', parentId],
+    queryFn: () =>
+      getCategories({
+        page: 0,
+        pageSize: 100,
+        parentId,
+      }),
+    staleTime: Infinity,
+  })
+
   return (
     <section className="flex flex-wrap items-center gap-2">
-      {categories
-        ? categories.map((category) => (
+      {data
+        ? data.categories.map((category) => (
             <Link
               href={`/community/categories/${category.name}`}
               key={category.id}
