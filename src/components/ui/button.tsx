@@ -44,21 +44,11 @@ export interface ButtonProps
   asChild?: boolean
   link?: string
   isLoading?: boolean
-  isSuccess?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    {
-      className,
-      variant,
-      size,
-      isLoading,
-      isSuccess,
-      asChild = false,
-      link,
-      ...props
-    },
+    { className, variant, size, isLoading, asChild = false, link, ...props },
     ref,
   ) => {
     const Comp = asChild ? Slot : 'button'
@@ -69,13 +59,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
         disabled={isLoading || props.disabled}
       >
-        {props.children}
         {isLoading ? (
           <div className="absolute flex w-full justify-center bg-inherit">
             <Loader2 className=" size-4 animate-spin" />
           </div>
         ) : (
-          isSuccess && <Check className="size-4" />
+          props.children
         )}
       </Comp>
     )

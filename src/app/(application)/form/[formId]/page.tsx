@@ -9,6 +9,7 @@ import useFormPersist from 'react-hook-form-persist'
 
 import { getForm } from '@/api/get-form'
 import { updateQuestions } from '@/api/update-questions'
+import { formActions } from '@/components/form/actions'
 import { EditCard } from '@/components/form/edit-card'
 import { FormSidebar } from '@/components/form/sidebar'
 import { SortableItem } from '@/components/sortable/sortable-item'
@@ -55,30 +56,13 @@ export default function FormDetailPage({
     },
   })
 
-  const actions = {
-    removeQuestion: (index: number) => {
-      remove(index)
-    },
-    cloneQuestion: (index: number) => {
-      insert(index + 1, fields[index])
-    },
-    addQuestion: () => {
-      append({
-        text: '',
-        questionType: {
-          id: 1,
-          name: 'options',
-          label: 'Opções',
-          icon: 'CircleDot',
-        },
-        required: false,
-        options: [],
-        index: fields.length,
-        formId: form.data?.id,
-        id: -Math.round(Math.random() * 100),
-      })
-    },
-  }
+  const actions = formActions({
+    remove,
+    insert,
+    fields,
+    append,
+    form,
+  })
   useFormPersist(`datasense@form${formId}`, {
     watch,
     setValue,
@@ -125,11 +109,10 @@ export default function FormDetailPage({
     ))} */}
       </div>
       <FormSidebar
-        addQuestion={actions.addQuestion}
         fields={fields}
-        loading={savingForm}
-        save={saveForm}
         swap={customSwap}
+        formObject={formObject}
+        actions={actions}
       />
     </div>
   )

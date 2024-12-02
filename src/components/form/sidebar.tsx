@@ -1,4 +1,7 @@
+import { useMutation } from '@tanstack/react-query'
 import { Plus, Save } from 'lucide-react'
+
+import { updateQuestions } from '@/api/update-questions'
 
 import { SortableItem } from '../sortable/sortable-item'
 import { SortableList } from '../sortable/sortable-list'
@@ -6,29 +9,45 @@ import { Button } from '../ui/button'
 import { QuestionBaseButton } from './question-base-button'
 
 interface SidebarProps {
-  addQuestion: () => void
+  actions: any
   swap: (activeIndex: number, overIndex: number) => void
-  loading: boolean
+  formObject: any
+  fields: any
 }
 
 export function FormSidebar({
-  addQuestion,
-  save,
   fields,
   swap,
-  loading,
+  formObject,
+  actions,
 }: SidebarProps) {
+  const { reset, watch } = formObject
+
+  const { mutateAsync: saveForm, isPending: savingForm } = useMutation({
+    mutationFn: async () => {
+      const { id, questions } = formObject.getValues()
+      await updateQuestions(id, questions)
+    },
+    onSuccess: () => {
+      reset(watch(), {
+        keepValues: false,
+        keepDirty: false,
+        keepDefaultValues: false,
+      })
+    },
+  })
+
   return (
     <aside className="sticky top-10 flex w-full max-w-xs flex-1 flex-col space-y-3 rounded-lg bg-primary-foreground p-4">
-      <Button onClick={addQuestion} className="justify-between">
+      <Button onClick={actions.addQuestion} className="justify-between">
         Nova questão <Plus />
       </Button>
       <QuestionBaseButton />
       <Button
-        onClick={save}
+        onClick={() => saveForm()}
         variant="outline"
         className="justify-between bg-card"
-        isLoading={loading}
+        isLoading={savingForm}
       >
         Salvar <Save />
       </Button>
