@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 import { GetFormsData } from '@/api/get-forms'
@@ -69,6 +70,7 @@ export function NewFormButton() {
       })
 
       push(`/form/${newForm.id}`)
+      toast('Formulário criado com sucesso', { type: 'info' })
     },
     onError(error) {
       console.log(error)
@@ -130,10 +132,8 @@ export function NewFormButton() {
             <TemplateSelector name="templateId" control={control} />
           </div>
           <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline" disabled={isPending}>
-                Cancelar
-              </Button>
+            <DialogClose asChild disabled={isPending}>
+              <Button variant="outline">Cancelar</Button>
             </DialogClose>
             <Button isLoading={isPending} type="submit">
               Criar Formulário

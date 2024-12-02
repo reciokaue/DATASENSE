@@ -10,8 +10,8 @@ import {
   useEffect,
   useState,
 } from 'react'
+import { toast } from 'react-toastify'
 
-import { useToast } from '../components/ui/use-toast'
 import { api } from '../lib/api'
 import { User } from '../models'
 import { AppError } from '../utils/AppError'
@@ -42,8 +42,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const pathname = usePathname().split('/')[1]
   const queryClient = useQueryClient()
 
-  const { toast } = useToast()
-
   async function login(email: string, password: string, remember: boolean) {
     try {
       const { data } = await api.post('/login', { email, password })
@@ -63,10 +61,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const isAppError = e instanceof AppError
       console.log(e)
 
-      toast({
-        title: isAppError ? e.message : 'Não foi possível fazer login',
-        description: e.description,
-        variant: 'destructive',
+      toast(isAppError ? e.message : 'Não foi possível fazer login', {
+        type: 'error',
       })
     }
   }
@@ -86,10 +82,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const isAppError = e instanceof AppError
       console.log(e)
 
-      toast({
-        title: isAppError ? e.message : 'Não foi possível criar conta',
-        description: e.description,
-        variant: 'destructive',
+      toast(isAppError ? e.message : 'Não foi possível criar conta', {
+        type: 'error',
       })
     }
   }

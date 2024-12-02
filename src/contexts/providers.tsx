@@ -1,9 +1,10 @@
 'use client'
 
+import 'react-toastify/dist/ReactToastify.css'
+
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactNode } from 'react'
-
-import { Toaster } from '@/components/ui/toaster'
+import { ToastContainer } from 'react-toastify'
 
 import { AuthProvider } from './Auth'
 
@@ -21,7 +22,17 @@ export function Providers({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>{children}</AuthProvider>
-      <Toaster />
+      <ToastContainer
+        position="bottom-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </QueryClientProvider>
   )
 }

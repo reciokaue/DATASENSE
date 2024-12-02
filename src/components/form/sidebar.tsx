@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { Plus, Save } from 'lucide-react'
+import { toast } from 'react-toastify'
 
 import { updateQuestions } from '@/api/update-questions'
 
@@ -34,6 +35,8 @@ export function FormSidebar({
         keepDirty: false,
         keepDefaultValues: false,
       })
+
+      toast('Formulário salvo com sucesso', { type: 'success' })
     },
   })
 
