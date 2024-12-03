@@ -45,7 +45,7 @@ export function FormSidebar({
       <Button onClick={actions.addQuestion} className="justify-between">
         Nova questão <Plus />
       </Button>
-      <QuestionBaseButton />
+      <QuestionBaseButton actions={actions} />
       <Button
         onClick={() => saveForm()}
         variant="outline"

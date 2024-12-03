@@ -1,5 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
-import { ChevronLeft, ChevronRight, LayoutGrid } from 'lucide-react'
+import {
+  ChevronLeft,
+  ChevronRight,
+  FolderSearch,
+  LayoutGrid,
+} from 'lucide-react'
 import { useState } from 'react'
 
 import { getCategories } from '@/api/get-categories'
@@ -20,33 +25,61 @@ import {
 import { Icon } from '../ui/icon'
 import { Input } from '../ui/input'
 import { Dropdown } from '../ui/select'
+import { Skeleton } from '../ui/skeleton'
 
-// interface QuestionBaseProps {}
+interface QuestionBaseProps {
+  actions: any
+}
 
-export function QuestionBaseButton() {
+export function QuestionBaseButton({ actions }: QuestionBaseProps) {
   const [selectedQuestion, setSelectedQuestion] = useState(null)
-  const query = ''
-  const page = 0
-  const pageSize = 10
-  const categoryId = null
+  const [questionTypeId, setQuestionTypeId] = useState<number | null>()
+  const [categoryId, setCategoryId] = useState<number | null>()
+  const [query, setQuery] = useState('')
+  const [page, setPage] = useState(0)
 
-  const { data: questions } = useQuery({
-    queryKey: ['questions-base'],
-    queryFn: () => getQuestions({ query, page, pageSize, categoryId }),
+  const pageSize = 8
+
+  const { data: result, isPending } = useQuery({
+    queryKey: [
+      'questions-base',
+      query,
+      page,
+      pageSize,
+      categoryId,
+      questionTypeId,
+    ],
+    queryFn: () =>
+      getQuestions({ query, page, pageSize, categoryId, questionTypeId }),
   })
-
   const { data: questionTypes } = useQuery({
     queryKey: ['questionTypes'],
-    queryFn: getQuestionTypes,
+    queryFn: async () => {
+      const response = await getQuestionTypes()
+      return [{ id: null, label: 'Todas' }, ...response]
+    },
   })
   const { data: categories } = useQuery({
     queryKey: ['categories'],
-    queryFn: () =>
-      getCategories({
-        page: 0,
-        pageSize: 100,
-      }),
+    queryFn: async () => {
+      const response = await getCategories({ page: 0, pageSize: 100 })
+      return [{ id: null, label: 'Todas' }, ...response?.categories]
+    },
   })
+
+  const selectQuestionType = (questionType) => {
+    setQuestionTypeId(questionType.id)
+    setPage(0)
+  }
+
+  const selectCategory = (category) => {
+    setCategoryId(category.id)
+    setPage(0)
+  }
+
+  const handleAddQuestion = () => {
+    actions.addQuestion({ question: selectedQuestion })
+  }
 
   return (
     <Dialog>
@@ -60,23 +93,30 @@ export function QuestionBaseButton() {
           <DialogTitle>Banco de Questões</DialogTitle>
         </DialogHeader>
         <header className="flex gap-3">
-          <Input placeholder="Buscar questão" styles="w-full" />
+          <Input
+            onChange={(e) => setQuery(e.target.value)}
+            value={query}
+            placeholder="Buscar questão"
+            styles="w-full"
+          />
           <Dropdown
-            setSelected={() => {}}
+            setSelected={selectQuestionType}
             placeholder={'Tipo da questão'}
             options={questionTypes}
+            listTitle="Tipo da questão"
             className="w-52"
           />
           <Dropdown
-            setSelected={() => {}}
+            setSelected={selectCategory}
             placeholder={'Categoria'}
-            options={categories?.categories}
+            options={categories}
+            listTitle="Categoria da questão"
             className="w-52"
           />
         </header>
-        <section className="grid grid-cols-4 gap-2">
-          {questions &&
-            questions?.map((question) => (
+        {result && (
+          <section className="grid grid-cols-4 gap-2">
+            {result?.questions?.map((question) => (
               <Card
                 key={question.id}
                 aria-selected={selectedQuestion?.id === question.id}
@@ -85,7 +125,7 @@ export function QuestionBaseButton() {
               >
                 <div className="flex w-full flex-col ">
                   <header className="flex items-center justify-between gap-2">
-                    <h2 className="text-start text-base font-medium">
+                    <h2 className="text-wrap text-start text-base font-medium">
                       {question.text}
                     </h2>
                   </header>
@@ -97,22 +137,40 @@ export function QuestionBaseButton() {
                 </div>
               </Card>
             ))}
-        </section>
+          </section>
+        )}
+        {isPending && (
+          <section className="grid grid-cols-4 gap-2">
+            {[0, 1, 2, 3].map((index) => (
+              <Skeleton key={index} className="h-20 w-full" />
+            ))}
+          </section>
+        )}
+        {result?.questions?.length === 0 && (
+          <div className="flex h-40 w-full flex-col items-center justify-center gap-2 text-primary/50">
+            <FolderSearch className="size-10" />
+            Nenhuma questão encontrada
+          </div>
+        )}
         <div className="ml-auto flex items-center gap-2">
+          <span>
+            Pagina {page + 1} de{' '}
+            {Math.floor(result?.meta.totalCount / pageSize)}
+          </span>
           <Button
-            onClick={() => {}}
+            onClick={() => setPage((prev) => prev - 1)}
+            disabled={page === 0}
             variant="outline"
             className="h-8 w-8 p-0"
-            // disabled={currentPage === 0}
           >
             <ChevronLeft className="h-4 w-4" />
             <span className="sr-only">Página anterior</span>
           </Button>
           <Button
-            onClick={() => {}}
+            disabled={page + 1 >= result?.meta.totalCount / pageSize}
             variant="outline"
             className="h-8 w-8 p-0"
-            // disabled={currentPage === 0}
+            onClick={() => setPage((prev) => prev + 1)}
           >
             <ChevronRight className="h-4 w-4" />
             <span className="sr-only">Página anterior</span>
@@ -146,7 +204,11 @@ export function QuestionBaseButton() {
               Cancelar
             </Button>
           </DialogClose>
-          <Button disabled={!selectedQuestion}>Adicionar</Button>
+          <DialogClose asChild>
+            <Button onClick={handleAddQuestion} disabled={!selectedQuestion}>
+              Adicionar
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

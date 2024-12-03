@@ -6,6 +6,16 @@ interface GetQuestionsProps {
   page?: number
   pageSize?: number
   categoryId?: number
+  questionTypeId?: number
+}
+
+export interface GetQuestionsData {
+  meta: {
+    page: number
+    pageSize: number
+    totalCount: number
+  }
+  questions: Question[]
 }
 
 export async function getQuestions({
@@ -13,9 +23,10 @@ export async function getQuestions({
   page = 0,
   pageSize = 10,
   categoryId,
-}: GetQuestionsProps): Promise<Question[]> {
+  questionTypeId,
+}: GetQuestionsProps): Promise<GetQuestionsData> {
   const response = await api.get(`/questions`, {
-    params: { query, page, pageSize, categoryId },
+    params: { query, page, pageSize, categoryId, questionTypeId },
   })
-  return response.data as Question[]
+  return response.data as GetQuestionsData
 }

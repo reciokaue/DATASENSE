@@ -1,3 +1,10 @@
+import { Question } from '@/models'
+
+interface addQuestionProps {
+  question?: Partial<Question>
+  // type: string
+}
+
 export const formActions = ({ remove, insert, fields, append, form }: any) => {
   const removeQuestion = (index: number) => {
     remove(index)
@@ -5,7 +12,18 @@ export const formActions = ({ remove, insert, fields, append, form }: any) => {
   const cloneQuestion = (index: number) => {
     insert(index + 1, fields[index])
   }
-  const addQuestion = () => {
+  const addQuestion = ({ question }: addQuestionProps) => {
+    if (question)
+      return append({
+        text: question.text,
+        questionType: question.questionType,
+        required: question.required,
+        options: question.options,
+        index: fields.length,
+        formId: form.data?.id,
+        id: -Math.round(Math.random() * 100),
+      })
+
     append({
       text: '',
       questionType: {

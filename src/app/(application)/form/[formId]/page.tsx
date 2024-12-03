@@ -2,13 +2,12 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { Loader2 } from 'lucide-react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import useFormPersist from 'react-hook-form-persist'
 
 import { getForm } from '@/api/get-form'
-import { updateQuestions } from '@/api/update-questions'
 import { formActions } from '@/components/form/actions'
 import { EditCard } from '@/components/form/edit-card'
 import { FormSidebar } from '@/components/form/sidebar'
@@ -38,21 +37,6 @@ export default function FormDetailPage({
       const data = await getForm(formId)
       reset(data, { keepDirty: false })
       return data
-    },
-  })
-
-  const { mutateAsync: saveForm, isPending: savingForm } = useMutation({
-    mutationFn: async () => {
-      const { id, questions } = formObject.getValues()
-      console.log(questions)
-      await updateQuestions(id, questions)
-    },
-    onSuccess: () => {
-      reset(watch(), {
-        keepValues: false,
-        keepDirty: false,
-        keepDefaultValues: false,
-      })
     },
   })
 
