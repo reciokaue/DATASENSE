@@ -60,9 +60,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={isLoading || props.disabled}
       >
         {isLoading ? (
-          <div className="absolute flex w-full justify-center bg-inherit">
-            <Loader2 className=" size-4 animate-spin" />
-          </div>
+          <>
+            <Loader2 className="size-4 animate-spin" />
+            <span className="invisible">{props.children}</span>
+          </>
         ) : (
           props.children
         )}

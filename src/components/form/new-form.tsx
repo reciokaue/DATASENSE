@@ -52,7 +52,6 @@ export function NewFormButton() {
     console.log(data)
     mutateAsync(data)
   }
-  // TODO loading and toast
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (data: CreateForm) => {
       console.log(data)
@@ -60,6 +59,8 @@ export function NewFormButton() {
     },
     onSuccess: (newForm) => {
       const previous: GetFormsData = queryClient.getQueryData(['user-forms'])
+
+      queryClient.setQueryData(['form', newForm.id], newForm)
 
       queryClient.setQueryData(['user-forms'], {
         meta: {
@@ -74,6 +75,7 @@ export function NewFormButton() {
     },
     onError(error) {
       console.log(error)
+      toast('Erro ao criar o formulário', { type: 'error' })
     },
   })
 

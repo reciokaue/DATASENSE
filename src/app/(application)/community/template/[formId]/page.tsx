@@ -1,9 +1,11 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
+import { Plus } from 'lucide-react'
 import Image from 'next/image'
 
 import { getForm } from '@/api/get-form'
+import { CopyFormDialog } from '@/components/form/copy-form-dialog'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
@@ -49,7 +51,7 @@ export default function TemplatePage({
           </header>
           <p>{form?.description}</p>
           <footer className="flex gap-3  pt-3">
-            <Button>+ Copiar</Button>
+            <CopyFormDialog formTemplate={form} />
             <Button>Visualizar</Button>
           </footer>
         </div>
@@ -78,7 +80,7 @@ export default function TemplatePage({
               </div>
             </header>
             <p>{question.text}</p>
-            <div className="flex h-fit flex-wrap justify-center gap-2">
+            <div className="flex h-fit flex-wrap justify-start gap-2">
               {question?.options?.map((option: any) => (
                 <Button key={option.id} type="button" variant="outline">
                   {option.text}
