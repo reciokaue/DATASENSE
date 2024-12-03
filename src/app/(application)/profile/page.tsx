@@ -20,7 +20,7 @@ interface User {
 
 export default function UserProfile() {
   const [isEditing, setIsEditing] = useState(false)
-  const { user } = useAuth()
+  const { user, setUser } = useAuth()
 
   const {
     register,
@@ -46,6 +46,9 @@ export default function UserProfile() {
 
   const updateUserMutation = useMutation({
     mutationFn: (user: any) => updateUser(user),
+    onSuccess: (user) => {
+      setUser(user)
+    },
   })
 
   const handleEdit = () => {
@@ -61,7 +64,7 @@ export default function UserProfile() {
       </header>
       <form onSubmit={handleSubmit(onSubmit)} className="mt-4 grid gap-4">
         <div className="flex gap-6">
-          <UploadImage user={user} />
+          <UploadImage user={user} setUser={setUser} />
           <div className="flex w-full flex-col space-y-2">
             <div className="flex flex-col items-start gap-2">
               <Label htmlFor="name">Nome *</Label>

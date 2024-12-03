@@ -7,9 +7,10 @@ import { User } from '@/models'
 
 interface UploadImageProps {
   user?: User
+  setUser?: (user: User) => void
 }
 
-export function UploadImage({ user }: UploadImageProps) {
+export function UploadImage({ user, setUser }: UploadImageProps) {
   const [file, setFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
@@ -24,7 +25,12 @@ export function UploadImage({ user }: UploadImageProps) {
   const handleUpload = async () => {
     if (file && user?.id) {
       try {
-        await uploadUserImage(user.id, file)
+        const result: any = await uploadUserImage(user.id, file)
+        setUser({
+          ...user,
+          profileImage: result?.profileImage,
+        })
+
         console.log('Image uploaded successfully!')
         setFile(null)
       } catch (error) {

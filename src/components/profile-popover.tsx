@@ -1,4 +1,5 @@
 import { User2 } from 'lucide-react'
+import Image from 'next/image'
 
 import { useAuth } from '../contexts/Auth'
 import { Button } from './ui/button'
@@ -21,8 +22,14 @@ export function ProfilePopover() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button className="flex size-10 items-center justify-center rounded-full bg-gray-200">
-          <User2 className="size-5" />
+        <button className="flex aspect-square size-10 items-center justify-center rounded-full bg-gray-200">
+          <Image
+            src={user.profileImage}
+            alt={user.name}
+            width={80}
+            height={80}
+            className="h-full w-full"
+          />
         </button>
       </PopoverTrigger>
       <PopoverContent className="ml-10 flex w-56 flex-col gap-3" align="end">

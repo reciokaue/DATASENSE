@@ -29,6 +29,7 @@ interface AuthContextData {
     name: string,
   ) => Promise<void>
   logout: () => Promise<void>
+  setUser: (user: User) => void
 }
 
 const AuthContext = createContext({} as AuthContextData)
@@ -125,6 +126,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         login,
         createAccount,
         logout,
+        setUser,
       }}
     >
       {children}
