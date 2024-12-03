@@ -75,8 +75,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
         password,
         name,
       })
-      setCookie('datasense-token', response.data)
-      api.defaults.headers.common.Authorization = `Bearer ${response.data}`
+      const { user, token } = response.data
+      setUser(user)
+      setCookie('datasense-token', token)
+      api.defaults.headers.common.Authorization = `Bearer ${token}`
 
       router.push('/home')
     } catch (e: any) {

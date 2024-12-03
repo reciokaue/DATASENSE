@@ -22,7 +22,7 @@ export function ProfilePopover() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button className="flex aspect-square size-10 items-center justify-center rounded-full bg-gray-200">
+        <button className="flex size-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200">
           <Image
             src={user.profileImage}
             alt={user.name}

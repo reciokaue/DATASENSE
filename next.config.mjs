@@ -9,6 +9,7 @@ const nextConfig = {
       'avatars.githubusercontent.com',
       'loremflickr.com',
       'picsum.photos',
+      'ui-avatars.com',
     ],
   },
 }

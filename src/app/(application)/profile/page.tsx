@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/contexts/Auth'
 
+import { DeleteAccountDialog } from './delete-account-dialog'
 import { UploadImage } from './image'
 
 interface User {
@@ -110,6 +111,7 @@ export default function UserProfile() {
           </div>
         </div>
         <footer className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+          <DeleteAccountDialog />
           <Button type="button" variant="outline" onClick={handleEdit}>
             {isEditing ? 'Cancelar' : 'Editar'}
           </Button>
