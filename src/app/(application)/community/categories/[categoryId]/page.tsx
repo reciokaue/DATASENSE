@@ -1,23 +1,22 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
+import { z } from 'zod'
 
 import { getCategory } from '@/api/get-category'
 import { getForms } from '@/api/get-forms'
+import { Pagination } from '@/components/pagination'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/components/ui/carousel'
 import { Icon } from '@/components/ui/icon'
 import { Label } from '@/components/ui/label'
+import { Skeleton } from '@/components/ui/skeleton'
 import { useQueryParams } from '@/utils/useQueryParams'
 
 import { CategoryList } from '../../category-list'
+import { Filters } from '../../filters'
 import { FormCard } from '../../form-card'
+
+const pageSize = 6
 
 export default function CategoryPage({
   params,
@@ -25,7 +24,7 @@ export default function CategoryPage({
   params: { categoryId: string }
 }) {
   const { searchParams } = useQueryParams()
-  const categoryName = searchParams.get('name')
+  const categoryName = searchParams.get('category')
   const { categoryId } = params
 
   const { data: category } = useQuery({
@@ -33,22 +32,24 @@ export default function CategoryPage({
     queryFn: () => getCategory(categoryId),
   })
 
-  const { data: datasense } = useQuery({
-    queryKey: ['datasense-forms', categoryId],
+  const search = searchParams.get('s') || ''
+  const formFilter = searchParams.get('form') || 'all'
+  const page = z.coerce
+    .number()
+    .transform((page) => page - 1)
+    .parse(searchParams.get('page') ?? '1')
+
+  const { data: community, isPending: communityLoading } = useQuery({
+    queryKey: ['community-forms', search, page, formFilter, categoryId],
     queryFn: () =>
       getForms({
-        page: 0,
-        pageSize: 8,
-        datasense: true,
+        page,
+        pageSize,
+        isPublic: true,
+        query: search,
+        form: formFilter,
         categoryId,
       }),
-    enabled: !!categoryId,
-  })
-
-  const { data: community } = useQuery({
-    queryKey: ['community-forms', categoryId],
-    queryFn: () =>
-      getForms({ page: 0, pageSize: 8, isPublic: true, categoryId }),
     enabled: !!categoryId,
   })
 
@@ -58,39 +59,54 @@ export default function CategoryPage({
         steps={[
           { title: 'Comunidade', icon: 'layout-template', href: '/community' },
           {
-            title: category?.label || 'Circle',
+            title: category?.label || categoryName,
             icon: category?.icon || 'Categoria',
             href: `/community/categories/${category?.label}`,
           },
         ]}
       />
-      <header className="mb-3 mt-2 flex items-center gap-2 text-primary">
-        <Icon name={category?.icon || ''} className="size-6" strokeWidth={3} />
-        <h1 className="text-3xl font-semibold leading-relaxed ">
-          {category?.label}
-        </h1>
-      </header>
-      <CategoryList parentId={categoryId} key={categoryName} />
+      <div className="grid grid-cols-5 grid-rows-2">
+        <div className="col-span-4 row-span-1 flex items-center gap-2 ">
+          <Icon
+            name={category?.icon || ''}
+            className="size-6"
+            strokeWidth={3}
+          />
+          <h1 className="text-3xl font-semibold leading-relaxed text-primary">
+            {category?.label || categoryName}
+          </h1>
+        </div>
+        <Filters className="col-span-1 row-span-2" />
+        <CategoryList
+          parentId={categoryId}
+          key={categoryName}
+          className="col-span-3 row-span-1"
+        />
+      </div>
 
-      <section className="flex flex-col py-6">
-        <Label className="mb-2 text-2xl">Formulários Datasense</Label>
-        <Carousel>
-          <CarouselContent>
-            {datasense?.forms.map((form) => (
-              <CarouselItem key={form.id} className="basis-1/4">
-                <FormCard form={form} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-        <Label className="mb-2 mt-6 text-2xl">Formulários da Comunidade</Label>
-        <div className="mt-2 grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-4">
+      <section className="flex flex-1 flex-col py-6">
+        <Label className="mb-2 text-2xl">Formulários</Label>
+        <div className="mt-2 grid grid-cols-1 gap-6 md:grid-cols-3">
           {community?.forms.map((form) => (
             <FormCard form={form} key={form.id} />
           ))}
+
+          {communityLoading &&
+            [0, 1, 2].map((i) => <Skeleton key={i} className="h-44 w-full" />)}
         </div>
+        {!communityLoading && community?.forms.length === 0 && (
+          <div className="flex flex-1 items-center justify-center text-muted-foreground">
+            Nenhum formulário encontrado
+          </div>
+        )}
+        {community?.forms.length > 0 && (
+          <Pagination
+            pageIndex={page}
+            perPage={pageSize}
+            totalCount={community?.meta?.totalCount}
+            className="mt-auto"
+          />
+        )}
       </section>
     </>
   )

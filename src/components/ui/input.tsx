@@ -26,7 +26,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       type === 'password' ? (isVisible ? 'text' : 'password') : type
 
     return (
-      <div className={cn('relative', styles)}>
+      <div className={cn('relative h-10', styles)}>
         <input
           type={typeState}
           className={cn(

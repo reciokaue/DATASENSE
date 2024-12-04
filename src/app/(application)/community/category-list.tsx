@@ -5,12 +5,14 @@ import { getCategories } from '@/api/get-categories'
 import { Badge } from '@/components/ui/badge'
 import { Icon } from '@/components/ui/icon'
 import { Skeleton } from '@/components/ui/skeleton'
+import { cn } from '@/lib/utils'
 
 interface CategoryListProps {
   parentId?: number | string
+  className?: string
 }
 
-export function CategoryList({ parentId }: CategoryListProps) {
+export function CategoryList({ parentId, className }: CategoryListProps) {
   const { data } = useQuery({
     queryKey: ['categories', parentId],
     queryFn: () =>
@@ -23,11 +25,11 @@ export function CategoryList({ parentId }: CategoryListProps) {
   })
 
   return (
-    <section className="flex flex-wrap items-center gap-2">
+    <section className={cn(['flex flex-wrap items-center gap-2', className])}>
       {data
         ? data.categories.map((category) => (
             <Link
-              href={`/community/categories/${category.id}?=${category.name}`}
+              href={`/community/categories/${category.id}?category=${category.name}`}
               key={category.id}
             >
               <Badge className="gap-2" variant="secondary">

@@ -7,7 +7,7 @@ interface GetFormsProps {
   pageSize?: number
   isPublic?: boolean
   categoryId?: string | number
-  datasense?: boolean
+  form?: 'all' | 'datasense' | 'community' | string
 }
 
 export interface GetFormsData {
@@ -25,7 +25,7 @@ export async function getForms({
   pageSize,
   isPublic,
   categoryId,
-  datasense,
+  form,
 }: GetFormsProps) {
   const params: any = {}
 
@@ -34,7 +34,7 @@ export async function getForms({
   if (pageSize) params.pageSize = pageSize
   if (isPublic !== undefined) params.isPublic = isPublic
   if (categoryId) params.categoryId = categoryId
-  if (datasense) params.datasense = datasense
+  if (form) params.form = form
 
   const response = await api.get(`/forms`, { params })
   return response.data as GetFormsData

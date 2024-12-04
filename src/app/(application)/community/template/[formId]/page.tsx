@@ -1,7 +1,6 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import { Plus } from 'lucide-react'
 import Image from 'next/image'
 
 import { getForm } from '@/api/get-form'
@@ -32,7 +31,7 @@ export default function TemplatePage({
           {
             title: form?.category?.label,
             icon: form?.category?.icon,
-            href: `/community/categories/${form?.category?.name}`,
+            href: `/community/categories/${form?.category?.id}`,
           },
           { title: form?.name, icon: 'book-copy', href: '/' },
         ]}
