@@ -5,8 +5,8 @@ interface GetQuestionsProps {
   query?: string
   page?: number
   pageSize?: number
-  categoryId?: number
-  questionTypeId?: number
+  categoryId?: number | string
+  questionTypeId?: number | string
 }
 
 export interface GetQuestionsData {
