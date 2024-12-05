@@ -24,9 +24,6 @@ export const useAuth = create<AuthStore>((set) => ({
   setUser: ({ auth, rememberMe }: loginProps) => {
     const { user, token } = auth
     set({ user, status: 'signIn' })
-
-    console.log(user, token)
-
     setCookie('datasense-token', token)
     api.defaults.headers.common.Authorization = `Bearer ${token}`
 
@@ -43,7 +40,6 @@ export const useAuth = create<AuthStore>((set) => ({
     const storage = localStorage.getItem('datasense@user')
     const userStorage = storage && JSON.parse(storage)
     const token = getCookie('datasense-token') || ''
-    console.log(storage, userStorage, token)
 
     api.defaults.headers.common.Authorization = `Bearer ${token}`
 
