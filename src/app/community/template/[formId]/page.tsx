@@ -54,14 +54,16 @@ export default function TemplatePage({
             <Button>Visualizar</Button>
           </footer>
         </div>
-        <div className="flex h-96 w-full items-center justify-center rounded-lg bg-primary/20">
-          <Image
-            className="size-20"
-            src={'/images/avatars/datasense.png'}
-            width={100}
-            height={100}
-            alt={''}
-          />
+        <div className="flex h-96 w-full overflow-hidden rounded-xl border border-border">
+          {form.logoUrl && (
+            <Image
+              className="h-full w-full object-cover"
+              src={form.logoUrl}
+              width={450}
+              height={600}
+              alt={form.description}
+            />
+          )}
         </div>
       </div>
       <h2 className="text-2xl font-semibold">Questões</h2>
@@ -69,7 +71,7 @@ export default function TemplatePage({
         {form?.questions?.map((question, index) => (
           <div
             key={question.id}
-            className="flex w-full flex-col space-y-4 rounded-md border p-6"
+            className="flex w-full flex-col space-y-4 rounded-md border p-6 shadow-sm hover:shadow"
           >
             <header className="flex items-center justify-between">
               <h2 className="text-base font-medium">Questão {index + 1}</h2>

@@ -2,6 +2,7 @@
 // @ts-nocheck
 
 import {
+  BookCopy,
   BookOpen,
   Building,
   Calendar,
@@ -63,6 +64,7 @@ const icons = {
   adjustments: Minimize,
   'document-text': BookOpen,
   ellipsis: Ellipsis,
+  'book-copy': BookCopy,
 }
 
 export const Icon = ({ name, ...props }: IconProps) => {
