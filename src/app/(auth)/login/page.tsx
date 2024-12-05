@@ -2,48 +2,46 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
-import { LoaderIcon } from 'lucide-react'
 import Link from 'next/link'
-import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 
+import { login } from '@/api/login'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
-import { useAuth } from '@/contexts/Auth'
+import { useAuth } from '@/contexts/useAuth'
 
 import { loginSchema, loginSchemaProps } from './schema'
 
 export default function LoginPage() {
-  const { login } = useAuth()
+  const { setUser } = useAuth()
+  const { push } = useRouter()
   const {
     register,
     handleSubmit,
     control,
-    reset,
-    formState: { isSubmitting, errors },
+    formState: { errors },
   } = useForm<loginSchemaProps>({
     resolver: zodResolver(loginSchema),
   })
-  type loginArgs = [string, string, boolean]
-  const loginMutation = useMutation({
-    mutationFn: (args: loginArgs) => login(...args),
-    onError: (err) => {
-      console.log(err)
+
+  const { mutateAsync: signIn, isPending } = useMutation({
+    mutationFn: login,
+    onError: (e) => toast(e.message, { type: 'error' }),
+    onSuccess: () => {
+      push('/home')
+      toast('Bem vindo', { type: 'info' })
     },
   })
 
-  function handleSignIn({ email, password, rememberMe }: loginSchemaProps) {
-    loginMutation.mutateAsync([email, password, rememberMe])
-  }
+  async function handleSignIn(data: loginSchemaProps) {
+    const { email, password, rememberMe } = data
 
-  useEffect(() => {
-    const email = localStorage.getItem('datasense_email')
-    reset({
-      email: email || '',
-      rememberMe: email !== '',
-    })
-  }, [reset])
+    const auth = await signIn({ email, password })
+    setUser({ auth, rememberMe })
+  }
 
   return (
     <section
@@ -109,8 +107,8 @@ export default function LoginPage() {
             />
           </div>
         </section>
-        <Button className="mt-4 w-full py-6 font-bold" disabled={isSubmitting}>
-          {isSubmitting ? <LoaderIcon className="animate-spin" /> : 'Login'}
+        <Button className="mt-4 w-full py-6 font-bold" isLoading={isPending}>
+          Login
         </Button>
         <Link href="/register">
           <p className="text-center text-sm text-muted-foreground">

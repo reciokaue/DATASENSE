@@ -3,41 +3,49 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import Link from 'next/link'
-import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
+import { Controller, useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 
+import { registerUser } from '@/api/sign-up'
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
-import { useAuth } from '@/contexts/Auth'
+import { useAuth } from '@/contexts/useAuth'
 
 import { Props, schema } from './schema'
 
 export default function RegisterPage() {
-  const { createAccount } = useAuth()
+  const { setUser } = useAuth()
+  const { push } = useRouter()
 
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting, errors },
+    control,
+    formState: { errors },
   } = useForm<Props>({
     resolver: zodResolver(schema),
   })
 
-  type registerArgs = [string, string, string]
-  const registerMutation = useMutation({
-    mutationFn: (args: registerArgs) => createAccount(...args),
-    onError: (err) => {
-      console.log(err)
+  const { mutateAsync: signUp, isPending } = useMutation({
+    mutationFn: registerUser,
+    onError: (e) => toast(e.message, { type: 'error' }),
+    onSuccess: () => {
+      push('/home')
+      toast('Bem vindo', { type: 'info' })
     },
   })
 
-  function handleSignUp({ email, password, name }: Props) {
-    registerMutation.mutateAsync([email, password, name])
+  async function handleSignUp(data: Props) {
+    const { email, password, name, rememberMe } = data
+
+    const auth = await signUp({ email, password, name })
+    setUser({ auth, rememberMe })
   }
+
   return (
-    <section
-      suppressHydrationWarning
-      className="flex min-h-screen items-center justify-center bg-background"
-    >
+    <section className="flex min-h-screen items-center justify-center bg-background">
       <form
         onSubmit={handleSubmit(handleSignUp)}
         className="flex max-w-md flex-1 flex-col gap-6 rounded-md border p-6"
@@ -80,8 +88,31 @@ export default function RegisterPage() {
               {errors.password?.message}
             </span>
           </div>
+          <div className="flex items-center justify-start gap-2">
+            <Controller
+              control={control}
+              name="rememberMe"
+              render={(checkbox) => (
+                <>
+                  <Checkbox
+                    checked={checkbox.field.value || false}
+                    onCheckedChange={(checked: boolean) => {
+                      checkbox.field.onChange(checked === true)
+                    }}
+                    id="remember"
+                  />
+                  <label
+                    htmlFor="remember"
+                    className="cursor-pointer text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Lembrar de mim
+                  </label>
+                </>
+              )}
+            />
+          </div>
         </section>
-        <Button className="mt-4 w-full py-6 font-bold" disabled={isSubmitting}>
+        <Button className="mt-4 w-full py-6 font-bold" isLoading={isPending}>
           Criar conta
         </Button>
         <Link href="/login">

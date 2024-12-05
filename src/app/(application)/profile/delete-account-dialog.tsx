@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { useAuth } from '@/contexts/Auth'
+import { useAuth } from '@/contexts/useAuth'
 
 export function DeleteAccountDialog() {
   const { user, logout } = useAuth()

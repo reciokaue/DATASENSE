@@ -1,6 +1,7 @@
 import Image from 'next/image'
 
-import { useAuth } from '../contexts/Auth'
+import { useAuth } from '@/contexts/useAuth'
+
 import { Button } from './ui/button'
 import { Label } from './ui/label'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
@@ -23,7 +24,10 @@ export function ProfilePopover() {
       <PopoverTrigger asChild>
         <button className="flex size-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200">
           <Image
-            src={user.profileImage}
+            src={
+              user?.profileImage ||
+              `https://ui-avatars.com/api/?name=${user.name}&background=random`
+            }
             alt={user.name}
             width={80}
             height={80}

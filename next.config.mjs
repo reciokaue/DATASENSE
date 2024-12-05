@@ -4,6 +4,7 @@ import { withContentlayer } from 'next-contentlayer'
 const nextConfig = {
   reactStrictMode: true,
   images: {
+    dangerouslyAllowSVG: true,
     domains: [
       'localhost',
       'avatars.githubusercontent.com',

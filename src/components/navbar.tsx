@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { ReactNode } from 'react'
 
-import { useAuth } from '../contexts/Auth'
+import { useAuth } from '../contexts/useAuth'
 import { cn } from '../lib/utils'
 import { ProfilePopover } from './profile-popover'
 
