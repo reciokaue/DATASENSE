@@ -12,26 +12,25 @@ export function FormCard({ form }: FormCardProps) {
   return (
     <Link href={`/community/template/${form.id}`}>
       <div className="flex w-full flex-col gap-2">
-        <div className="flex h-64 w-full overflow-hidden rounded-xl border border-border shadow-sm hover:shadow">
-          {form.logoUrl ? (
+        <div className="flex h-64 grid-cols-7 overflow-hidden rounded-xl border border-border shadow-sm hover:shadow">
+          <section className="flex w-full flex-col items-start justify-start gap-3 p-4">
+            <div className="flex items-center gap-2">
+              <Icon name={form.category?.icon} className="size-4" />
+              {form.category.label}
+            </div>
+            <h2 className="text-xl"> {form.name}</h2>
+            <p className="truncate text-sm text-muted-foreground">
+              {form.description}
+            </p>
+          </section>
+          {form.logoUrl && (
             <Image
-              className="h-full w-full object-cover"
-              src={form.logoUrl}
-              width={450}
-              height={600}
+              className="h-full basis-1/2 bg-center object-cover object-center"
+              src={form?.logoUrl}
+              width={400}
+              height={650}
               alt={form.description}
             />
-          ) : (
-            <section className="flex flex-col items-start justify-start gap-3 bg-red-500 p-4">
-              <div className="flex items-center gap-2">
-                <Icon name={form.category?.icon} className="size-4" />
-                {form.category.label}
-              </div>
-              <h2 className="text-xl"> {form.name}</h2>
-              <p className="text-sm  text-muted-foreground">
-                {form.description}
-              </p>
-            </section>
           )}
         </div>
         <footer className="flex items-center gap-3">

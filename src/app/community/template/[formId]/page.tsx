@@ -54,8 +54,8 @@ export default function TemplatePage({
             <Button>Visualizar</Button>
           </footer>
         </div>
-        <div className="flex h-96 w-full overflow-hidden rounded-xl border border-border">
-          {form?.logoUrl && (
+        {form?.logoUrl && (
+          <div className="flex h-96 w-full overflow-hidden rounded-xl border border-border">
             <Image
               className="h-full w-full object-cover"
               src={form.logoUrl}
@@ -63,8 +63,8 @@ export default function TemplatePage({
               height={600}
               alt={form.description}
             />
-          )}
-        </div>
+          </div>
+        )}
       </div>
       <h2 className="text-2xl font-semibold">Questões</h2>
       <section className="grid grid-cols-2 gap-6 pb-10">

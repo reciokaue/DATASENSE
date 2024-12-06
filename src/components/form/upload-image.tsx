@@ -48,7 +48,7 @@ export function UploadImage({ form }: UploadImageProps) {
         htmlFor="dropzone-file"
         className="relative flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-800"
       >
-        {previewUrl || form?.logoUrl !== '' ? (
+        {previewUrl !== null || form?.logoUrl ? (
           <img
             src={previewUrl || form?.logoUrl}
             alt="Preview"
