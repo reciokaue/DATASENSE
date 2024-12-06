@@ -1,6 +1,7 @@
 'use client'
 
-import { addDays, format } from 'date-fns'
+import { PopoverClose } from '@radix-ui/react-popover'
+import { format, subMonths } from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import * as React from 'react'
 import { DateRange } from 'react-day-picker'
@@ -13,6 +14,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
+import { useQueryParams } from '@/utils/useQueryParams'
 
 interface DateRangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
   // date: DateRange | undefined
@@ -24,10 +26,22 @@ export function DateRangePicker({
   // setDate,
   ...rest
 }: DateRangePickerProps) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: null,
-    to: new Date(),
-  })
+  const { setMultipleQueryParams, searchParams, removeQueryParam } =
+    useQueryParams()
+
+  const from = JSON.parse(searchParams.get('from'))
+  const to = JSON.parse(searchParams.get('to'))
+
+  function handleChangeDate(date: DateRange) {
+    setMultipleQueryParams({
+      from: JSON.stringify(date.from),
+      to: JSON.stringify(date.to),
+    })
+  }
+
+  function handleClearFilter() {
+    removeQueryParam(['from', 'to'])
+  }
 
   return (
     <div className={cn('grid gap-2', rest.className)} {...rest}>
@@ -35,15 +49,15 @@ export function DateRangePicker({
         <PopoverTrigger asChild>
           <Button id="date" variant="outline">
             <CalendarIcon className="size-4" />
-            {date?.from ? (
-              date.to ? (
+            {from ? (
+              to ? (
                 <>
-                  {format(date.from, 'd LLL')}
+                  {format(from, 'd LLL')}
                   {' até '}
-                  {format(date.to, "d' de 'LLL")}
+                  {format(to, "d' de 'LLL")}
                 </>
               ) : (
-                format(date.from, 'LLL dd, y')
+                format(from, 'LLL dd, y')
               )
             ) : (
               <span className="text-large font-normal">
@@ -56,11 +70,19 @@ export function DateRangePicker({
           <Calendar
             initialFocus
             mode="range"
-            defaultMonth={date?.from}
-            selected={date}
-            onSelect={setDate}
+            defaultMonth={subMonths(new Date(), 1)}
+            selected={{
+              from,
+              to,
+            }}
+            onSelect={handleChangeDate}
             numberOfMonths={2}
           />
+          <div className="flex p-2">
+            <PopoverClose asChild>
+              <Button onClick={handleClearFilter}>Limpar</Button>
+            </PopoverClose>
+          </div>
         </PopoverContent>
       </Popover>
     </div>

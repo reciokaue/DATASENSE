@@ -31,9 +31,28 @@ export interface QuestionsResults {
   questions: QuestionResult[]
 }
 
-export async function getQuestionsResults(
-  formId: string | number,
-): Promise<QuestionsResults> {
-  const response = await api.get(`/analytics/forms/${formId}/questions-results`)
+interface GetQuestionsResultsProps {
+  formId: number | string
+  from?: Date
+  to?: Date
+  query?: string
+}
+
+export async function getQuestionsResults({
+  formId,
+  from,
+  to,
+  query,
+}: GetQuestionsResultsProps): Promise<QuestionsResults> {
+  const response = await api.get(
+    `/analytics/forms/${formId}/questions-results`,
+    {
+      params: {
+        to,
+        from,
+        query,
+      },
+    },
+  )
   return response.data
 }

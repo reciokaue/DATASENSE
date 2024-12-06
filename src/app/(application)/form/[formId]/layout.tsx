@@ -37,7 +37,7 @@ export default function FormLayout({
           Configurações
         </Link>
       </nav>
-      <section className="mt-2 flex w-full flex-col">{children}</section>
+      <section className="mt-2 flex h-full w-full flex-col">{children}</section>
     </>
   )
 }

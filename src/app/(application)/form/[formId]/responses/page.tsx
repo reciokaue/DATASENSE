@@ -1,157 +1,29 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
-import { format } from 'date-fns'
-import { FileUpIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useQueryParams } from '@/utils/useQueryParams'
 
-import { getFormSummary } from '@/api/get-form-sumary'
-import { getQuestionsResults } from '@/api/get-question-results'
-import { getSessions } from '@/api/get-sessions'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { DateRangePicker } from '@/components/ui/date-range-picker'
-import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Skeleton } from '@/components/ui/skeleton'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { formatResponse } from '@/utils/formatResponse'
-
-import { ResponseCard } from '../../../../../components/form/response-card'
-
-const summaryTitles = [
-  'Total de sessões',
-  'Total de respostas',
-  'Total de questões',
-  'Média de respostas por sessão',
-  'Taxa de conclusão',
-]
+import { Cards } from './cards'
+import { Filters } from './filters'
+import { Summary } from './summary'
+import { Table } from './table'
 
 export default function ResponsesPage({
   params,
 }: {
   params: { formId: string }
 }) {
-  const [viewType, setViewType] = useState('cards')
+  const { searchParams } = useQueryParams()
   const { formId } = params
 
-  const { data: summary, isLoading: summaryLoading } = useQuery({
-    queryKey: ['formSummary', formId],
-    queryFn: () => getFormSummary(formId),
-  })
-  const { data: questionResults, isLoading: questionLoading } = useQuery({
-    queryKey: ['questionsResults', formId],
-    queryFn: () => getQuestionsResults(formId),
-  })
-  const { data: sessions } = useQuery({
-    queryKey: ['sessions', formId],
-    queryFn: () => getSessions({ formId }),
-  })
+  const viewType = searchParams.get('view') || 'cards'
 
   return (
-    <div className="mx-auto flex w-full max-w-screen-lg flex-col  items-center space-y-6 pb-10">
-      <header className="grid w-full grid-cols-2 gap-3 md:grid-cols-5">
-        {summaryLoading ? (
-          <>
-            <Skeleton className="h-36 w-full" />
-            <Skeleton className="h-36 w-full" />
-            <Skeleton className="h-36 w-full" />
-            <Skeleton className="h-36 w-full" />
-            <Skeleton className="h-36 w-full" />
-          </>
-        ) : (
-          <>
-            {Object.values(summary).map((summaryValue, index) => (
-              <Card
-                key={summaryTitles[index]}
-                className="flex h-full w-full flex-col p-6"
-              >
-                <span className="text-4xl font-semibold text-primary">
-                  {summaryValue}
-                </span>
-                <p className="text-sm text-secondary-foreground">
-                  {summaryTitles[index]}
-                </p>
-              </Card>
-            ))}
-          </>
-        )}
-      </header>
-      <nav className="flex w-full items-center justify-start gap-3">
-        <DateRangePicker />
-        <Select onValueChange={setViewType}>
-          <SelectTrigger className="h-full w-fit">
-            <SelectValue placeholder="Visualização" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="cards">Cards</SelectItem>
-            <SelectItem value="table">Tabela</SelectItem>
-          </SelectContent>
-        </Select>
-        <Input placeholder="Filtrar" />
+    <div className="mx-auto flex h-full w-full max-w-screen-lg flex-col items-center space-y-6 pb-10">
+      <Summary formId={formId} />
+      <Filters />
 
-        <Button className="ml-auto">
-          Exportar <FileUpIcon />
-        </Button>
-      </nav>
-      {viewType === 'cards' && (
-        <div className="grid w-full grid-cols-2 gap-6">
-          {questionLoading ? (
-            <>
-              <Skeleton className="h-[300px] w-full" />
-              <Skeleton className="h-[300px] w-full" />
-            </>
-          ) : (
-            questionResults?.questions.map((question) => (
-              <ResponseCard key={question.id} question={question} />
-            ))
-          )}
-        </div>
-      )}
-      {viewType === 'table' && (
-        <Table className="">
-          <TableHeader>
-            <TableRow>
-              <TableHead>Respondido em</TableHead>
-              {questionResults.questions.map((question) => (
-                <TableHead className="w-auto" key={question.id}>
-                  {question.text}
-                </TableHead>
-              ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {sessions?.sessions?.map((session, index) => (
-              <TableRow key={index}>
-                <TableCell className="w-auto">
-                  {format(new Date(session.createdAt), 'dd/MM/yyyy HH:mm')}
-                </TableCell>
-                {session.responses.map((response, index) => (
-                  <TableCell key={response?.id} className="w-auto">
-                    {formatResponse(
-                      String(response?.text || response?.value),
-                      questionResults.questions[index].type,
-                    )}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      )}
+      {viewType === 'cards' && <Cards formId={formId} />}
+      {viewType === 'table' && <Table formId={formId} />}
     </div>
   )
 }

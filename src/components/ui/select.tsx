@@ -182,14 +182,15 @@ export function Dropdown({
       <SelectContent>
         <SelectGroup>
           {listTitle && <SelectLabel>{listTitle}</SelectLabel>}
-          {options?.map((option) => (
-            <SelectItem
-              key={`dropdown-option-${option.id}`}
-              value={JSON.stringify(option)}
-            >
-              {option?.label}
-            </SelectItem>
-          ))}
+          {options &&
+            options?.map((option) => (
+              <SelectItem
+                key={`dropdown-option-${option.id}`}
+                value={JSON.stringify(option)}
+              >
+                {option?.label}
+              </SelectItem>
+            ))}
         </SelectGroup>
       </SelectContent>
     </Select>

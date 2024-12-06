@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { COLORS } from '@/styles/colors'
 
-import { ResponsesTable } from './responses-table'
+import { CardTable } from './card-table'
 
 interface ResponseCardProps {
   question: QuestionResult
@@ -27,7 +27,9 @@ const staticsLabels = ['Média', 'Mediana', 'Mínimo', 'Máximo']
 export function ResponseCard({ question }: ResponseCardProps) {
   return (
     <Card className="flex flex-col p-6">
-      <h3 className="mb-2 text-xl font-semibold">{question.text}</h3>
+      <h3 className="mb-2 break-words text-xl font-semibold">
+        {question.text}
+      </h3>
       <div className="mb-4 text-sm text-secondary-foreground">
         Total de respostas: {question.totalResponses}
       </div>
@@ -108,7 +110,7 @@ export function ResponseCard({ question }: ResponseCardProps) {
         </div>
       )}
 
-      {question.responses && <ResponsesTable question={question} />}
+      {question.responses && <CardTable question={question} />}
     </Card>
   )
 }

@@ -55,7 +55,7 @@ export default function TemplatePage({
           </footer>
         </div>
         <div className="flex h-96 w-full overflow-hidden rounded-xl border border-border">
-          {form.logoUrl && (
+          {form?.logoUrl && (
             <Image
               className="h-full w-full object-cover"
               src={form.logoUrl}

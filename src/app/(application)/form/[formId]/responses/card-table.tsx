@@ -19,7 +19,7 @@ interface ResponseTableProps {
   question: QuestionResult
 }
 
-export function ResponsesTable({ question }: ResponseTableProps) {
+export function CardTable({ question }: ResponseTableProps) {
   const [currentPage, setCurrentPage] = useState(1)
 
   const totalPages = Math.ceil(question.responses.length / ITEMS_PER_PAGE)
