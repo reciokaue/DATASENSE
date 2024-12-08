@@ -182,7 +182,7 @@ export function Dropdown({
       <SelectContent>
         <SelectGroup>
           {listTitle && <SelectLabel>{listTitle}</SelectLabel>}
-          {options &&
+          {options?.length > 0 &&
             options?.map((option) => (
               <SelectItem
                 key={`dropdown-option-${option.id}`}

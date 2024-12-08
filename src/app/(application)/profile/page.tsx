@@ -47,8 +47,8 @@ export default function UserProfile() {
 
   const updateUserMutation = useMutation({
     mutationFn: (user: any) => updateUser(user),
-    onSuccess: (user) => {
-      setUser(user)
+    onSuccess: (newUser) => {
+      setUser({ auth: { user: newUser } })
     },
   })
 

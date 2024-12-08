@@ -3,11 +3,12 @@ import { useState } from 'react'
 
 import { uploadUserImage } from '@/api/upload-profile-image'
 import { Button } from '@/components/ui/button'
+import { loginProps } from '@/contexts/useAuth'
 import { User } from '@/models'
 
 interface UploadImageProps {
   user?: User
-  setUser?: (user: User) => void
+  setUser?: (data: loginProps) => void
 }
 
 export function UploadImage({ user, setUser }: UploadImageProps) {
@@ -27,8 +28,12 @@ export function UploadImage({ user, setUser }: UploadImageProps) {
       try {
         const result: any = await uploadUserImage(user.id, file)
         setUser({
-          ...user,
-          profileImage: result?.profileImage,
+          auth: {
+            user: {
+              ...user,
+              profileImage: result?.profileImage,
+            },
+          },
         })
 
         console.log('Image uploaded successfully!')

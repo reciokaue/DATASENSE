@@ -10,7 +10,7 @@ interface LoginProps {
 
 export interface AuthData {
   user: User
-  token: string
+  token?: string
 }
 
 export async function login({ email, password }: LoginProps) {

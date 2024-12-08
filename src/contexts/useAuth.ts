@@ -5,7 +5,7 @@ import { AuthData } from '@/api/login'
 import { api } from '@/lib/api'
 import { User } from '@/models'
 
-interface loginProps {
+export interface loginProps {
   auth: AuthData
   rememberMe?: boolean
 }
@@ -24,8 +24,11 @@ export const useAuth = create<AuthStore>((set) => ({
   setUser: ({ auth, rememberMe }: loginProps) => {
     const { user, token } = auth
     set({ user, status: 'signIn' })
-    setCookie('datasense-token', token)
-    api.defaults.headers.common.Authorization = `Bearer ${token}`
+
+    if (token) {
+      setCookie('datasense-token', token)
+      api.defaults.headers.common.Authorization = `Bearer ${token}`
+    }
 
     if (rememberMe) localStorage.setItem('datasense@user', JSON.stringify(user))
   },

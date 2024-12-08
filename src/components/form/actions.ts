@@ -27,10 +27,10 @@ export const formActions = ({ remove, insert, fields, append, form }: any) => {
     append({
       text: '',
       questionType: {
-        id: 1,
+        id: 10,
         name: 'options',
-        label: 'Opções',
-        icon: 'CircleDot',
+        label: 'Multiplas opções',
+        icon: 'ellipsis',
       },
       required: false,
       options: [],
