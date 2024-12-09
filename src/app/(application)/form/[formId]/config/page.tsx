@@ -2,16 +2,16 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import useFormPersist from 'react-hook-form-persist'
+import { toast } from 'react-toastify'
 
 import { getForm } from '@/api/get-form'
 import { updateForm } from '@/api/update-form'
 import { CategorySelector } from '@/components/category-selector'
 import { ExportLink } from '@/components/form/export-link'
 import { RemoveButton } from '@/components/form/remove-button'
-import { UploadImage } from '@/components/form/upload-image'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -19,11 +19,24 @@ import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { Form, FormSchema } from '@/models'
 
+import { UploadImage } from './upload-image'
+
 export default function Config({ params }: { params: { formId: string } }) {
   const { formId } = params
+  const queryClient = useQueryClient()
 
   const updateFormMutation = useMutation({
     mutationFn: (form: Form) => updateForm(form),
+    onSuccess: (newForm: Form) => {
+      const previous: Form = queryClient.getQueryData(['form', newForm.id])
+
+      if (previous)
+        queryClient.setQueryData(['form', newForm.id], {
+          ...newForm,
+          questions: previous.questions,
+        })
+      toast('Formulário salvo com sucesso', { type: 'success' })
+    },
   })
 
   const formObject = useForm<Form>({
@@ -67,7 +80,7 @@ export default function Config({ params }: { params: { formId: string } }) {
   })
 
   return (
-    <div className="mx-auto flex  h-full max-w-3xl flex-col pb-10">
+    <div className="mx-auto flex  h-full max-w-3xl flex-col">
       <header className="flex flex-col space-y-1.5 text-center sm:text-left">
         <h1 className="text-2xl font-semibold leading-none tracking-tight">
           Configurações
@@ -102,7 +115,7 @@ export default function Config({ params }: { params: { formId: string } }) {
             <p className="text-sm text-red-500">{errors.description.message}</p>
           )}
         </div>
-        <UploadImage form={form?.data} />
+        {form && <UploadImage form={form?.data} setValue={setValue} />}
         <div className="grid grid-cols-4 gap-4">
           <CategorySelector
             control={control}
@@ -137,16 +150,9 @@ export default function Config({ params }: { params: { formId: string } }) {
             className="absolute right-5 top-1/2"
           />
         </div>
-        <footer className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+        <footer className="flex flex-col-reverse pb-10 sm:flex-row sm:justify-end sm:space-x-2">
           <RemoveButton form={form.data} />
           <ExportLink formId={formId} />
-          {/* <Button
-            onClick={resetForm}
-            variant="outline"
-            disabled={updateFormMutation.isPending}
-          >
-            Cancelar
-          </Button> */}
           <Button isLoading={updateFormMutation.isPending} type="submit">
             Salvar Formulário
           </Button>

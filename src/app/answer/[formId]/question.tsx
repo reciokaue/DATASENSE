@@ -43,6 +43,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
     return (
       <Input
         className="h-auto border-2 px-4 py-4"
+        maxLength={100}
         placeholder="Digite sua resposta aqui..."
         {...register(`responses.${question?.index}.text`, {
           required: {
@@ -247,11 +248,11 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
               step={1}
             />
             <footer className="grid grid-cols-3 py-4 text-sm text-primary/60">
-              <span>Não concordo (0)</span>
+              <span>(0)</span>
               <div className="flex items-center justify-center gap-2 pt-4 text-sm text-primary/50">
                 Puxe
               </div>
-              <span className="text-end">Totalmente! (10)</span>
+              <span className="text-end">(10)</span>
             </footer>
           </>
         )}

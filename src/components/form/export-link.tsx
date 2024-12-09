@@ -1,5 +1,6 @@
 import { QRCodeSVG } from 'qrcode.react'
 import React, { useRef } from 'react'
+import { toast } from 'react-toastify'
 
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
@@ -11,10 +12,10 @@ interface ExportLinkProps {
 }
 
 export function ExportLink({ formId }: ExportLinkProps) {
-  const link = `${process.env.NEXT_PUBLIC_APP_URL}/answer/${formId}` // Substitua pelo seu link dinâmico
+  const link = `${process.env.NEXT_PUBLIC_APP_URL}/answer/${formId}`
   const qrCodeRef = useRef<SVGSVGElement>(null)
 
-  const handleDownloadQRCode = () => {
+  function handleDownloadQRCode() {
     if (!qrCodeRef.current) return
 
     const svgElement = qrCodeRef.current
@@ -30,35 +31,41 @@ export function ExportLink({ formId }: ExportLinkProps) {
     URL.revokeObjectURL(url)
   }
 
+  function handleCopyLink() {
+    navigator.clipboard.writeText(link)
+    toast('Link copiado')
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline">Compartilhar</Button>
       </DialogTrigger>
-      <DialogContent className="flex w-64 min-w-[400px] flex-col items-center p-4">
-        <div className="mb-4 flex flex-col justify-center space-y-6">
-          <QRCodeSVG
-            value="https://github.com/dral/react-qrcode-svg"
-            height="300"
-            width="300"
-            fgColor="#000"
-            bgColor="#fff"
-          />
-          <Button onClick={handleDownloadQRCode} variant="outline">
-            Baixar QR Code
-          </Button>
+      <DialogContent className="flex w-64 min-w-[340px] flex-col items-center pt-10">
+        <QRCodeSVG
+          value="https://github.com/dral/react-qrcode-svg"
+          height="300"
+          width="300"
+          fgColor="#000"
+          bgColor="#fff"
+        />
+        <Button
+          onClick={handleDownloadQRCode}
+          variant="outline"
+          className="w-full"
+        >
+          Baixar QR Code
+        </Button>
+        <div className="flex items-center justify-between gap-2">
+          <Input type="text" readOnly value={link} />
+          <Button onClick={handleCopyLink}>Copiar link</Button>
         </div>
-        <div className="mb-4 flex items-center gap-2">
-          <Input
-            type="text"
-            readOnly
-            value={link}
-            className="w-full rounded border px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <Button onClick={() => navigator.clipboard.writeText(link)}>
-            Copiar
-          </Button>
-        </div>
+        <Button
+          link={`/answer/${formId}?view=true&backTo=/form/${formId}/config`}
+          className="w-full"
+        >
+          Visualizar
+        </Button>
       </DialogContent>
     </Dialog>
   )

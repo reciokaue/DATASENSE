@@ -70,7 +70,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       </Comp>
     )
 
-    return !link ? buttonElement : <Link href={link}>{buttonElement}</Link>
+    return !link ? (
+      buttonElement
+    ) : (
+      <Link href={link} className={className}>
+        {buttonElement}
+      </Link>
+    )
   },
 )
 

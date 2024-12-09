@@ -6,7 +6,7 @@ interface Result {
 
 export async function uploadFormImage(
   formId: number,
-  file: File,
+  file?: File,
 ): Promise<Result> {
   const formData = new FormData()
   formData.append('file', file)

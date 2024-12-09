@@ -51,7 +51,12 @@ export default function TemplatePage({
           <p>{form?.description}</p>
           <footer className="flex gap-3  pt-3">
             <CopyFormDialog formTemplate={form} />
-            <Button>Visualizar</Button>
+            <Button
+              link={`/answer/${params.formId}?view=true`}
+              variant="outline"
+            >
+              Visualizar
+            </Button>
           </footer>
         </div>
         {form?.logoUrl && (

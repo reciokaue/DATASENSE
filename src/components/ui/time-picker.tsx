@@ -65,7 +65,7 @@ export function TimePicker({ setDate, date }: TimePickerProps) {
           {date ? format(date, 'HH:mm') : <span>Horário</span>}
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="border-border bg-popover p-6 text-primary shadow-lg">
+      <DrawerContent className="mx-auto max-w-xl border-border bg-popover p-6 text-primary shadow-lg">
         <h1 className="my-6 text-2xl font-semibold text-primary">
           Selecionar horário
         </h1>
