@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import { z } from 'zod'
 
 import { getQuestionsResults } from '@/api/get-question-results'
 import { Skeleton } from '@/components/ui/skeleton'

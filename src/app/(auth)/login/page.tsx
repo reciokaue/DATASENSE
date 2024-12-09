@@ -52,7 +52,7 @@ export default function LoginPage() {
       queryClient.clear()
     }
     invalidade()
-  }, [])
+  }, [queryClient])
 
   return (
     <section

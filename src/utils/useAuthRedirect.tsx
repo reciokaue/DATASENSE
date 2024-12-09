@@ -13,5 +13,5 @@ export function useAuthRedirect() {
     if (!user) {
       push('/')
     }
-  }, [user, push])
+  }, [user, push, hydrate])
 }
