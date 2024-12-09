@@ -68,65 +68,92 @@ export default function AnswerPage({ params }: { params: { formId: string } }) {
             height="600"
             src={form?.logoUrl}
             alt="imagem do proprietário"
-            className="h-80 w-full rounded-lg object-fill"
+            className="h-80 w-full rounded-lg object-cover"
           />
         ) : (
           <div className="h-80 w-full rounded-lg bg-primary/20 object-fill"></div>
         )}
       </div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex h-full w-full flex-1 flex-col px-4 py-3 sm:px-6 md:px-10"
-      >
-        <header className="flex flex-col space-y-2 py-5 text-start md:text-left">
-          <h2 className="text-2xl font-semibold">{form?.name}</h2>
-          <p className="text-lg font-medium">{form?.description}</p>
-          <Badge variant="secondary" className="text-sm sm:text-base">
-            Enviamos suas respostas anonimamente
-          </Badge>
-        </header>
-        <div className="flex h-full flex-1 flex-col items-start gap-10 py-10">
-          {form?.questions?.map((question, index) => (
-            <section key={question.id} className="flex w-full flex-col">
-              <header className="mb-3 flex items-center gap-2">
-                <span className="flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                  {index + 1}
-                </span>
-                <h2 className="text-sm text-primary/60">
-                  {question.questionType?.label}
-                </h2>
-              </header>
-              <h1 className="mb-6 text-2xl font-bold text-primary">
-                {question.text}
-                {question.required && ' (obrigatória)'}
-              </h1>
-              <QuestionType form={responseForm} question={question} />
-              {errors.responses?.[index]?.value?.message && (
-                <p className="pt-4 text-sm text-red-500">
-                  {errors.responses?.[index]?.value?.message}
-                </p>
-              )}
-            </section>
-          ))}
-        </div>
-        <footer className="flex w-full py-4">
+      <header className="flex flex-col space-y-2 px-4 py-3 text-start sm:px-6 md:px-10">
+        <h2 className="text-2xl font-semibold">{form?.name}</h2>
+        <p className="text-lg font-medium">{form?.description}</p>
+        <Badge variant="secondary" className="text-sm sm:text-base">
+          Enviamos suas respostas anonimamente
+        </Badge>
+      </header>
+      {form?.active && (
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex h-full w-full flex-1 flex-col px-4 py-3 sm:px-6 md:px-10"
+        >
+          <div className="flex h-full flex-1 flex-col items-start gap-10 py-10">
+            {form?.questions?.map((question, index) => (
+              <section key={question.id} className="flex w-full flex-col">
+                <header className="mb-3 flex items-center gap-2">
+                  <span className="flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                    {index + 1}
+                  </span>
+                  <h2 className="text-sm text-primary/60">
+                    {question.questionType?.label}
+                  </h2>
+                </header>
+                <h1 className="mb-6 text-2xl font-bold text-primary">
+                  {question.text}
+                  {question.required && ' (obrigatória)'}
+                </h1>
+                <QuestionType form={responseForm} question={question} />
+                {errors.responses?.[index]?.value?.message && (
+                  <p className="pt-4 text-sm text-red-500">
+                    {errors.responses?.[index]?.value?.message}
+                  </p>
+                )}
+              </section>
+            ))}
+          </div>
+          <footer className="flex w-full py-4">
+            {!viewMode ? (
+              <Button
+                type="submit"
+                className="h-12 w-full text-lg sm:h-14 sm:text-xl"
+              >
+                Enviar
+              </Button>
+            ) : (
+              <Button
+                className="h-12 w-full text-lg sm:h-14 sm:text-xl"
+                link={backTo}
+              >
+                Voltar
+              </Button>
+            )}
+          </footer>
+        </form>
+      )}
+      {!form.active && (
+        <div className="mt-10 w-full px-4 py-3 text-start sm:px-6 md:px-10">
+          <p className="mt-4 text-center text-lg text-gray-700 dark:text-gray-300 sm:text-xl">
+            Este formulário esta inativo e nao aceita novas respostas, procure o
+            dono caso ache que seja um erro
+          </p>
+
           {!viewMode ? (
             <Button
-              type="submit"
-              className="h-12 w-full text-lg sm:h-14 sm:text-xl"
+              type="button"
+              className="mt-10 h-12 w-full text-lg sm:h-14 sm:text-xl"
+              link="/"
             >
-              Enviar
+              Crie seu próprio formulário
             </Button>
           ) : (
             <Button
-              className="h-12 w-full text-lg sm:h-14 sm:text-xl"
+              className="mt-10 h-12 w-full text-lg sm:h-14 sm:text-xl"
               link={backTo}
             >
               Voltar
             </Button>
           )}
-        </footer>
-      </form>
+        </div>
+      )}
     </main>
   )
 }
