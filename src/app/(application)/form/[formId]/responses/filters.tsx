@@ -1,6 +1,3 @@
-import { FileUpIcon } from 'lucide-react'
-
-import { Button } from '@/components/ui/button'
 import { DateRangePicker } from '@/components/ui/date-range-picker'
 import { Input } from '@/components/ui/input'
 import {
@@ -12,11 +9,13 @@ import {
 } from '@/components/ui/select'
 import { useQueryParams } from '@/utils/useQueryParams'
 
-// interface FiltersProps {
+import { DownloadDialog } from '../config/download-dialog'
 
-// }
+interface FiltersProps {
+  formId: string | number
+}
 
-export function Filters() {
+export function Filters({ formId }: FiltersProps) {
   const { setQueryParam, searchParams } = useQueryParams()
 
   const search = searchParams.get('s') || ''
@@ -46,9 +45,7 @@ export function Filters() {
         defaultValue={search}
       />
 
-      <Button className="ml-auto">
-        Exportar <FileUpIcon />
-      </Button>
+      <DownloadDialog formId={formId} />
     </nav>
   )
 }

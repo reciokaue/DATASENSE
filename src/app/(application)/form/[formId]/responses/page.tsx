@@ -20,7 +20,7 @@ export default function ResponsesPage({
   return (
     <div className="mx-auto flex h-full w-full max-w-screen-lg flex-col items-center space-y-6 pb-10">
       <Summary formId={formId} />
-      <Filters />
+      <Filters formId={formId} />
 
       {viewType === 'cards' && <Cards formId={formId} />}
       {viewType === 'table' && <Table formId={formId} />}
