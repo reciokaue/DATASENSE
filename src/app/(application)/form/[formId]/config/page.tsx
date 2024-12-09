@@ -10,7 +10,6 @@ import { toast } from 'react-toastify'
 import { getForm } from '@/api/get-form'
 import { updateForm } from '@/api/update-form'
 import { CategorySelector } from '@/components/category-selector'
-import { ExportLink } from '@/components/form/export-link'
 import { RemoveButton } from '@/components/form/remove-button'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -19,6 +18,7 @@ import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { Form, FormSchema } from '@/models'
 
+import { ExportLink } from './export-link'
 import { UploadImage } from './upload-image'
 
 export default function Config({ params }: { params: { formId: string } }) {
