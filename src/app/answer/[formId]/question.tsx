@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from 'react'
 import { Controller, useFieldArray, UseFormReturn } from 'react-hook-form'
+import ReactInputMask from 'react-input-mask'
 
 import { Button } from '@/components/ui/button'
 import { DatePicker } from '@/components/ui/date-picker'
@@ -161,11 +162,12 @@ export function QuestionType({ question, form, index }: QuestionTypeProps) {
 
   if (type === 'phone')
     return (
-      <Input
-        type="tel"
-        // pattern="^\(\d{2}\)\s?\d{5}-\d{4}$"
+      <ReactInputMask
+        mask="(99) 99999-9999"
+        alwaysShowMask={false}
+        className="flex h-auto w-full rounded-md border-2 border-input bg-background px-4 py-4 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+        type={'text'}
         placeholder="(XX) XXXXX-XXXX"
-        className="h-auto border-2 px-4 py-4"
         {...register(`responses.${index}.text`, {
           required: question?.required,
         })}
