@@ -99,7 +99,11 @@ export default function AnswerPage({ params }: { params: { formId: string } }) {
                   {question.text}
                   {question.required && ' (obrigatória)'}
                 </h1>
-                <QuestionType form={responseForm} question={question} />
+                <QuestionType
+                  form={responseForm}
+                  question={question}
+                  index={index}
+                />
                 {errors.responses?.[index]?.value?.message && (
                   <p className="pt-4 text-sm text-red-500">
                     {errors.responses?.[index]?.value?.message}

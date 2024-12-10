@@ -13,9 +13,10 @@ import { Option, Question } from '@/models'
 interface QuestionTypeProps {
   question: Question
   form: UseFormReturn<any>
+  index: number
 }
 
-export function QuestionType({ question, form }: QuestionTypeProps) {
+export function QuestionType({ question, form, index }: QuestionTypeProps) {
   const { register, control } = form
   const type = question?.questionType?.name
   const { append, remove, fields } = useFieldArray({
@@ -45,7 +46,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
         className="h-auto border-2 px-4 py-4"
         maxLength={100}
         placeholder="Digite sua resposta aqui..."
-        {...register(`responses.${question?.index}.text`, {
+        {...register(`responses.${index}.text`, {
           required: {
             value: question?.required || false,
             message: 'Questão obrigatória',
@@ -60,7 +61,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
         className="h-48 w-full resize-none border-2 px-4 py-4"
         maxLength={500}
         placeholder="Digite sua resposta aqui..."
-        {...register(`responses.${question?.index}.text`, {
+        {...register(`responses.${index}.text`, {
           required: {
             value: question?.required || false,
             message: 'Questão obrigatória',
@@ -91,7 +92,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
   if (type === 'starRating')
     return (
       <Controller
-        name={`responses.${question?.index}`}
+        name={`responses.${index}`}
         control={control}
         render={({ field }) => (
           <div className="flex w-full items-center justify-center gap-3">
@@ -124,7 +125,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
   if (type === 'list')
     return (
       <Controller
-        name={`responses.${question?.index}`}
+        name={`responses.${index}`}
         control={control}
         render={({ field }) => (
           <div className="flex flex-col justify-start gap-2">
@@ -165,7 +166,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
         // pattern="^\(\d{2}\)\s?\d{5}-\d{4}$"
         placeholder="(XX) XXXXX-XXXX"
         className="h-auto border-2 px-4 py-4"
-        {...register(`responses.${question?.index}.text`, {
+        {...register(`responses.${index}.text`, {
           required: question?.required,
         })}
       />
@@ -177,7 +178,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
         type="email"
         placeholder="seuemail@exemplo.com"
         className="h-auto border-2 px-4 py-4"
-        {...register(`responses.${question?.index}.text`, {
+        {...register(`responses.${index}.text`, {
           required: question?.required,
           pattern: {
             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -197,7 +198,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
           },
         }}
         control={control}
-        name={`responses.${question?.index}.text`}
+        name={`responses.${index}.text`}
         render={({ field }) => (
           <TimePicker
             date={field.value || new Date()}
@@ -217,7 +218,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
           },
         }}
         control={control}
-        name={`responses.${question?.index}.text`}
+        name={`responses.${index}.text`}
         render={({ field }) => (
           <DatePicker
             date={field.value || new Date()}
@@ -236,7 +237,7 @@ export function QuestionType({ question, form }: QuestionTypeProps) {
             message: 'Questão obrigatória',
           },
         }}
-        name={`responses.${question?.index}.value`}
+        name={`responses.${index}.value`}
         control={control}
         defaultValue={5}
         render={({ field }) => (
