@@ -50,7 +50,7 @@ export function ResponseCard({ question }: ResponseCardProps) {
           <BarChart data={question.chartData} className="-ml-6 mt-2">
             <XAxis dataKey="label" />
             <YAxis interval={1} />
-            <Tooltip />
+            <Tooltip content={CustomTooltip} />
             <Bar dataKey="value" fill="#8884d8">
               {question.chartData.map((entry, index) => (
                 <Cell
@@ -113,4 +113,17 @@ export function ResponseCard({ question }: ResponseCardProps) {
       {question.responses && <CardTable question={question} />}
     </Card>
   )
+}
+
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="custom-tooltip bg-primary/20 p-2 text-white">
+        <p className="label">{`${label} : ${payload[0].value}`}</p>
+        {/* <p className="desc">Anything you want can be displayed here.</p> */}
+      </div>
+    )
+  }
+
+  return null
 }
