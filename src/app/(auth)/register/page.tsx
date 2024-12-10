@@ -1,9 +1,10 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
@@ -18,6 +19,7 @@ import { Props, schema } from './schema'
 export default function RegisterPage() {
   const { setUser } = useAuth()
   const { push } = useRouter()
+  const queryClient = useQueryClient()
 
   const {
     register,
@@ -48,6 +50,14 @@ export default function RegisterPage() {
 
     setUser({ auth, rememberMe })
   }
+
+  useEffect(() => {
+    const invalidade = async () => {
+      await queryClient.cancelQueries()
+      queryClient.clear()
+    }
+    invalidade()
+  }, [queryClient])
 
   return (
     <section className="flex min-h-screen items-center justify-center bg-background">

@@ -25,7 +25,7 @@ export default function HomePage() {
       </div>
       <div className="mt-8 grid grid-cols-1 gap-3 pb-10 md:grid-cols-3">
         {!isLoading &&
-          result.meta.totalCount > 0 &&
+          result?.meta?.totalCount > 0 &&
           result?.forms?.map((form) => (
             <Link key={form.id} href={`/form/${form.id}`} className="group">
               <HomeCard form={form} />

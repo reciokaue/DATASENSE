@@ -32,7 +32,10 @@ export function CategoryList({ parentId, className }: CategoryListProps) {
               href={`/community/categories/${category.id}?category=${category.name}`}
               key={category.id}
             >
-              <Badge className="gap-2" variant="secondary">
+              <Badge
+                className="gap-2"
+                variant={category?.parentId || category?.id}
+              >
                 <Icon name={category.icon} size={15} />
                 {category.label}
               </Badge>

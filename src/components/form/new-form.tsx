@@ -64,10 +64,10 @@ export function NewFormButton() {
 
       queryClient.setQueryData(['user-forms'], {
         meta: {
-          ...previous.meta,
-          totalCount: previous.meta.totalCount + 1,
+          ...previous?.meta,
+          totalCount: previous?.meta?.totalCount + 1,
         },
-        forms: [...previous.forms, newForm],
+        forms: [...previous?.forms, newForm],
       })
 
       push(`/form/${newForm.id}`)
