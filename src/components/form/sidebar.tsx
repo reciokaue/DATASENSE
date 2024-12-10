@@ -28,6 +28,7 @@ export function FormSidebar({
     mutationFn: async () => {
       const { id, questions } = formObject.getValues()
       await updateQuestions(id, questions)
+      console.log(questions)
     },
     onSuccess: () => {
       reset(watch(), {

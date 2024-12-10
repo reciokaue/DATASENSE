@@ -101,7 +101,7 @@ export default function LoginPage() {
               render={(checkbox) => (
                 <>
                   <Checkbox
-                    checked={checkbox.field.value || false}
+                    checked={checkbox.field.value || true}
                     onCheckedChange={(checked: boolean) => {
                       checkbox.field.onChange(checked === true)
                     }}

@@ -45,8 +45,8 @@ export function Options({ formObject, index }: OptionsProps) {
       })
     }
   }
-  function deleteOption(option: any) {
-    remove(option.index)
+  function deleteOption(index: number) {
+    remove(index)
   }
 
   function customSwap(activeIndex: number, overIndex: number) {
@@ -55,7 +55,10 @@ export function Options({ formObject, index }: OptionsProps) {
     swap(activeIndex, overIndex)
   }
 
-  if (questionType.name === types.OPTIONS || questionType.name === types.LIST)
+  if (
+    questionType?.name === types?.OPTIONS ||
+    questionType?.name === types?.LIST
+  )
     return (
       <section className="space-y-3">
         <Header onPress={newOption} />
@@ -72,7 +75,7 @@ export function Options({ formObject, index }: OptionsProps) {
               )}
             >
               <Button
-                onClick={() => deleteOption(item)}
+                onClick={() => deleteOption(optionIndex)}
                 className="hover:text-red-500"
                 size="icon"
                 variant="ghost"

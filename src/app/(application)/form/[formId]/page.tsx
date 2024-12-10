@@ -46,6 +46,7 @@ export default function FormDetailPage({
     fields,
     append,
     form,
+    swap,
   })
   useFormPersist(`datasense@form${formId}`, {
     watch,
