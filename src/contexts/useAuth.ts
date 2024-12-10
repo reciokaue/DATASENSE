@@ -21,9 +21,10 @@ type AuthStore = {
 export const useAuth = create<AuthStore>((set) => ({
   status: 'idle',
   user: null,
-  setUser: ({ auth, rememberMe }: loginProps) => {
+  setUser: ({ auth, rememberMe = true }: loginProps) => {
     const { user, token } = auth
     set({ user, status: 'signIn' })
+    console.log(rememberMe)
 
     if (token) {
       setCookie('datasense-token', token)

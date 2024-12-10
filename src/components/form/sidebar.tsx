@@ -1,8 +1,10 @@
 import { useMutation } from '@tanstack/react-query'
 import { Plus, Save } from 'lucide-react'
+import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 
 import { updateQuestions } from '@/api/update-questions'
+import { cn } from '@/lib/utils'
 
 import { SortableItem } from '../sortable/sortable-item'
 import { SortableList } from '../sortable/sortable-list'
@@ -22,7 +24,11 @@ export function FormSidebar({
   formObject,
   actions,
 }: SidebarProps) {
-  const { reset, watch } = formObject
+  const {
+    reset,
+    watch,
+    formState: { isDirty },
+  } = formObject
 
   const { mutateAsync: saveForm, isPending: savingForm } = useMutation({
     mutationFn: async () => {
@@ -41,6 +47,19 @@ export function FormSidebar({
     },
   })
 
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.ctrlKey && event.key === 's') {
+        event.preventDefault()
+        saveForm()
+      }
+    }
+    document.addEventListener('keydown', handleKeyPress)
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress)
+    }
+  }, [saveForm])
+
   return (
     <aside className="sticky top-10 flex w-full max-w-xs flex-1 flex-col space-y-3 rounded-lg bg-primary-foreground p-4">
       <Button onClick={actions.addQuestion} className="justify-between">
@@ -50,7 +69,10 @@ export function FormSidebar({
       <Button
         onClick={() => saveForm()}
         variant="outline"
-        className="justify-between bg-card"
+        className={cn([
+          'justify-between bg-card',
+          isDirty && 'border-2 border-blue-500',
+        ])}
         isLoading={savingForm}
       >
         Salvar <Save />
@@ -81,9 +103,27 @@ export function FormSidebar({
 
       <div className="flex flex-col space-y-4 pt-4">
         <h2 className="text-sm font-medium">Dicas de leitura</h2>
-        <Button variant="foreground">Como medir a satisfação</Button>
-        <Button variant="foreground">Quais perguntas devo fazer?</Button>
-        <Button variant="foreground">Modelos Oficiais</Button>
+        <Button
+          variant="foreground"
+          className="w-full"
+          link="http://localhost:3000/blog/tipos-questoes-formulario"
+        >
+          Como medir a satisfação
+        </Button>
+        <Button
+          link="http://localhost:3000/blog/formularios-digitais"
+          className="w-full"
+          variant="foreground"
+        >
+          Quais perguntas devo fazer?
+        </Button>
+        <Button
+          className="w-full"
+          variant="foreground"
+          link="http://localhost:3000/community?form=datasense"
+        >
+          Modelos Oficiais
+        </Button>
       </div>
     </aside>
   )

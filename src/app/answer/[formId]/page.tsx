@@ -61,19 +61,17 @@ export default function AnswerPage({ params }: { params: { formId: string } }) {
           DATASENSE
         </h1>
       </nav>
-      <div className="flex w-full items-center justify-center px-4 py-3 sm:px-6 md:px-10">
-        {form?.logoUrl ? (
+      {form?.logoUrl && (
+        <div className="flex h-96 w-full overflow-hidden rounded-xl border border-border">
           <Image
-            width="600"
-            height="600"
-            src={form?.logoUrl}
-            alt="imagem do proprietário"
-            className="h-80 w-full rounded-lg object-cover"
+            className="h-full w-full object-cover"
+            src={form.logoUrl}
+            width={450}
+            height={600}
+            alt={form.description}
           />
-        ) : (
-          <div className="h-80 w-full rounded-lg bg-primary/20 object-fill"></div>
-        )}
-      </div>
+        </div>
+      )}
       <header className="flex flex-col space-y-2 px-4 py-3 text-start sm:px-6 md:px-10">
         <h2 className="text-2xl font-semibold">{form?.name}</h2>
         <p className="text-lg font-medium">{form?.description}</p>
@@ -129,7 +127,7 @@ export default function AnswerPage({ params }: { params: { formId: string } }) {
           </footer>
         </form>
       )}
-      {!form.active && (
+      {!form?.active && (
         <div className="mt-10 w-full px-4 py-3 text-start sm:px-6 md:px-10">
           <p className="mt-4 text-center text-lg text-gray-700 dark:text-gray-300 sm:text-xl">
             Este formulário esta inativo e nao aceita novas respostas, procure o

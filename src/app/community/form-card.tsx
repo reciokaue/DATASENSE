@@ -12,20 +12,22 @@ export function FormCard({ form }: FormCardProps) {
   return (
     <Link href={`/community/template/${form.id}`}>
       <div className="flex w-full flex-col gap-2">
-        <div className="flex h-64 grid-cols-7 overflow-hidden rounded-xl border border-border shadow-sm hover:shadow">
-          <section className="flex w-full flex-col items-start justify-start gap-3 p-4">
+        <div className="flex h-64 overflow-hidden rounded-xl border border-border shadow-sm hover:shadow">
+          <section
+            className={`flex flex-col items-start justify-start gap-3 p-4 ${form?.logoUrl ? 'w-3/5' : 'w-full'}`}
+          >
             <div className="flex items-center gap-2">
               <Icon name={form.category?.icon} className="size-4" />
               {form.category.label}
             </div>
-            <h2 className="text-xl"> {form.name}</h2>
-            <p className="truncate text-sm text-muted-foreground">
+            <h2 className="text-xl"> {form?.name}</h2>
+            <p className="truncate text-wrap break-words text-sm text-muted-foreground">
               {form.description}
             </p>
           </section>
-          {form.logoUrl && (
+          {form?.logoUrl && (
             <Image
-              className="h-full basis-1/2 bg-center object-cover object-center"
+              className="h-full w-1/2 bg-center object-cover object-center"
               src={form?.logoUrl}
               width={400}
               height={650}

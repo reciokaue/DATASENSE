@@ -22,8 +22,6 @@ interface CardProps {
 export function EditCard({ formObject, index, actions }: CardProps) {
   const { register, control } = formObject
 
-  // setValue(`questions.${index}.index`, index)
-
   return (
     <form className="relative flex w-full flex-col space-y-4 rounded-lg border border-border bg-white px-6 py-3">
       <h2 className="text-base font-medium">Questão {index + 1}</h2>

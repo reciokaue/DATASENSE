@@ -10,7 +10,14 @@ export const formActions = ({ remove, insert, fields, append, form }: any) => {
     remove(index)
   }
   const cloneQuestion = (index: number) => {
-    insert(index + 1, fields[index])
+    insert(index + 1, {
+      ...fields[index],
+      id: -Math.round(Math.random() * 100),
+      // options: fields[index].map((opt) => ({
+      //   ...opt,
+      //   id: -Math.round(Math.random() * 100),
+      // })),
+    })
   }
   const addQuestion = ({ question }: addQuestionProps) => {
     if (question)
@@ -27,20 +34,13 @@ export const formActions = ({ remove, insert, fields, append, form }: any) => {
     append({
       text: '',
       questionType: {
-        id: 10,
-        name: 'options',
-        label: 'Multiplas opções',
-        icon: 'ellipsis',
+        id: 2,
+        name: 'list',
+        label: 'Lista',
+        icon: 'list',
       },
       required: true,
-      options: [
-        { text: 'Ótimo', id: -Math.round(Math.random() * 1000), index: 0 },
-        { text: 'Bom', id: -Math.round(Math.random() * 1000), index: 1 },
-        { text: 'Regular', id: -Math.round(Math.random() * 1000), index: 2 },
-        { text: 'Ruim', id: -Math.round(Math.random() * 1000), index: 3 },
-        { text: 'Péssimo', id: -Math.round(Math.random() * 1000), index: 4 },
-        { text: 'Não sei', id: -Math.round(Math.random() * 1000), index: 5 },
-      ],
+      options: [],
       index: fields.length,
       formId: form.data?.id,
       id: -Math.round(Math.random() * 100),

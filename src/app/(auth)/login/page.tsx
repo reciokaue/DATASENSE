@@ -28,6 +28,9 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm<loginSchemaProps>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      rememberMe: true,
+    },
   })
 
   const { mutateAsync: signIn, isPending } = useMutation({

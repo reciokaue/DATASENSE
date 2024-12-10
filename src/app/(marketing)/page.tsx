@@ -24,7 +24,10 @@ export default function IndexPage() {
             precisos, mesmo sem experiência prévia, a um custo acessível.
           </p>
           <div className="space-x-4">
-            <Link href="/login" className={cn(buttonVariants({ size: 'lg' }))}>
+            <Link
+              href="/register"
+              className={cn(buttonVariants({ size: 'lg' }))}
+            >
               Comece Agora
             </Link>
             <Link

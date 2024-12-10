@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 
 import { createNewForm } from '@/api/create-new-form'
 import { GetFormsData } from '@/api/get-forms'
+import { useAuth } from '@/contexts/useAuth'
 import { Form } from '@/models'
 
 import { Button } from '../ui/button'
@@ -25,6 +26,7 @@ interface CopyFormDialogProps {
 export function CopyFormDialog({ formTemplate }: CopyFormDialogProps) {
   const { push } = useRouter()
   const queryClient = useQueryClient()
+  const { status } = useAuth()
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async () => {
@@ -59,6 +61,14 @@ export function CopyFormDialog({ formTemplate }: CopyFormDialogProps) {
       toast('Erro ao copiar o formulário', { type: 'error' })
     },
   })
+
+  if (status !== 'signIn') {
+    return (
+      <Button link="/login">
+        Faça login para copiar <Plus size={20} />
+      </Button>
+    )
+  }
 
   return (
     <Dialog>
