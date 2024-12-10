@@ -41,6 +41,8 @@ export default function RegisterPage() {
     const { email, password, name, rememberMe } = data
 
     const auth = await signUp({ email, password, name })
+    localStorage.setItem('datasense@firstTime', 'true')
+
     setUser({ auth, rememberMe })
   }
 

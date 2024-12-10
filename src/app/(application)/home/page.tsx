@@ -7,6 +7,7 @@ import { getForms } from '@/api/get-forms'
 import { NewFormButton } from '@/components/form/new-form'
 import { Skeleton } from '@/components/ui/skeleton'
 
+import { FirstTime } from './first-time'
 import { HomeCard } from './home-card'
 
 export default function HomePage() {
@@ -17,6 +18,7 @@ export default function HomePage() {
 
   return (
     <>
+      <FirstTime />
       <div className="flex w-full items-center justify-between space-x-3">
         <h1 className="text-2xl font-semibold">Formulários</h1>
         <NewFormButton />
