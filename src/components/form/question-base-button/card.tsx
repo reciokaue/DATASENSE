@@ -16,9 +16,11 @@ export function Card({ question, ...rest }: CardProps) {
           {question.text}
         </h2>
         <div className="flex h-fit flex-wrap justify-start gap-1 pt-2">
-          {question?.options?.map((option: any) => (
-            <p key={option.id}>- {option.text}</p>
-          ))}
+          {question.options.length > 0 &&
+            ['list', 'options'].includes(question.questionType.name) &&
+            question?.options?.map((option: any) => (
+              <p key={option.id}>- {option.text}</p>
+            ))}
         </div>
       </div>
     </CardBase>

@@ -25,6 +25,7 @@ export function QuestionBaseButton({ actions }: QuestionBaseProps) {
   const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(
     null,
   )
+  const [isOpen, setIsOpen] = useState(false)
   const { searchParams } = useQueryParams()
 
   const search = searchParams.get('s') || ''
@@ -52,16 +53,18 @@ export function QuestionBaseButton({ actions }: QuestionBaseProps) {
         categoryId,
         questionTypeId,
       }),
+    enabled: isOpen,
   })
 
   const addQuestion = () => {
     actions.addQuestion({ question: selectedQuestion })
     setSelectedQuestion(null)
+    setIsOpen(false)
   }
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
+      <DialogTrigger asChild onClick={() => setIsOpen(true)}>
         <Button variant="outline" className="justify-between">
           Banco de Questões <LayoutGrid />
         </Button>

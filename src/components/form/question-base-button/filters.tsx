@@ -12,14 +12,14 @@ export function Filters() {
   const search = searchParams.get('s') || ''
 
   const { data: questionTypes } = useQuery({
-    queryKey: ['questionTypes'],
+    queryKey: ['questionTypes-filters'],
     queryFn: async () => {
       const response = await getQuestionTypes()
       return [{ id: null, label: 'Todas' }, ...response]
     },
   })
   const { data: categories } = useQuery({
-    queryKey: ['categories'],
+    queryKey: ['categories-filters'],
     queryFn: async () => {
       const response = await getCategories({ page: 0, pageSize: 100 })
       return [{ id: null, label: 'Todas' }, ...response?.categories]

@@ -14,7 +14,7 @@ export function FormCard({ form }: FormCardProps) {
       <div className="flex w-full flex-col gap-2">
         <div className="flex h-64 overflow-hidden rounded-xl border border-border shadow-sm hover:shadow">
           <section
-            className={`flex flex-col items-start justify-start gap-3 p-4 ${form?.logoUrl ? 'w-3/5' : 'w-full'}`}
+            className={`flex flex-col items-start justify-start gap-2 p-4 ${form?.logoUrl ? 'w-3/5' : 'w-full'}`}
           >
             <div className="flex items-center gap-2">
               <Icon name={form.category?.icon} className="size-4" />
