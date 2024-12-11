@@ -13,9 +13,10 @@ interface NavLinkProps {
   href: string
   icon: ReactNode
   text: string
+  index: number
 }
 
-const NavLink: React.FC<NavLinkProps> = ({ href, icon, text }) => {
+const NavLink: React.FC<NavLinkProps> = ({ href, icon, text, index }) => {
   const pathname = usePathname()
   const path = pathname?.split('/')[1]
   const isActive = path === href.slice(1)
@@ -26,9 +27,13 @@ const NavLink: React.FC<NavLinkProps> = ({ href, icon, text }) => {
         href={href}
         className={cn(
           'flex items-center rounded-md px-3 py-2 text-sm transition-colors duration-150 ease-in-out',
-          isActive
-            ? 'font-bold text-blue-500 '
-            : 'font-medium text-gray-700 hover:bg-stone-300  hover:text-gray-900',
+          isActive && index === 0 && 'text-blue-500',
+          isActive && index === 1 && 'text-amber-400',
+          isActive && index === 2 && 'text-red-500',
+          isActive && index === 3 && 'text-green-500',
+          isActive && 'font-bold ',
+          !isActive &&
+            'font-medium text-gray-700 hover:bg-stone-300  hover:text-gray-900',
         )}
       >
         {icon}
@@ -66,8 +71,12 @@ export function Navbar() {
             </Link>
             <ul className="flex space-x-4">
               {user?.id
-                ? authLinks.map((link) => <NavLink key={link.href} {...link} />)
-                : links.map((link) => <NavLink key={link.href} {...link} />)}
+                ? authLinks.map((link, i) => (
+                    <NavLink key={link.href} {...link} index={i} />
+                  ))
+                : links.map((link, i) => (
+                    <NavLink key={link.href} {...link} index={i} />
+                  ))}
             </ul>
           </div>
           <ProfilePopover />

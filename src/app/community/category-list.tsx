@@ -29,7 +29,7 @@ export function CategoryList({ parentId, className }: CategoryListProps) {
       {data
         ? data.categories.map((category) => (
             <Link
-              href={`/community/categories/${category.id}?category=${category.name}`}
+              href={`/community/categories/${category.id}?category=${category.label}`}
               key={category.id}
             >
               <Badge
