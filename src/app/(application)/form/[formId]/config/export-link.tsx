@@ -75,7 +75,16 @@ export function ExportLink({ formId }: ExportLinkProps) {
   }
 
   function handleCopyLink() {
-    navigator.clipboard.writeText(link)
+    if (navigator?.clipboard?.writeText) {
+      navigator.clipboard.writeText(link)
+    } else {
+      const textArea = document.createElement('textarea')
+      textArea.value = link
+      document.body.appendChild(textArea)
+      textArea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textArea)
+    }
     toast('Link copiado')
   }
 

@@ -22,7 +22,12 @@ export function Filters() {
     queryKey: ['categories-filters'],
     queryFn: async () => {
       const response = await getCategories({ page: 0, pageSize: 100 })
-      return [{ id: null, label: 'Todas' }, ...response?.categories]
+      return [
+        { id: null, label: 'Todas' },
+        ...response?.categories.reduce((flat, categoria) => {
+          return flat.concat(categoria, ...(categoria?.subcategories || []))
+        }, []),
+      ]
     },
   })
 

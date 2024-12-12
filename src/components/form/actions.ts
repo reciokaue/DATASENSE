@@ -13,6 +13,9 @@ export const formActions = ({ remove, insert, fields, append, form }: any) => {
     insert(index + 1, {
       ...fields[index],
       id: -Math.round(Math.random() * 100),
+      _count: {
+        responses: 0,
+      },
       // options: fields[index].map((opt) => ({
       //   ...opt,
       //   id: -Math.round(Math.random() * 100),

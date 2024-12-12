@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 
+import { Label } from '../ui/label'
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Options } from './options'
 import { SelectQuestionType } from './select-type'
 
@@ -20,7 +22,9 @@ interface CardProps {
 }
 
 export function EditCard({ formObject, index, actions }: CardProps) {
-  const { register, control } = formObject
+  const { register, control, getValues } = formObject
+
+  const questionResponses = getValues(`questions.${index}._count.responses`)
 
   return (
     <form className="relative flex w-full flex-col space-y-4 rounded-lg border border-border bg-white px-6 py-3">
@@ -54,15 +58,43 @@ export function EditCard({ formObject, index, actions }: CardProps) {
           >
             <Copy className="size-5" />
           </Button>
-          <Button
-            onClick={() => actions.removeQuestion(index)}
-            type="button"
-            variant="ghost"
-            size="icon"
-            className="hover:text-red-500"
-          >
-            <Trash2 className="size-5" />
-          </Button>
+          {questionResponses === 0 ? (
+            <Button
+              onClick={() => actions.removeQuestion(index)}
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="hover:text-red-500"
+            >
+              <Trash2 className="size-5" />
+            </Button>
+          ) : (
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="hover:text-red-500"
+                >
+                  <Trash2 className="size-5" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="max-w-[200px] space-y-2">
+                <p className=" text-balance text-sm">
+                  Essa questão tem {questionResponses} respostas, eluindo todos
+                  os dados serão perdidos
+                </p>
+
+                <Button
+                  onClick={() => actions.removeQuestion(index)}
+                  variant="destructive"
+                >
+                  Excluir mesmo assim
+                </Button>
+              </PopoverContent>
+            </Popover>
+          )}
         </div>
         <div className="flex items-center gap-2">
           Obrigatória
