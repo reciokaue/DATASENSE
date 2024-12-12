@@ -22,7 +22,7 @@ interface ResponseCardProps {
   question: QuestionResult
 }
 
-const staticsLabels = ['Média', 'Mediana', 'Mínimo', 'Máximo']
+const staticsLabels = ['Média', 'Mínimo', 'Máximo', 'Mediana']
 
 export function ResponseCard({ question }: ResponseCardProps) {
   return (
@@ -40,7 +40,7 @@ export function ResponseCard({ question }: ResponseCardProps) {
               <p className="text-sm text-secondary-foreground">
                 {staticsLabels[index]}
               </p>
-              <p className="text-lg font-medium">{statistic?.toFixed(1)}</p>
+              <p className="text-lg font-medium">{statistic}</p>
             </Card>
           ))}
         </header>
@@ -120,7 +120,6 @@ const CustomTooltip = ({ active, payload, label }) => {
     return (
       <div className="custom-tooltip bg-primary/20 p-2 text-white">
         <p className="label">{`${label} : ${payload[0].value}`}</p>
-        {/* <p className="desc">Anything you want can be displayed here.</p> */}
       </div>
     )
   }

@@ -18,8 +18,8 @@ export interface QuestionResult {
   chartData?: Array<{ label: string; value: number; percentage: number }>
   statistics?: {
     average: number
-    min: number
-    max: number
+    min: string
+    max: string
     median: number
   }
   responses?: Array<{ text: string; count: number }>
