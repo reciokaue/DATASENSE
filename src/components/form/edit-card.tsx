@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 
-import { Label } from '../ui/label'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Options } from './options'
 import { SelectQuestionType } from './select-type'
@@ -58,7 +57,7 @@ export function EditCard({ formObject, index, actions }: CardProps) {
           >
             <Copy className="size-5" />
           </Button>
-          {questionResponses === 0 ? (
+          {questionResponses === 0 || !questionResponses ? (
             <Button
               onClick={() => actions.removeQuestion(index)}
               type="button"
