@@ -45,8 +45,12 @@ export default function LoginPage() {
   async function handleSignIn(data: loginSchemaProps) {
     const { email, password, rememberMe } = data
 
-    const auth = await signIn({ email, password })
-    setUser({ auth, rememberMe })
+    try {
+      const auth = await signIn({ email, password })
+      setUser({ auth, rememberMe })
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   useEffect(() => {
@@ -81,7 +85,7 @@ export default function LoginPage() {
               placeholder="Seu email"
               {...register('email')}
             />
-            <span className="text-sm text-red-500">
+            <span data-test="error-message" className="text-sm text-red-500">
               {errors.email?.message}
             </span>
           </div>
@@ -93,7 +97,7 @@ export default function LoginPage() {
               placeholder="• • • • • • • • • • "
               {...register('password')}
             />
-            <span className="text-sm text-red-500">
+            <span data-test="error-message" className="text-sm text-red-500">
               {errors.password?.message}
             </span>
           </div>
@@ -109,6 +113,7 @@ export default function LoginPage() {
                       checkbox.field.onChange(!checkbox.field.value)
                     }}
                     id="remember"
+                    data-test="checkbox-remember-me"
                   />
                   <label
                     htmlFor="remember"
@@ -121,10 +126,14 @@ export default function LoginPage() {
             />
           </div>
         </section>
-        <Button className="mt-4 w-full py-6 font-bold" isLoading={isPending}>
+        <Button
+          data-test="button-login"
+          className="mt-4 w-full py-6 font-bold"
+          isLoading={isPending}
+        >
           Login
         </Button>
-        <Link href="/register">
+        <Link href="/register" data-test="create-account-link">
           <p className="text-center text-sm text-muted-foreground">
             Não possui conta ainda?{' '}
             <span className="text-blue-500 underline underline-offset-2">

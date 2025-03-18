@@ -35,6 +35,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           )}
           ref={ref}
           {...props}
+          data-test={`input-${props.name}`}
         />
         {type === 'password' && (
           <Button
