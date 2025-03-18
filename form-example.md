@@ -26,6 +26,3 @@ Sim
 Não
 Poderia ser mais curto
 Poderia ser mais longo
-
-
-Quais aspectos você acha que poderiam ser melhorados?

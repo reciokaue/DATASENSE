@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 
 export default function SuccessPage() {
   return (
-    <main className="flex h-screen flex-col items-center justify-between">
+    <main className="mx-auto flex h-screen max-w-screen-sm flex-col items-center justify-between">
       <div className="flex w-full flex-1 flex-col p-4">
         <h1 className="text-xl font-bold text-gray-900 dark:text-white sm:text-2xl">
           DATASENSE

@@ -12,6 +12,8 @@ import { format } from 'date-fns'
 // 17:00	1
 // 19:30
 export function formatResponse(text: string, type: string): string {
+  if (text === 'undefined') return 'Não respondido'
+
   switch (type) {
     case 'date':
       if (text !== 'undefined') return format(new Date(text), 'dd/MM/yyyy')
