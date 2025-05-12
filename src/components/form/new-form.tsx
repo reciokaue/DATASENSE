@@ -82,7 +82,7 @@ export function NewFormButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
+        <Button data-test="button-new-form">
           Novo <Plus />
         </Button>
       </DialogTrigger>
@@ -137,7 +137,11 @@ export function NewFormButton() {
             <DialogClose asChild disabled={isPending}>
               <Button variant="outline">Cancelar</Button>
             </DialogClose>
-            <Button isLoading={isPending} type="submit">
+            <Button
+              data-test="button-create-form"
+              isLoading={isPending}
+              type="submit"
+            >
               Criar Formulário
             </Button>
           </DialogFooter>

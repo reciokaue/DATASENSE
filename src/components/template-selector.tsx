@@ -37,14 +37,24 @@ export function TemplateSelector({ control, name }: TemplateSelectorProps) {
               templateId.field.onChange(value === 'null' ? null : +value)
             }
           >
-            <SelectTrigger id="category" className="w-[280px]">
+            <SelectTrigger
+              data-test="select-form"
+              id="category"
+              className="w-[280px]"
+            >
               <SelectValue placeholder="Selecionar" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={'null'}>Não copiar</SelectItem>
+              <SelectItem data-test="select-null" value={'null'}>
+                Não copiar
+              </SelectItem>
               {result &&
-                result.forms.map((form) => (
-                  <SelectItem key={form.id} value={String(form.id)}>
+                result.forms.map((form, index) => (
+                  <SelectItem
+                    data-test={`select-${index}`}
+                    key={form.id}
+                    value={String(form.id)}
+                  >
                     {form.name}
                   </SelectItem>
                 ))}

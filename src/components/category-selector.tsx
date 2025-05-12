@@ -47,6 +47,7 @@ export function CategorySelector({
                 options={data?.categories}
                 placeholder={parent?.label || 'Selecionar'}
                 listTitle="Categorias"
+                name="categories"
                 setSelected={(cat) => {
                   setParent(cat)
                   field.onChange({
