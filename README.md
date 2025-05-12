@@ -1,18 +1,28 @@
 # DATASENSE
 
-Sistema de captação e analise de dados através de formulários online
+![home screen](./docs/hero.png)
 
-Grupo:  
+**Plataforma para criação de formulários e análise inteligente de dados.**
 
-- Kauê Recio Carpim Sala.  
-- Leonardo Marcel Hyppolito.  
+Datasense é uma aplicação web desenvolvida como Trabalho de Conclusão de Curso, com o objetivo de facilitar a coleta, organização e visualização de dados a partir de formulários personalizados.
+O objetivo do projeto é disponibilizar uma forma apurada e precisa de coletar e analisar dados de pesquisas de mercado em geral, sem a necessidade de experiencia previa na area, disponibilizando modelos testados e aprovados, por um preço acessível.
 
-## Tecnologias: 
+## Funcionalidades
 
-- React. 
-- Node. 
+- Criação e gerenciamento de formulários dinâmicos
+- Visualização de respostas com gráficos e dashboards
+- Filtros avançados para análise segmentada
+- Exportação de dados (.csv)
+- Autenticação com JWT
+- UI responsiva e acessível
 
-O objetivo do projeto é disponibilizar uma forma apurada e precisa de coletar e analisar dados de pesquisas de mercado em geral, sem a necessidade de experiencia previa na area, disponibilizando modelos testados e aprovados, por um preço acessível
+## Tecnologias utilizadas
+
+- **Frontend:** React.js, Next.js, Tailwind CSS, React Hook Form, Chart.js
+- **Backend:** Node.js, Express.js, Prisma ORM
+- **Banco de Dados:** PostgreSQL
+- **Autenticação:** JWT
+- **Outros:** GitHub, Vercel
 
 ## Público alvo 
 
@@ -24,111 +34,43 @@ O objetivo do projeto é disponibilizar uma forma apurada e precisa de coletar e
 A incapacidade do gerente de conhecer seu cliente e suas necessidades
 O custo elevado para se contratar agências de publicidade e marketing
 
-## Formas de Monetização
 
-- Cobrança por pesquisa respondida
-- Anúncios
-- Planos
+## 📦 Como rodar o projeto localmente
 
-## Requisitos da primeira versão (MVP):
- 
-- O gerente deve conseguir selecionar questões/formulários prontos para criar seu formulário. 
-- O gerente deve conseguir ativar e desativar formulários. 
-- O gerente deve conseguir criar as questões do seu formulário. 
-- O gerente deve selecionar uma data limite para formulários. 
-- O usuário deve conseguir responder os formulários. 
-- O administrador deve conseguir visualizar os gerentes e seus formulários. 
-- O administrador deve conseguir criar e editar questões.
-- O administrador deve conseguir criar e editar tópicos.
-- O sistema deve salvar formulários inativos. 
-- O sistema deve apresentar os resultados dos formulários. 
-- O sistema deve gerar um qrCode e um link de acesso à formulário. 
+1. Clone o repositório:
+```bash
+git clone <https://github.com/reciokaue/datasense.git>
+```
+2. Instale as dependências
+```bash
+yarn
+```
+3. Atualize o `.env`
+```bash
+  NEXT_PUBLIC_API_URL=http://localhost:3333
+  NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+3. Atualize o `.env`
+```bash
+  NEXT_PUBLIC_API_URL=http://localhost:3333
+  NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+4. rode o backend 
 
-## Observações:
+https://github.com/reciokaue/feed-back
 
-- O gerente só pode alterar questões de um formulário se este não tiver respostas. 
-- O sistema deve armazenar as datas e os horários das respostas dos usuários. 
-- O gerente pode escolher a ordem das perguntas. 
 
-## Perfis:
+# Aplicação
 
-#### Usuário
-  Permite responder os formulários
-
-#### gerente:
-  Permite criar e finalizar formulários
-  Permite visualizar dados dos formulários
-  Permite personalizar perguntas do formulário
-
-#### Administrador.
-  Permite visualizar usuários
-  Permite visualizar formulários
-  Permite criar e editar tópicos
-  Permite criar e editar questões
+![home screen](./docs/hero.png)
+![form results](./docs/form-results.png)
+![form editing](./docs/form-edit.png)
+![forms page](./docs/forms-page.png)
+![responding form](./docs/form-response.png)
 
 ## Casos de uso
 
 ![Casos de uso](./docs/useCases.drawio.png)
-
-Manager
-  -Auth
-    -login
-    -register
-    -forgot password
-  -Crud Forms
-    -create
-    -read
-    -delete
-    -change
-    +add public questions
-    +use models
-    +toggle active
-    +toggle public
-    +generate qrcode/link
-
-Admin
-  -Crud Public Forms
-    -create
-    -read
-    -delete
-    -change
-  -Crud Public Questions
-    -create
-    -read
-    -delete
-  -Crud Topics
-    -create
-    -read
-    -delete
-  -View users
-    -list users w/ pagination
-      -show (name, email, number of forms, plan)
-
-User
-  - responder formulário
-
-
-Possíveis rotas
-  Manager [
-    - POST "/auth/login" request: {
-      email: string
-      password: string
-    }
-    response: {token: string}
-
-    - Post "/auth/register" request: {
-      name: string
-      email: string
-      password: string
-    }
-    response: {token: string}
-
-    - POST "/auth/forgot-password" request:  {
-      "email": "example@example.com"
-    }
-  ]
-
-
 
 ## Modelo de entidade e relacionamento ER
 
